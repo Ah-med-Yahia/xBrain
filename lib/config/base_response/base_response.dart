@@ -1,3 +1,4 @@
+import 'package:explaino/config/errors/error_handler.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'base_response.freezed.dart';

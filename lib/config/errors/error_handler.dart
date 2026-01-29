@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:explaino/core/constants/errors_constants.dart';
 import 'error_model.dart';
 import 'local_exception.dart';
 
