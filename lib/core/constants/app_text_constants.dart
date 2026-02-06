@@ -1,0 +1,3 @@
+class AppTextConstants {
+  AppTextConstants._();
+}
