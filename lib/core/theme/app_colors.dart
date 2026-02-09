@@ -42,6 +42,7 @@ class AppColors {
   static const Color darkInputFill = Color(0xFF1a2035);
   static const Color lightInputIcon = Color(0xFF000000);
   static const Color darkInputIcon = Color(0xFF94a3b8);
+  static const Color circleAvatarBackground = Color(0xFFE8EBF1);
 
   // =========================
   // Text Colors
@@ -64,4 +65,27 @@ class AppColors {
   static const Color transparent = Color(0x00000000);
   static const Color red = Color(0xFFF40909);
   static const Color green = Color(0xFF10B981);
+
+  // =========================
+  // Login Screen Specific Colors
+  // =========================
+  static const LinearGradient loginContainerGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [AppColors.primary, Color(0xFF0A6EB8)],
+  );
+  static const List<BoxShadow> loginContainerShadow = [
+    BoxShadow(
+      color: Color(0x331197F7),
+      offset: Offset(0, 4),
+      blurRadius: 6,
+      spreadRadius: -4,
+    ),
+    BoxShadow(
+      color: Color(0x331197F7),
+      offset: Offset(0, 10),
+      blurRadius: 15,
+      spreadRadius: -3,
+    ),
+  ];
 }
