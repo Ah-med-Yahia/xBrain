@@ -1,8 +1,9 @@
 class AppTextConstants {
   AppTextConstants._();
+  //constants for text on auth screens
   static const String welcomeBack = 'Welcome Back';
   static const String signInToAccount = 'Please sign in to your account';
-  static const String orContinueWith = " Or continue with ";
+  static const String orContinueWith = "Or continue with";
   static const String dontHaveAccount = "Don't have an account?";
   static const String signUp = "Sign Up";
   static const String forgotPassword = "Forgot Password?";
@@ -17,4 +18,5 @@ class AppTextConstants {
   static const String enterNewPassword = "Enter New Password";
   static const String confirmNewPassword = "Confirm New Password";
   static const String resetPassword = "Reset Password";
+  static const String resetPasswordQuestion = "Reset Password?";
 }

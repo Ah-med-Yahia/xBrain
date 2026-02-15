@@ -1,7 +1,8 @@
+import 'package:explaino/core/gen/assets.gen.dart';
+import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../core/gen/assets.gen.dart';
-import '../../../../../core/theme/app_colors.dart';
+
 
 class ForgetPasswordAvatar extends StatelessWidget {
   const ForgetPasswordAvatar({super.key});
@@ -9,31 +10,30 @@ class ForgetPasswordAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final width = size.width;
-    final height = size.height;
+    
     
     return Stack(
       alignment: Alignment.center,
       children: [
         CircleAvatar(
-          radius: width * 0.25,
-          backgroundColor: AppColors.circleAvatarBackground.withOpacity(.5),
+          radius: size.width * 0.25,
+          backgroundColor: AppColors.lightPeriwinkle.withOpacity(.5),
         ),
         CircleAvatar(
-          radius: width * 0.225,
-          backgroundColor: AppColors.circleAvatarBackground,
+          radius: size.width * 0.225,
+          backgroundColor: AppColors.lightPeriwinkle,
         ),
         Positioned(
-          top: height * 0.015,
-          right: width * 0.075,
+          top:  size.height * 0.015,
+          right: size.width * 0.075,
           child: CircleAvatar(
-            radius: width * 0.0375,
+            radius: size.width * 0.0375,
             backgroundColor: AppColors.primary,
           ),
         ),
         Assets.forgetPasswordLogo.svg(
-          width: width * 0.115,
-          height: width * 0.115,
+          width: size.width * 0.115,
+          height: size.width * 0.115,
         ),
       ],
     );

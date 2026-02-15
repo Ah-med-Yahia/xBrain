@@ -1,7 +1,6 @@
+import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../../core/constants/app_text_constants.dart';
-import '../../../../../core/theme/app_colors.dart';
 
 class EmailAndPasswordTextField extends StatefulWidget {
   const EmailAndPasswordTextField({super.key});
@@ -17,7 +16,7 @@ class _EmailAndPasswordTextFieldState extends State<EmailAndPasswordTextField> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final height = size.height;
+
     return Form(
       child: Column(
         children: [
@@ -28,7 +27,7 @@ class _EmailAndPasswordTextFieldState extends State<EmailAndPasswordTextField> {
             ),
             keyboardType: TextInputType.emailAddress,
           ),
-          SizedBox(height: height * 0.02),
+          SizedBox(height: size.height * 0.02),
           TextFormField(
             decoration: InputDecoration(
               labelText: AppTextConstants.password,

@@ -1,8 +1,7 @@
+import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/features/auth/login/presentation/widgets/forget_password_avatar.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../../core/constants/app_text_constants.dart';
-import '../../../../../core/theme/app_colors.dart';
-import '../widgets/forget_password_avatar.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -18,8 +17,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final width = size.width;
-    final height = size.height;
 
     return Scaffold(
       body: Container(
@@ -28,16 +25,21 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         child: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
-              horizontal: width * 0.04,
-              vertical: height * 0.01,
+              horizontal: size.width * 0.04,
+              vertical: size.height * 0.01,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: height * 0.05),
+                SizedBox(height: size.height * 0.05),
                 ForgetPasswordAvatar(),
-                SizedBox(height: height * 0.04),
-                SizedBox(height: height * 0.04),
+                SizedBox(height: size.height * 0.03),
+                Text(
+                  AppTextConstants.resetPasswordQuestion,
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
+                SizedBox(height: size.height * 0.04),
+
                 Form(
                   child: Column(
                     children: [
@@ -67,7 +69,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: height * 0.02),
+                SizedBox(height: size.height * 0.02),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: AppTextConstants.confirmNewPassword,
@@ -91,10 +93,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
-                SizedBox(height: height * 0.25),
+                SizedBox(height: size.height * 0.25),
                 SizedBox(
                   width: double.infinity,
-                  height: height * 0.07,
+                  height: size.height * 0.06,
                   child: ElevatedButton(
                     onPressed: () {},
                     child: Text(
