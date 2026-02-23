@@ -21,7 +21,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(gradient: AppColors.lightScaffoldGradient),
+        decoration: const BoxDecoration(
+          gradient: AppColors.lightScaffoldGradient,
+        ),
         child: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
@@ -32,7 +34,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(height: size.height * 0.05),
-                ForgetPasswordAvatar(),
+                const ForgetPasswordAvatar(),
                 SizedBox(height: size.height * 0.03),
                 Text(
                   AppTextConstants.resetPasswordQuestion,
@@ -46,7 +48,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       TextFormField(
                         decoration: InputDecoration(
                           hintText: AppTextConstants.enterNewPassword,
-                          prefixIcon: Icon(
+                          prefixIcon: const Icon(
                             Icons.lock_outline,
                             color: AppColors.black,
                           ),
@@ -73,7 +75,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: AppTextConstants.confirmNewPassword,
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.lock_outline,
                       color: AppColors.black,
                     ),

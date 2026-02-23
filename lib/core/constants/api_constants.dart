@@ -1,4 +1,4 @@
 class ApiConstants {
   ApiConstants._();
-  static const String baseUrl = "https://your-api.com";
+  static const String baseUrl = 'https://your-api.com';
 }

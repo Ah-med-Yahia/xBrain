@@ -22,7 +22,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(gradient: AppColors.lightScaffoldGradient),
+        decoration: const BoxDecoration(
+          gradient: AppColors.lightScaffoldGradient,
+        ),
         child: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
@@ -36,12 +38,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: size.width * 0.2,
                   height: size.width * 0.2,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [AppColors.primary, AppColors.darkBlue],
                     ),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: AppColors.brightSkyBlue,
                         offset: Offset(0, 4),
@@ -75,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 SizedBox(height: size.height * 0.04),
-                EmailAndPasswordTextField(),
+                const EmailAndPasswordTextField(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -127,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 SizedBox(height: size.height * 0.03),
-                SocialIconRow(),
+                const SocialIconRow(),
                 SizedBox(height: size.height * 0.03),
                 AuthLinkRow(
                   promptText: AppTextConstants.dontHaveAccount,

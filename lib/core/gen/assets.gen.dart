@@ -17,6 +17,8 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class Assets {
   const Assets._();
 
+  static const SvgGenImage appLogo = SvgGenImage('assets/app_logo.svg');
+  static const SvgGenImage chatbotLogo = SvgGenImage('assets/chatbot_logo.svg');
   static const SvgGenImage facebookLogo = SvgGenImage(
     'assets/facebook_logo.svg',
   );
@@ -25,13 +27,17 @@ class Assets {
   );
   static const SvgGenImage googleLogo = SvgGenImage('assets/google_logo.svg');
   static const SvgGenImage loginLogo = SvgGenImage('assets/login_logo.svg');
+  static const SvgGenImage starsLogo = SvgGenImage('assets/stars_logo.svg');
 
   /// List of all assets
   static List<SvgGenImage> get values => [
+    appLogo,
+    chatbotLogo,
     facebookLogo,
     forgetPasswordLogo,
     googleLogo,
     loginLogo,
+    starsLogo,
   ];
 }
 
