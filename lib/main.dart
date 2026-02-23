@@ -9,8 +9,6 @@ void main() async {
   runApp(const ExplainoApp());
 }
 
-
-
 class ExplainoApp extends StatelessWidget {
   const ExplainoApp({super.key});
 
@@ -23,4 +21,3 @@ class ExplainoApp extends StatelessWidget {
     );
   }
 }
-
