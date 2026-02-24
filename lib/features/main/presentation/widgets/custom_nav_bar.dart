@@ -265,7 +265,7 @@ class _CustomNavBarState extends State<CustomNavBar>
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
             _items.length,
-            (index) => _buildNavItem(_items[index], index),
+            (index) => Expanded(child: _buildNavItem(_items[index], index)),
           ),
         ),
       ),
