@@ -17,7 +17,10 @@ abstract class AppRouter {
         path: AppRoutesConstants.forgetPassword,
         builder: (context, state) => const ForgetPasswordScreen(),
       ),
-      GoRoute(path: AppRoutesConstants.resetPassword, builder: (context, state) => const ResetPasswordScreen()),
+      GoRoute(
+        path: AppRoutesConstants.resetPassword,
+        builder: (context, state) => const ResetPasswordScreen(),
+      ),
     ],
   );
 }
