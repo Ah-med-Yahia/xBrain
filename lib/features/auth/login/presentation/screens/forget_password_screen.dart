@@ -21,7 +21,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(gradient: AppColors.lightScaffoldGradient),
+        decoration: const BoxDecoration(
+          gradient: AppColors.lightScaffoldGradient,
+        ),
         child: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
@@ -32,7 +34,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(height: size.height * 0.05),
-                ForgetPasswordAvatar(),
+                const ForgetPasswordAvatar(),
                 SizedBox(height: size.height * 0.03),
                 Text(
                   AppTextConstants.forgotPassword,
@@ -49,7 +51,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
                 SizedBox(height: size.height * 0.04),
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     label: Text(AppTextConstants.email),
                     prefixIcon: Icon(
                       Icons.email_outlined,

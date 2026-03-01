@@ -14,7 +14,7 @@ class ForgetPasswordAvatar extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: size.width * 0.25,
-          backgroundColor: AppColors.lightPeriwinkle.withOpacity(.5),
+          backgroundColor: AppColors.lightPeriwinkle.withValues(alpha: 0.5),
         ),
         CircleAvatar(
           radius: size.width * 0.225,
