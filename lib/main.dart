@@ -9,8 +9,6 @@ void main() async {
   runApp(const ExplainoApp());
 }
 
-
-
 class ExplainoApp extends StatelessWidget {
   const ExplainoApp({super.key});
 
@@ -18,9 +16,8 @@ class ExplainoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: AppRouter.router,
-      theme: AppTheme.appTheme,
+      theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
     );
   }
 }
-

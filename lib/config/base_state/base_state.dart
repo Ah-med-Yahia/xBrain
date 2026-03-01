@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 
 class BaseState<T> extends Equatable {
@@ -6,7 +5,7 @@ class BaseState<T> extends Equatable {
   final bool isEmpty;
   final T? data;
 
-  const BaseState({this.isError = false, this.isEmpty=false, this.data});
+  const BaseState({this.isError = false, this.isEmpty = false, this.data});
 
   BaseState<T> copyWith({bool? isError, bool? isEmpty, T? data}) {
     return BaseState<T>(
