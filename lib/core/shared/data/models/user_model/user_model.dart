@@ -1,10 +1,10 @@
-import 'package:explaino/core/shared/data/models/auth_response_model/specialization_model.dart';
-import 'package:explaino/core/shared/data/models/auth_response_model/wallet_model.dart';
+import 'package:explaino/core/shared/data/models/user_model/specialization_model/specialization_model.dart';
+import 'package:explaino/core/shared/data/models/user_model/wallet_model/wallet_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'user_model.g.dart';
 
 @JsonSerializable()
-class User {
+class UserModel {
   @JsonKey(name: 'id')
   final String id;
   @JsonKey(name: 'email')
@@ -22,9 +22,9 @@ class User {
   @JsonKey(name: 'profile_image_url')
   final String? profileImageUrl;
   @JsonKey(name: 'specializations')
-  final List<SpecializationModel> specializations;
+  final SpecializationModel specializations;
   @JsonKey(name: 'wallet')
-  final Wallet wallet;
+  final WalletModel wallet;
   @JsonKey(name: 'specialization_form_completed_at')
   // final dynamic specializationFormCompletedAt;
   @JsonKey(name: 'created_at')
@@ -32,7 +32,7 @@ class User {
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
 
-  User({
+  UserModel({
     required this.id,
     required this.email,
     required this.username,
@@ -48,7 +48,7 @@ class User {
     required this.updatedAt,
   });
 
-  User copyWith({
+  UserModel copyWith({
     String? id,
     String? email,
     String? username,
@@ -57,12 +57,12 @@ class User {
     String? phoneNumber,
     String? bio,
     String? profileImageUrl,
-    List<SpecializationModel>? specializations,
-    Wallet? wallet,
+    SpecializationModel? specializations,
+    WalletModel? wallet,
     // dynamic specializationFormCompletedAt,
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) => User(
+  }) => UserModel(
     id: id ?? this.id,
     email: email ?? this.email,
     username: username ?? this.username,
@@ -78,7 +78,8 @@ class User {
     updatedAt: updatedAt ?? this.updatedAt,
   );
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

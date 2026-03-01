@@ -1,4 +1,4 @@
-import 'package:explaino/core/shared/data/models/auth_response_model/user_model.dart';
+import 'package:explaino/core/shared/data/models/user_model/user_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
 
@@ -19,7 +19,7 @@ class AuthResponseModel {
   @JsonKey(name: 'refresh_token')
   final String refreshToken;
   @JsonKey(name: 'user')
-  final User user;
+  final UserModel user;
 
   AuthResponseModel({
     required this.message,
@@ -32,7 +32,7 @@ class AuthResponseModel {
     String? message,
     String? accessToken,
     String? refreshToken,
-    User? user,
+    UserModel? user,
   }) => AuthResponseModel(
     message: message ?? this.message,
     accessToken: accessToken ?? this.accessToken,
