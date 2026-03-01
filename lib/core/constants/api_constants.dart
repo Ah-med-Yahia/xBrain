@@ -1,4 +1,7 @@
 class ApiConstants {
   ApiConstants._();
-  static const String baseUrl = 'https://your-api.com';
+  static const String baseUrl = 'https:';
+  //==================== Auth============================
+  static const String login = 'api/v1/auth/login';
+  static const String register = 'api/v1/auth/register';
 }
