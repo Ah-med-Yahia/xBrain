@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:explaino/config/dio_module/auth_interceptor.dart';
-import 'package:explaino/config/dio_module/logger_interceptor.dart';
+import 'package:explaino/config/modules/dio_module/auth_interceptor.dart';
+import 'package:explaino/config/modules/dio_module/logger_interceptor.dart';
 import 'package:explaino/core/constants/api_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
