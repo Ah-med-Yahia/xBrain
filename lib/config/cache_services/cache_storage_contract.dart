@@ -1,5 +1,5 @@
 import 'package:explaino/config/base_response/base_response.dart';
-import 'package:explaino/config/cache_modules/serializer/serializer.dart';
+import 'package:explaino/config/cache_services/serializer/serializer.dart';
 
 abstract class CacheStorageContract {
   Future<BaseResponse<void>> write<T>(

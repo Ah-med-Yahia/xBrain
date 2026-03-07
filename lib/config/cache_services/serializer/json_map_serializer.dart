@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:explaino/config/cache_modules/serializer/serializer.dart';
+import 'package:explaino/config/cache_services/serializer/serializer.dart';
 
 class JsonStorageSerializer implements Serializer<Map<String, dynamic>> {
   @override

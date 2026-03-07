@@ -3,6 +3,7 @@ class CacheConstants {
 
   static const String token = 'TOKEN';
   static const String secureStorageService = 'SecureStorageService.';
+  static const String sharedPreferencesService = 'SharedPreferencesService.';
   static const String error = 'error:';
 }
 

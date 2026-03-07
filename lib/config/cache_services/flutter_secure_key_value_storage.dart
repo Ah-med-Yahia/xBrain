@@ -1,6 +1,6 @@
 import 'package:explaino/config/base_response/base_response.dart';
-import 'package:explaino/config/cache_modules/cache_storage_contract.dart';
-import 'package:explaino/config/cache_modules/serializer/serializer.dart';
+import 'package:explaino/config/cache_services/cache_storage_contract.dart';
+import 'package:explaino/config/cache_services/serializer/serializer.dart';
 import 'package:explaino/config/errors/error_handler.dart';
 import 'package:explaino/config/errors/local_exception.dart';
 import 'package:explaino/core/constants/cache_constants.dart';
