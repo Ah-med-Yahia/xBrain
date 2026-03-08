@@ -2,6 +2,9 @@ class CacheConstants {
   CacheConstants._();
 
   static const String token = 'TOKEN';
+  static const String secureStorageService = 'SecureStorageService.';
+  static const String sharedPreferencesService = 'SharedPreferencesService.';
+  static const String error = 'error:';
 }
 
 class StorageKeys {
@@ -21,14 +24,4 @@ class StorageMethods {
   static const String deleteAll = 'deleteAll';
   static const String containsKey = 'containsKey';
   static const String getAllKeys = 'getAllKeys';
-  static const String writeJson = 'writeJson';
-  static const String readJson = 'readJson';
-  static const String writeList = 'writeList';
-  static const String readList = 'readList';
-  static const String writeBool = 'writeBool';
-  static const String readBool = 'readBool';
-  static const String writeInt = 'writeInt';
-  static const String readInt = 'readInt';
-  static const String writeDouble = 'writeDouble';
-  static const String readDouble = 'readDouble';
 }

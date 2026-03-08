@@ -1,25 +1,25 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:explaino/config/base_response/base_response.dart';
-import 'package:explaino/config/cache_modules/secure_storage_module.dart';
 import 'package:explaino/config/network/session_manager.dart';
+import 'package:explaino/config/services/token_service.dart';
 import 'package:explaino/core/constants/cache_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class AuthInterceptor extends Interceptor {
-  final SecureStorageService _secureStorageService;
+  final TokenService _tokenService;
   final SessionManager _sessionManager;
 
-  AuthInterceptor(this._secureStorageService, this._sessionManager);
+  AuthInterceptor(this._tokenService, this._sessionManager);
 
   @override
   Future<void> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final tokenResponse = await _secureStorageService.getAuthTokens();
+    final tokenResponse = await _tokenService.getToken();
 
     tokenResponse.when(
       success: (token) {
@@ -60,8 +60,8 @@ class AuthInterceptor extends Interceptor {
 
   Future<void> _clearExpiredToken() async {
     try {
-      await _secureStorageService.clearAuthTokens();
-      await _secureStorageService.writeBool(StorageKeys.isLoggedIn, false);
+      await _tokenService.clearToken();
+      // await _tokenService.writeBool(StorageKeys.isLoggedIn, false);
 
       if (kDebugMode) {
         log('Auth tokens cleared due to session expiration');
