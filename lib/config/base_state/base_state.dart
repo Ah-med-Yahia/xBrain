@@ -14,6 +14,7 @@ class BaseState<T> extends Equatable {
       data: data ?? this.data,
     );
   }
+
   @override
   List<Object?> get props => [isError, isEmpty, data];
 }

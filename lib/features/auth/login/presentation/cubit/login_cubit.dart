@@ -47,9 +47,9 @@ class LoginCubit extends Cubit<LoginState> {
   //   final passwordError = AppValidators.validateLoginPassword(loginRequestModel.password);
 
   //   if(emailError != null || passwordError != null){
-      
+
   //     emit(state.copyWith (loginBaseState: ));
   //   }
-    
+
   // }
 }
