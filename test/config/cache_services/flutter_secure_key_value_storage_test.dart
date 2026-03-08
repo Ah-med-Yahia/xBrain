@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/config/cache_services/flutter_secure_key_value_storage.dart';
+import 'package:explaino/config/cache_services/serializer/bool_serializer.dart';
 import 'package:explaino/config/cache_services/serializer/double_serializer.dart';
 import 'package:explaino/config/cache_services/serializer/int_serializer.dart';
 import 'package:explaino/config/cache_services/serializer/json_map_serializer.dart';
@@ -252,6 +253,29 @@ void main() {
         DoubleSerializer(),
       );
       expect(result, isA<Failure<double?>>());
+    });
+
+    test('should return faliure when error in write bool value', () async {
+      when(
+        cacheStorage.write(key: testKey, value: 'true'),
+      ).thenThrow(CacheError(errorMessage));
+
+      final result = await flutterSecureKeyValueStorage.write(
+        testKey,
+        true,
+        BoolSerializer(),
+      );
+      expect(result, isA<Failure<void>>());
+    });
+
+    test('should return faliure when error in read bool value', () async {
+      when(cacheStorage.read(key: testKey)).thenThrow(CacheError(errorMessage));
+
+      final result = await flutterSecureKeyValueStorage.read(
+        testKey,
+        BoolSerializer(),
+      );
+      expect(result, isA<Failure<bool?>>());
     });
 
     test('should return faliure when error in write list value', () async {
