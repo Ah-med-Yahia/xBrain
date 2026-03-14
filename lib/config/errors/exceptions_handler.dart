@@ -59,6 +59,6 @@ AppException _handleBadResponse(DioException error) {
 
 AppException _handleLocalException(LocalException error) {
   return switch (error) {
-    CacheError(:final message) => CacheError(message),
+    CacheException(:final message) => CacheException(message),
   };
 }

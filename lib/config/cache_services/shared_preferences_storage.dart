@@ -124,7 +124,7 @@ class SharedPrefStorage implements CacheStorageContract {
 
   AppException _handleError(String method, error) {
     return ExceptionsHandler.handle(
-      CacheError(
+      CacheException(
         '${CacheConstants.sharedPreferencesService}$method ${CacheConstants.error} $error',
       ),
     );

@@ -9,7 +9,7 @@ class ApiException extends AppException {
     required Map<String, dynamic> json,
     required int? statusCode,
   }) {
-    return ApiException(getAllErrorMessage(json['error']), code: statusCode);
+    return ApiException(getAllErrorMessage(json), code: statusCode);
   }
 
   static String getAllErrorMessage(Map<String, dynamic> errors) {
@@ -17,11 +17,11 @@ class ApiException extends AppException {
 
     final errorMessage = errors.entries
         .map((entry) {
+          final key = entry.key;
           final value = entry.value;
-          return "${value.join(',')}";
+          return "$key: ${value.join(', ')}";
         })
         .join('\n');
-
     return errorMessage;
   }
 }

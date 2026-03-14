@@ -82,7 +82,7 @@ class FlutterSecureKeyValueStorage implements CacheStorageContract {
 
   AppException _handleError(String method, error) {
     return ExceptionsHandler.handle(
-      CacheError(
+      CacheException(
         '${CacheConstants.secureStorageService}$method ${CacheConstants.error} $error',
       ),
     );

@@ -301,7 +301,7 @@ void main() {
     test('should fail to write value', () async {
       when(
         mockSharedPreferences.setString(testKey, testValue),
-      ).thenThrow(CacheError(testError));
+      ).thenThrow(CacheException(testError));
 
       final result = await sharedPrefStorage.write(
         testKey,
@@ -318,7 +318,7 @@ void main() {
     test('should fail to read value', () async {
       when(
         mockSharedPreferences.getString(testKey),
-      ).thenThrow(CacheError(testError));
+      ).thenThrow(CacheException(testError));
 
       final result = await sharedPrefStorage.read(testKey, StringSerializer());
 
@@ -331,7 +331,7 @@ void main() {
     test('should fail to delete value', () async {
       when(
         mockSharedPreferences.remove(testKey),
-      ).thenThrow(CacheError(testError));
+      ).thenThrow(CacheException(testError));
 
       final result = await sharedPrefStorage.delete(testKey);
 
@@ -342,7 +342,7 @@ void main() {
     });
 
     test('should fail to delete all values', () async {
-      when(mockSharedPreferences.clear()).thenThrow(CacheError(testError));
+      when(mockSharedPreferences.clear()).thenThrow(CacheException(testError));
 
       final result = await sharedPrefStorage.deleteAll();
 
@@ -353,7 +353,9 @@ void main() {
     });
 
     test('should fail to get all keys', () async {
-      when(mockSharedPreferences.getKeys()).thenThrow(CacheError(testError));
+      when(
+        mockSharedPreferences.getKeys(),
+      ).thenThrow(CacheException(testError));
 
       final result = await sharedPrefStorage.getAllKeys();
 
@@ -366,7 +368,7 @@ void main() {
     test('should fail to check if key exists', () async {
       when(
         mockSharedPreferences.containsKey(testKey),
-      ).thenThrow(CacheError(testError));
+      ).thenThrow(CacheException(testError));
 
       final result = await sharedPrefStorage.containsKey(testKey);
 
