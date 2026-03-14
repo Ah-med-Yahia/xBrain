@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handelNavigateToMainScreen() {
     UIUtils.hideEasyLoading();
-    // context.go(AppRoutesConstants.);
+    GoRouter.of(context).go(AppRoutesConstants.forgetPassword);
   }
 
   @override
@@ -129,11 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   AuthLinkRow(
                     promptText: AppTextConstants.dontHaveAccount,
                     linkText: AppTextConstants.signUp,
-                    onLinkTap: () {
-                      GoRouter.of(
-                        context,
-                      ).go(AppRoutesConstants.forgetPassword);
-                    },
+                    onLinkTap: () {},
                   ),
                 ],
               ),

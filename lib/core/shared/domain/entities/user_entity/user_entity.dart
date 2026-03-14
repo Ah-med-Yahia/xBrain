@@ -14,6 +14,6 @@ abstract class UserEntity with _$UserEntity {
     required String bio,
     String? profilePicture,
     required WalletEntity wallet,
-    required SpecializationEntity specializations,
+    required List<SpecializationEntity> specializations,
   }) = _UserEntity;
 }

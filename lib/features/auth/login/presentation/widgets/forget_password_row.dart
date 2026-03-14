@@ -9,25 +9,20 @@ class ForgetPasswordRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
-          child: InkWell(
-            onTap: () {
-              context.go(AppRoutesConstants.forgetPassword);
-            },
-            child: Text(
-              AppTextConstants.forgotPassword,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: AppColors.primary),
-            ),
-          ),
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton(
+        onPressed: () => context.go(AppRoutesConstants.forgetPassword),
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
         ),
-      ],
+        child: Text(
+          AppTextConstants.forgotPassword,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.primary),
+        ),
+      ),
     );
   }
 }

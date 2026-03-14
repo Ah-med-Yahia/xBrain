@@ -13,10 +13,10 @@ extension UserMapper on UserModel {
       firstName: firstName,
       lastName: lastName,
       phoneNumber: phoneNumber,
-      bio: bio,
+      bio: bio!,
       profilePicture: profileImageUrl,
       wallet: wallet.toEntity(),
-      specializations: specializations.toEntity(),
+      specializations: specializations.map((e) => e.toEntity()).toList(),
     );
   }
 }

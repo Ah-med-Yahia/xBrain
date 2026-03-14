@@ -7,13 +7,12 @@ class ContinueDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Expanded(child: Divider(color: AppColors.divider)),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             AppTextConstants.orContinueWith,
             style: Theme.of(context).textTheme.bodyLarge,

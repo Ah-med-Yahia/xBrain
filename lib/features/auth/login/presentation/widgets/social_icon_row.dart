@@ -7,40 +7,39 @@ class SocialIconRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 16,
       children: [
-        _SocialIconContainer(iconWidget: Assets.googleLogo.svg()),
-        SizedBox(width: size.width * 0.04),
-        _SocialIconContainer(iconWidget: Assets.facebookLogo.svg()),
+        _SocialIconContainer(iconWidget: Assets.googleLogo.svg(), onTap: () {}),
+        _SocialIconContainer(
+          iconWidget: Assets.facebookLogo.svg(),
+          onTap: () {},
+        ),
       ],
     );
   }
 }
 
 class _SocialIconContainer extends StatelessWidget {
-  const _SocialIconContainer({required this.iconWidget});
+  const _SocialIconContainer({required this.iconWidget, required this.onTap});
 
   final Widget iconWidget;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(100),
       child: Container(
-        width: size.width * 0.15,
-        height: size.width * 0.15,
+        width: 56,
+        height: 56,
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.black, width: 1.5),
           shape: BoxShape.circle,
         ),
-        child: Padding(
-          padding: EdgeInsets.all(size.width * 0.025),
-          child: iconWidget,
-        ),
+        child: Padding(padding: const EdgeInsets.all(12), child: iconWidget),
       ),
     );
   }
