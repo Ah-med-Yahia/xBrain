@@ -6,7 +6,8 @@ import 'package:explaino/config/cache_services/serializer/int_serializer.dart';
 import 'package:explaino/config/cache_services/serializer/serializer.dart';
 import 'package:explaino/config/cache_services/serializer/string_list_serializer.dart';
 import 'package:explaino/config/cache_services/serializer/string_serializer.dart';
-import 'package:explaino/config/errors/error_handler.dart';
+import 'package:explaino/config/errors/app_exception.dart';
+import 'package:explaino/config/errors/exceptions_handler.dart';
 import 'package:explaino/config/errors/local_exception.dart';
 import 'package:explaino/core/constants/cache_constants.dart';
 import 'package:injectable/injectable.dart';
@@ -121,8 +122,8 @@ class SharedPrefStorage implements CacheStorageContract {
     }
   }
 
-  ErrorHandler _handleError(String method, error) {
-    return ErrorHandler.handle(
+  AppException _handleError(String method, error) {
+    return ExceptionsHandler.handle(
       CacheError(
         '${CacheConstants.sharedPreferencesService}$method ${CacheConstants.error} $error',
       ),

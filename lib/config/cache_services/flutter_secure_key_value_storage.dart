@@ -1,7 +1,8 @@
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/config/cache_services/cache_storage_contract.dart';
 import 'package:explaino/config/cache_services/serializer/serializer.dart';
-import 'package:explaino/config/errors/error_handler.dart';
+import 'package:explaino/config/errors/app_exception.dart';
+import 'package:explaino/config/errors/exceptions_handler.dart';
 import 'package:explaino/config/errors/local_exception.dart';
 import 'package:explaino/core/constants/cache_constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -79,8 +80,8 @@ class FlutterSecureKeyValueStorage implements CacheStorageContract {
     }
   }
 
-  ErrorHandler _handleError(String method, error) {
-    return ErrorHandler.handle(
+  AppException _handleError(String method, error) {
+    return ExceptionsHandler.handle(
       CacheError(
         '${CacheConstants.secureStorageService}$method ${CacheConstants.error} $error',
       ),

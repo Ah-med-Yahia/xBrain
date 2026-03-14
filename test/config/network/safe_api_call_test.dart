@@ -1,6 +1,6 @@
 import 'package:explaino/config/base_response/base_response.dart';
-import 'package:explaino/config/errors/error_handler.dart';
 import 'package:explaino/config/network/safe_api_call.dart';
+import 'package:explaino/core/constants/errors_constants.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -26,10 +26,7 @@ void main() {
 
       expect(result, isA<Failure<String>>());
       result as Failure<String>;
-      expect(
-        result.errorHandler.message,
-        ErrorHandler.handle(exception).message,
-      );
+      expect(result.exception.message, ErrorsConstant.defaultError);
     });
   });
 }

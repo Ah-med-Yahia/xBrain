@@ -53,5 +53,15 @@ void main() {
 
       expect(state1, equals(state2));
     });
+
+    test('props should return isError, isEmpty and data', () {
+      const state = BaseState<String>(
+        isError: true,
+        isEmpty: false,
+        data: 'test',
+      );
+
+      expect(state.props, [true, false, 'test']);
+    });
   });
 }
