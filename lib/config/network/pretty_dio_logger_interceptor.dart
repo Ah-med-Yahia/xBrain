@@ -3,11 +3,12 @@ import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 @singleton
-class LoggerInterceptor extends PrettyDioLogger {
-  LoggerInterceptor()
+class PrettyDioLoggerInterceptor extends PrettyDioLogger {
+  PrettyDioLoggerInterceptor()
     : super(
         requestHeader: true,
         requestBody: true,
+        responseHeader: true,
         responseBody: true,
         error: true,
         compact: false,
