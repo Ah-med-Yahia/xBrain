@@ -79,6 +79,8 @@ extension StringValidation on String? {
 class AppValidators {
   static String? validateEmail(String? value) => value.validateEmail;
 
+  static String? validateUserName(String? value) => value.validateMinLength(8);
+
   static String? validatePassword(String? value) => value.validatePassword;
 
   static String? validateLoginPassword(String? value) =>

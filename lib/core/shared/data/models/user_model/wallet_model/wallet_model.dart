@@ -7,11 +7,11 @@ class WalletModel {
   @JsonKey(name: 'id')
   final String id;
   @JsonKey(name: 'balance')
-  final int balance;
+  final num balance;
 
   WalletModel({required this.id, required this.balance});
 
-  WalletModel copyWith({String? id, int? balance}) =>
+  WalletModel copyWith({String? id, num? balance}) =>
       WalletModel(id: id ?? this.id, balance: balance ?? this.balance);
 
   factory WalletModel.fromJson(Map<String, dynamic> json) =>

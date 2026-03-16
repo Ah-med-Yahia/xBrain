@@ -18,15 +18,15 @@ class UserModel {
   @JsonKey(name: 'phone_number')
   final String phoneNumber;
   @JsonKey(name: 'bio')
-  final String bio;
+  final String? bio;
   @JsonKey(name: 'profile_image_url')
   final String? profileImageUrl;
   @JsonKey(name: 'specializations')
-  final SpecializationModel specializations;
+  final List<SpecializationModel> specializations;
   @JsonKey(name: 'wallet')
   final WalletModel wallet;
   @JsonKey(name: 'specialization_form_completed_at')
-  // final dynamic specializationFormCompletedAt;
+  final DateTime? specializationFormCompletedAt;
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @JsonKey(name: 'updated_at')
@@ -39,11 +39,11 @@ class UserModel {
     required this.firstName,
     required this.lastName,
     required this.phoneNumber,
-    required this.bio,
+    this.bio,
     this.profileImageUrl,
     required this.specializations,
     required this.wallet,
-    // required this.specializationFormCompletedAt,
+    this.specializationFormCompletedAt,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -57,9 +57,9 @@ class UserModel {
     String? phoneNumber,
     String? bio,
     String? profileImageUrl,
-    SpecializationModel? specializations,
+    List<SpecializationModel>? specializations,
     WalletModel? wallet,
-    // dynamic specializationFormCompletedAt,
+    DateTime? specializationFormCompletedAt,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => UserModel(
@@ -73,7 +73,8 @@ class UserModel {
     profileImageUrl: profileImageUrl ?? this.profileImageUrl,
     specializations: specializations ?? this.specializations,
     wallet: wallet ?? this.wallet,
-    // specializationFormCompletedAt: specializationFormCompletedAt ?? this.specializationFormCompletedAt,
+    specializationFormCompletedAt:
+        specializationFormCompletedAt ?? this.specializationFormCompletedAt,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
