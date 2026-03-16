@@ -1,12 +1,11 @@
-
 import 'package:explaino/core/extensions/extensions.dart';
 import 'package:test/test.dart';
 
 void main() {
   test('String isNullOrEmpty', () {
     const emptyString = '';
-    const notEmptyString = 'hello'; 
-    final bool   result1 = emptyString.isNullOrEmpty();
+    const notEmptyString = 'hello';
+    final bool result1 = emptyString.isNullOrEmpty();
     final bool result2 = notEmptyString.isNullOrEmpty();
     expect(result1, true);
     expect(result2, false);

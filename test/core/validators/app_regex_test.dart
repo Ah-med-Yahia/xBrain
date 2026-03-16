@@ -1,4 +1,3 @@
-
 import 'package:explaino/core/validators/app_regex.dart';
 import 'package:test/test.dart';
 
@@ -46,9 +45,13 @@ void main() {
   });
 
   test('isPhoneValid ...', () {
-    expect(AppRegex.isPhoneValid('test'), false);
-    expect(AppRegex.isPhoneValid('TEST'), false);
-    expect(AppRegex.isPhoneValid('Test'), false);
+    expect(AppRegex.isPhoneValid('+201012345678'), true);
+    expect(AppRegex.isPhoneValid('+201123456789'), true);
+    expect(AppRegex.isPhoneValid('+201223456789'), true);
+    expect(AppRegex.isPhoneValid('+201523456789'), true);
+    expect(AppRegex.isPhoneValid('01012345678'), false);
+    expect(AppRegex.isPhoneValid('+20101234567'), false);
+    expect(AppRegex.isPhoneValid('+20101234567890'), false);
     expect(AppRegex.isPhoneValid(''), false);
   });
 }
