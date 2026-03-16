@@ -189,7 +189,7 @@ void main() {
     test('should return failure when write string value', () async {
       when(
         cacheStorage.write(key: testKey, value: 'value'),
-      ).thenThrow(CacheError(errorMessage));
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.write(
         testKey,
@@ -200,7 +200,9 @@ void main() {
     });
 
     test('should return failure when read string value', () async {
-      when(cacheStorage.read(key: testKey)).thenThrow(CacheError(errorMessage));
+      when(
+        cacheStorage.read(key: testKey),
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.read(
         testKey,
@@ -212,7 +214,7 @@ void main() {
     test('should return faliure when error in write int value', () async {
       when(
         cacheStorage.write(key: testKey, value: '1'),
-      ).thenThrow(CacheError(errorMessage));
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.write(
         testKey,
@@ -223,7 +225,9 @@ void main() {
     });
 
     test('should return faliure when error in read int value', () async {
-      when(cacheStorage.read(key: testKey)).thenThrow(CacheError(errorMessage));
+      when(
+        cacheStorage.read(key: testKey),
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.read(
         testKey,
@@ -235,7 +239,7 @@ void main() {
     test('should return faliure when error in write double value', () async {
       when(
         cacheStorage.write(key: testKey, value: '1.0'),
-      ).thenThrow(CacheError(errorMessage));
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.write(
         testKey,
@@ -246,7 +250,9 @@ void main() {
     });
 
     test('should return faliure when error in read double value', () async {
-      when(cacheStorage.read(key: testKey)).thenThrow(CacheError(errorMessage));
+      when(
+        cacheStorage.read(key: testKey),
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.read(
         testKey,
@@ -258,7 +264,7 @@ void main() {
     test('should return faliure when error in write bool value', () async {
       when(
         cacheStorage.write(key: testKey, value: 'true'),
-      ).thenThrow(CacheError(errorMessage));
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.write(
         testKey,
@@ -269,7 +275,9 @@ void main() {
     });
 
     test('should return faliure when error in read bool value', () async {
-      when(cacheStorage.read(key: testKey)).thenThrow(CacheError(errorMessage));
+      when(
+        cacheStorage.read(key: testKey),
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.read(
         testKey,
@@ -281,7 +289,7 @@ void main() {
     test('should return faliure when error in write list value', () async {
       when(
         cacheStorage.write(key: testKey, value: jsonEncode(['1', '2', '3'])),
-      ).thenThrow(CacheError(errorMessage));
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.write(testKey, [
         '1',
@@ -292,7 +300,9 @@ void main() {
     });
 
     test('should return faliure when error in read list value', () async {
-      when(cacheStorage.read(key: testKey)).thenThrow(CacheError(errorMessage));
+      when(
+        cacheStorage.read(key: testKey),
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.read(
         testKey,
@@ -304,7 +314,7 @@ void main() {
     test('should return faliure when error in write json value', () async {
       when(
         cacheStorage.write(key: testKey, value: jsonEncode({'key': 'value'})),
-      ).thenThrow(CacheError(errorMessage));
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.write(testKey, {
         'key': 'value',
@@ -313,7 +323,9 @@ void main() {
     });
 
     test('should return faliure when error in read json value', () async {
-      when(cacheStorage.read(key: testKey)).thenThrow(CacheError(errorMessage));
+      when(
+        cacheStorage.read(key: testKey),
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.read(
         testKey,
@@ -325,14 +337,14 @@ void main() {
     test('should return faliure when error in delete value', () async {
       when(
         cacheStorage.delete(key: testKey),
-      ).thenThrow(CacheError(errorMessage));
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.delete(testKey);
       expect(result, isA<Failure<void>>());
     });
 
     test('should return faliure when error in delete all values', () async {
-      when(cacheStorage.deleteAll()).thenThrow(CacheError(errorMessage));
+      when(cacheStorage.deleteAll()).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.deleteAll();
       expect(result, isA<Failure<void>>());
@@ -341,14 +353,14 @@ void main() {
     test('should return faliure when error in contains key', () async {
       when(
         cacheStorage.containsKey(key: testKey),
-      ).thenThrow(CacheError(errorMessage));
+      ).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.containsKey(testKey);
       expect(result, isA<Failure<bool>>());
     });
 
     test('should return faliure when error in get all keys', () async {
-      when(cacheStorage.readAll()).thenThrow(CacheError(errorMessage));
+      when(cacheStorage.readAll()).thenThrow(CacheException(errorMessage));
 
       final result = await flutterSecureKeyValueStorage.getAllKeys();
       expect(result, isA<Failure<List<String>>>());

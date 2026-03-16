@@ -5,10 +5,13 @@ class CacheConstants {
   static const String secureStorageService = 'SecureStorageService.';
   static const String sharedPreferencesService = 'SharedPreferencesService.';
   static const String error = 'error:';
+  static const String accessTokenReadFailed = 'Access Token read failed';
+  static const String refreshTokenReadFailed = 'Refresh Token read failed';
 }
 
 class StorageKeys {
   static const String accessToken = 'access_token';
+  static const String refreshToken = 'refresh_token';
   static const String isLoggedIn = 'is_logged_in';
   static const String deviceId = 'device_id';
   static const String saveAuthTokens = 'saveAuthTokens';
