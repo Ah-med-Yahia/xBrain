@@ -1,7 +1,7 @@
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/config/cache_services/cache_storage_contract.dart';
 import 'package:explaino/config/cache_services/serializer/string_serializer.dart';
-import 'package:explaino/config/services/token_service_storage_contract.dart';
+import 'package:explaino/config/services/tokens/token_service_storage_contract.dart';
 import 'package:explaino/core/constants/cache_constants.dart';
 import 'package:injectable/injectable.dart';
 

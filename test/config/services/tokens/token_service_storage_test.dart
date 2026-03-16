@@ -1,7 +1,7 @@
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/config/cache_services/flutter_secure_key_value_storage.dart';
 import 'package:explaino/config/errors/local_exception.dart';
-import 'package:explaino/config/services/token_service_storage.dart';
+import 'package:explaino/config/services/tokens/token_service_storage.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';

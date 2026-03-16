@@ -3,6 +3,9 @@ class ApiConstants {
   //====================Headers============================
   static const String authorization = 'Authorization';
   static const String bearer = 'Bearer';
+  //====================Keys============================
+  static const String refreshTokenKey = 'refreshToken';
+  static const String accessTokenKey = 'accessToken';
   //==================== Base URL============================
   static const String baseUrl =
       'https://xbrain-backend-chbfe7hscpbqergn.francecentral-01.azurewebsites.net/api/';

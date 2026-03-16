@@ -18,6 +18,8 @@ class ErrorsConstant {
   static const String unauthorizedError = 'Unauthorized access.';
   static const String notFoundError = 'Resource not found.';
   static const String internalServerError = 'Internal server error.';
+  static const String sessionExpiredError =
+      'Session expired. Please log in again.';
 
   //================== Local Exceptions ==================================
   static const String cacheError = 'Cache error occurred.';
