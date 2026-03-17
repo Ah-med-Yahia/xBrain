@@ -1,19 +1,19 @@
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/core/shared/api/api_clients/resend_otp_api_client.dart';
 import 'package:explaino/core/shared/data/models/auth_response_model/auth_response_model.dart';
-import 'package:explaino/core/shared/data/models/otp_response_model/otp_response_model.dart';
-import 'package:explaino/core/shared/data/models/resend_otp_request_model/resend_otp_request_model.dart';
+import 'package:explaino/core/shared/data/models/otp/otp_response_model/otp_response_model.dart';
+import 'package:explaino/core/shared/data/models/otp/resend_otp_request_model/resend_otp_request_model.dart';
 import 'package:explaino/features/auth/register/api/api_clients/register_api_client.dart';
 import 'package:explaino/features/auth/register/api/data_sources_impl/remote/register_remote_data_source_impl.dart';
 import 'package:explaino/features/auth/register/data/models/request/register_request_model/register_request_model.dart';
-import 'package:explaino/features/auth/register/data/models/request/verify_email_request_model/verify_email_request_model.dart';
+import 'package:explaino/core/shared/data/models/otp/verify_otp_request_model/verify_otp_request_model.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import 'register_remote_data_source_impl_test.mocks.dart';
 
-@GenerateMocks([ResendOtpApiClient, RegisterApiClient,AuthResponseModel])
+@GenerateMocks([ResendOtpApiClient, RegisterApiClient, AuthResponseModel])
 void main() {
   late RegisterRemoteDataSourceImpl registerRemoteDataSourceImpl;
   late MockResendOtpApiClient resendOtpApiClient;
@@ -30,7 +30,7 @@ void main() {
 
   final resendOtpRequest = ResendOtpRequestModel(email: '');
 
-  final verifyEmailRequest = VerifyEmailRequestModel(email: '', otp: '');
+  final verifyEmailRequest = VerifyOtpRequestModel(email: '', otp: '');
 
   final response = OtpResponseModel(
     email: 'test@example.com',
