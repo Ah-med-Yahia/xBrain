@@ -1,7 +1,5 @@
 import 'package:explaino/config/base_response/base_response.dart';
-import 'package:explaino/core/shared/data/mappers/otp/resend_otp_request_mapper.dart';
 import 'package:explaino/core/shared/data/mappers/otp/verify_otp_request_mapper.dart';
-import 'package:explaino/core/shared/domain/entities/otp/resend_otp_request_entity.dart';
 import 'package:explaino/core/shared/domain/entities/otp/verify_otp_request_entity.dart';
 import 'package:explaino/features/auth/register/data/datasources/local/register_local_data_sources.dart';
 import 'package:explaino/features/auth/register/data/datasources/remote/register_remote_data_source.dart';
@@ -23,17 +21,6 @@ class RegisterRepositoryImpl implements RegisterRepository {
   @override
   Future<BaseResponse<String>> sendOtp(RegisterRequestEntity request) async {
     final response = await _registerRemoteDataSource.sendOtp(request.toModel());
-    return response.when(
-      success: (data) => BaseResponse.success(data.message),
-      failure: (error) => BaseResponse.failure(error),
-    );
-  }
-
-  @override
-  Future<BaseResponse<String>> resendOtp(ResendOtpRequestEntity request) async {
-    final response = await _registerRemoteDataSource.resendOtp(
-      request.toModel(),
-    );
     return response.when(
       success: (data) => BaseResponse.success(data.message),
       failure: (error) => BaseResponse.failure(error),

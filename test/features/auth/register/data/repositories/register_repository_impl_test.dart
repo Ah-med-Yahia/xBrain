@@ -1,10 +1,8 @@
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/config/errors/api_exception.dart';
 import 'package:explaino/core/shared/data/models/auth_response_model/auth_response_model.dart';
-import 'package:explaino/core/shared/data/models/otp/otp_response_model/otp_response_model.dart';
 import 'package:explaino/core/shared/data/models/user_model/user_model.dart';
 import 'package:explaino/core/shared/data/models/user_model/wallet_model/wallet_model.dart';
-import 'package:explaino/core/shared/domain/entities/otp/resend_otp_request_entity.dart';
 import 'package:explaino/core/shared/domain/entities/otp/verify_otp_request_entity.dart';
 import 'package:explaino/features/auth/register/data/datasources/local/register_local_data_sources.dart';
 import 'package:explaino/features/auth/register/data/datasources/remote/register_remote_data_source.dart';
@@ -20,10 +18,6 @@ void main() {
   late MockRegisterRemoteDataSource registerRemoteDataSource;
   late MockRegisterLocalDataSource registerLocalDataSource;
   late RegisterRepositoryImpl registerRepositoryImpl;
-
-  final ResendOtpRequestEntity resendOtpRequestEntity = ResendOtpRequestEntity(
-    email: '',
-  );
 
   final AuthResponseModel authResponseModel = AuthResponseModel(
     message: 'message',
@@ -54,43 +48,6 @@ void main() {
     registerRepositoryImpl = RegisterRepositoryImpl(
       registerRemoteDataSource,
       registerLocalDataSource,
-    );
-  });
-
-  group('resendOtp', () {
-    test(
-      'should return success when remote data source returns success',
-      () async {
-        when(registerRemoteDataSource.resendOtp(any)).thenAnswer(
-          (_) async => BaseResponse.success(
-            OtpResponseModel(
-              message: 'Otp sent successfully',
-              email: 'test@test.com',
-            ),
-          ),
-        );
-
-        final result = await registerRepositoryImpl.resendOtp(
-          resendOtpRequestEntity,
-        );
-
-        expect(result, isA<Success<String>>());
-      },
-    );
-
-    test(
-      'should return failure when remote data source returns failure',
-      () async {
-        when(
-          registerRemoteDataSource.resendOtp(any),
-        ).thenAnswer((_) async => BaseResponse.failure(ApiException('error')));
-
-        final result = await registerRepositoryImpl.resendOtp(
-          resendOtpRequestEntity,
-        );
-
-        expect(result, isA<Failure<String>>());
-      },
     );
   });
 
