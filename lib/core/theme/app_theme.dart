@@ -146,14 +146,14 @@ abstract class AppTheme {
     checkboxTheme: CheckboxThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       side: const BorderSide(width: 1, color: AppColors.inputBorder),
-      overlayColor: WidgetStatePropertyAll(AppColors.lightInputOverlay),
+      overlayColor: const WidgetStatePropertyAll(AppColors.lightInputOverlay),
       fillColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return AppColors.primary;
         }
         return AppColors.lightInputFill;
       }),
-      visualDensity: VisualDensity.compact
+      visualDensity: VisualDensity.compact,
     ),
   );
 
@@ -301,7 +301,7 @@ abstract class AppTheme {
     checkboxTheme: CheckboxThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       side: const BorderSide(width: 1, color: AppColors.inputBorder),
-      overlayColor: WidgetStatePropertyAll(AppColors.darkInputOverlay),
+      overlayColor: const WidgetStatePropertyAll(AppColors.darkInputOverlay),
       materialTapTargetSize: MaterialTapTargetSize.padded,
       fillColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
@@ -309,7 +309,7 @@ abstract class AppTheme {
         }
         return AppColors.darkInputFill;
       }),
-      visualDensity: VisualDensity.compact
+      visualDensity: VisualDensity.compact,
     ),
   );
 }

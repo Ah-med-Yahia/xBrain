@@ -35,13 +35,15 @@ class AppColors {
   // UI / Components Colors
   // =========================
   static const Color unselectedBottomNaVIcon = Color(0xFF9baebb);
-  static const Color textHint = Color(0xFF64748B);
+  static const Color textHint = Color(0xFF94A3B8);
   static const Color error = Color(0xFFEF4444);
   static const Color inputBorder = Color(0xFF333D4D);
   static const Color lightInputFill = Color(0xFFf8fafc);
   static const Color darkInputFill = Color(0xFF1a2035);
   static const Color lightInputIcon = Color(0xFF000000);
   static const Color darkInputIcon = Color(0xFF94a3b8);
+  static const Color lightInputOverlay = Color(0x1A000000);
+  static const Color darkInputOverlay = Color(0x1A94a3b8);
 
   // =========================
   // Text Colors
