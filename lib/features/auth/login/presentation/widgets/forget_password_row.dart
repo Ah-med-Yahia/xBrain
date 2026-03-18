@@ -12,7 +12,7 @@ class ForgetPasswordRow extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        onPressed: () => context.go(AppRoutesConstants.forgetPassword),
+        onPressed: () => context.go(AppRoutesConstants.forgotPassword),
         style: TextButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),

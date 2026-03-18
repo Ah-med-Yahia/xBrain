@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handelNavigateToMainScreen() {
     UIUtils.hideEasyLoading();
-    GoRouter.of(context).go(AppRoutesConstants.forgetPassword);
+    GoRouter.of(context).go(AppRoutesConstants.forgotPassword);
   }
 
   @override
