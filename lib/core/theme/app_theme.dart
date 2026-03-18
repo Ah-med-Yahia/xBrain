@@ -69,6 +69,21 @@ abstract class AppTheme {
         fontWeight: FontWeight.w500,
         color: AppColors.lightTextPrimary,
       ),
+      bodyLarge: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: AppColors.lightTextPrimary,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppColors.lightTextPrimary,
+      ),
+      bodySmall: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: AppColors.lightTextPrimary,
+      ),
     ),
 
     // Elevated Button Theme
@@ -99,7 +114,12 @@ abstract class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       hintStyle: const TextStyle(
         fontSize: 16,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w400,
+        color: AppColors.textHint,
+      ),
+      labelStyle: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
         color: AppColors.textHint,
       ),
       fillColor: AppColors.lightInputFill,
@@ -121,6 +141,19 @@ abstract class AppTheme {
         borderSide: const BorderSide(width: 1, color: AppColors.error),
         borderRadius: BorderRadius.circular(16),
       ),
+    ),
+    // Checkbox Theme
+    checkboxTheme: CheckboxThemeData(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      side: const BorderSide(width: 1, color: AppColors.inputBorder),
+      overlayColor: WidgetStatePropertyAll(AppColors.lightInputOverlay),
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return AppColors.primary;
+        }
+        return AppColors.lightInputFill;
+      }),
+      visualDensity: VisualDensity.compact
     ),
   );
 
@@ -191,6 +224,21 @@ abstract class AppTheme {
         fontWeight: FontWeight.w500,
         color: AppColors.darkTextPrimary,
       ),
+      bodyLarge: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: AppColors.darkTextPrimary,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppColors.darkTextPrimary,
+      ),
+      bodySmall: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: AppColors.darkTextPrimary,
+      ),
     ),
 
     // Elevated Button Theme
@@ -221,7 +269,12 @@ abstract class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       hintStyle: const TextStyle(
         fontSize: 16,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w400,
+        color: AppColors.textHint,
+      ),
+      labelStyle: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
         color: AppColors.textHint,
       ),
       fillColor: AppColors.darkInputFill,
@@ -243,6 +296,20 @@ abstract class AppTheme {
         borderSide: const BorderSide(width: 1, color: AppColors.error),
         borderRadius: BorderRadius.circular(16),
       ),
+    ),
+    // Checkbox Theme
+    checkboxTheme: CheckboxThemeData(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      side: const BorderSide(width: 1, color: AppColors.inputBorder),
+      overlayColor: WidgetStatePropertyAll(AppColors.darkInputOverlay),
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return AppColors.primary;
+        }
+        return AppColors.darkInputFill;
+      }),
+      visualDensity: VisualDensity.compact
     ),
   );
 }
