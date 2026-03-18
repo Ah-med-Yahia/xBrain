@@ -1,5 +1,7 @@
 class AppTextConstants {
   AppTextConstants._();
+
+  static const String loading = 'Loading...';
   //constants for text on auth screens
   static const String welcomeBack = 'Welcome Back';
   static const String signInToAccount = 'Please sign in to your account';

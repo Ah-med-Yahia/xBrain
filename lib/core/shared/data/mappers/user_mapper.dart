@@ -8,12 +8,13 @@ import 'package:explaino/core/shared/domain/entities/user_entity/wallet_entity/w
 extension UserMapper on UserModel {
   UserEntity toEntity() {
     return UserEntity(
+      id: id,
       email: email,
       username: username,
       firstName: firstName,
       lastName: lastName,
       phoneNumber: phoneNumber,
-      bio: bio!,
+      bio: bio,
       profilePicture: profileImageUrl,
       wallet: wallet.toEntity(),
       specializations: specializations.map((e) => e.toEntity()).toList(),

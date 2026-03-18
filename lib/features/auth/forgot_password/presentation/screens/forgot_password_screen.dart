@@ -1,8 +1,8 @@
 import 'package:explaino/config/di/di.dart';
-import 'package:explaino/core/constants/app_routes_constant.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
-import 'package:explaino/core/models/utils/ui_utils.dart';
+import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/core/validators/app_validators.dart';
 import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code_models/forgot_password_request_model.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_cubit.dart';
@@ -55,7 +55,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   void _handelNavigateToOtpVerificationScreen() {
     UIUtils.hideEasyLoading();
-    GoRouter.of(context).go(AppRoutesConstants.otpVerification);
+    GoRouter.of(context).go(AppRoutesConstants.otpVerificationRoute);
   }
 
   @override
@@ -138,7 +138,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   promptText: AppTextConstants.rememberPassword,
                   linkText: AppTextConstants.logIn,
                   onLinkTap: () {
-                    GoRouter.of(context).go(AppRoutesConstants.login);
+                    GoRouter.of(context).go(AppRoutesConstants.loginRoute);
                   },
                 ),
               ],

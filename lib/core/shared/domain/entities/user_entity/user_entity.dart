@@ -6,12 +6,13 @@ part 'user_entity.freezed.dart';
 @freezed
 abstract class UserEntity with _$UserEntity {
   const factory UserEntity({
+    required String id,
     required String email,
     required String username,
     required String firstName,
     required String lastName,
     required String phoneNumber,
-    required String bio,
+    String? bio,
     String? profilePicture,
     required WalletEntity wallet,
     required List<SpecializationEntity> specializations,

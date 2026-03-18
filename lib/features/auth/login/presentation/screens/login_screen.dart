@@ -1,8 +1,8 @@
 import 'package:explaino/config/di/di.dart';
-import 'package:explaino/core/constants/app_routes_constant.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
-import 'package:explaino/core/models/utils/ui_utils.dart';
+import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/features/auth/login/data/models/login_request_model.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_cubit.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_intents.dart';
@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handelNavigateToMainScreen() {
     UIUtils.hideEasyLoading();
-    GoRouter.of(context).go(AppRoutesConstants.forgotPassword);
+    GoRouter.of(context).go(AppRoutesConstants.forgotPasswordRoute);
   }
 
   @override

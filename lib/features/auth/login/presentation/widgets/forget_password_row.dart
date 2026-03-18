@@ -1,5 +1,5 @@
-import 'package:explaino/core/constants/app_routes_constant.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +12,7 @@ class ForgetPasswordRow extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        onPressed: () => context.go(AppRoutesConstants.forgotPassword),
+        onPressed: () => context.go(AppRoutesConstants.forgotPasswordRoute),
         style: TextButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),

@@ -19,7 +19,7 @@ abstract class ForgotPasswordApiClient {
     @Body() ForgotPasswordRequestModel request,
   );
 
-  @POST(ApiConstants.verifyResetOtp)
+  @POST(ApiConstants.verifyEmail)
   Future<VerifyEmailResponseModel> verifyResetOtpCode(
     @Body() VerifyEmailRequestEntity request,
   );
