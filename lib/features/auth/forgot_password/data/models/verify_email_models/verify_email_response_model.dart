@@ -5,6 +5,7 @@ part 'verify_email_response_model.g.dart';
 class VerifyEmailResponseModel {
   final String email;
   final String otp;
+  @JsonKey(name: 'reset_token')
   final String resetToken;
 
   VerifyEmailResponseModel({

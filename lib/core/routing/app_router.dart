@@ -18,12 +18,20 @@ abstract class AppRouter {
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
       GoRoute(
-        path: AppRoutesConstants.resetPassword,
-        builder: (context, state) => const ResetPasswordScreen(),
+        path: AppRoutesConstants.resetPasswordRoute,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+
+          return ResetPasswordScreen(
+            email: data['email'] as String,
+            resetToken: data['resetToken'] as String,
+          );
+        },
       ),
       GoRoute(
         path: AppRoutesConstants.otpVerificationRoute,
-        builder: (context, state) => const OtpVerificationScreen(),
+        builder: (context, state) =>
+            OtpVerificationScreen(email: state.extra as String),
       ),
     ],
   );

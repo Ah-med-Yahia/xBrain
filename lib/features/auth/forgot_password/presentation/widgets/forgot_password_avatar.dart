@@ -4,15 +4,16 @@ import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordAvatar extends StatelessWidget {
-  const ForgotPasswordAvatar({super.key});
+  final bool isForgotPassword;
+  const ForgotPasswordAvatar({super.key, required this.isForgotPassword});
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     final avatarRadius = width * 0.25;
     final iconSize = (width * 0.115).clamp(32.0, 64.0);
-    final dotRadius = avatarRadius * 0.15;
-    final dotOffset = avatarRadius * 0.72;
+    final dotRadius = avatarRadius * 0.1;
+    final dotOffset = avatarRadius * 0.7;
 
     return Column(
       children: [
@@ -40,10 +41,15 @@ class ForgotPasswordAvatar extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 24),
-        Text(
-          AppTextConstants.forgotPassword,
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
+        isForgotPassword
+            ? Text(
+                AppTextConstants.forgotPassword,
+                style: Theme.of(context).textTheme.headlineLarge,
+              )
+            : Text(
+                AppTextConstants.resetPassword,
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
         const SizedBox(height: 16),
       ],
     );

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/routing/app_routes_constant.dart';
@@ -28,11 +29,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  StreamSubscription? _subscription;
 
   @override
   void initState() {
+    super.initState();
     loginCubit = getIt<LoginCubit>();
-    loginCubit.sideEffects.listen((effect) {
+    _subscription = loginCubit.sideEffects.listen((effect) {
+      if (!mounted) return;
       switch (effect) {
         case ShowError():
           _handelError(effect.message);
@@ -42,11 +46,12 @@ class _LoginScreenState extends State<LoginScreen> {
           _handelLoading();
       }
     });
-    super.initState();
   }
 
   void _handelLoading() {
-    UIUtils.showEasyLoading();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      UIUtils.showEasyLoading();
+    });
   }
 
   void _handelError(String message) {
@@ -65,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    _subscription?.cancel();
     loginCubit.close();
     _emailController.dispose();
     _passwordController.dispose();
@@ -102,6 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
+                        FocusScope.of(context).unfocus();
                         if (_formKey.currentState!.validate()) {
                           loginCubit.doIntent(
                             LoginSubmitIntent(

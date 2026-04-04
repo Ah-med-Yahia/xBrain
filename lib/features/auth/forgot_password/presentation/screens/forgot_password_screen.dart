@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/routing/app_routes_constant.dart';
@@ -24,24 +26,30 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   late final ForgotPasswordCubit forgotPasswordCubit;
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
+  StreamSubscription? _subscription;
+
   @override
   void initState() {
+    super.initState();
     forgotPasswordCubit = getIt<ForgotPasswordCubit>();
-    forgotPasswordCubit.sideEffects.listen((effect) {
+    _subscription = forgotPasswordCubit.sideEffects.listen((effect) {
+      if (!mounted) return;
       switch (effect) {
         case ShowError():
           _handelError(effect.message);
-        case NavigateToOtpVerificationScreen():
-          _handelNavigateToOtpVerificationScreen();
+        case NavigateToOtpVerificationScreen(email: final email):
+          _handelNavigateToOtpVerificationScreen(email);
         case ShowLoading():
           _handelLoading();
+        default:
       }
     });
-    super.initState();
   }
 
   void _handelLoading() {
-    UIUtils.showEasyLoading();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      UIUtils.showEasyLoading();
+    });
   }
 
   void _handelError(String message) {
@@ -53,9 +61,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  void _handelNavigateToOtpVerificationScreen() {
+  void _handelNavigateToOtpVerificationScreen(String email) {
     UIUtils.hideEasyLoading();
-    GoRouter.of(context).go(AppRoutesConstants.otpVerificationRoute);
+    GoRouter.of(
+      context,
+    ).go(AppRoutesConstants.otpVerificationRoute, extra: email);
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    forgotPasswordCubit.close();
+    emailController.dispose();
+    super.dispose();
   }
 
   @override
@@ -82,7 +100,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   child: Column(
                     children: [
                       SizedBox(height: size.height * 0.05),
-                      const ForgotPasswordAvatar(),
+                      const ForgotPasswordAvatar(isForgotPassword: true),
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: size.width * 0.05,

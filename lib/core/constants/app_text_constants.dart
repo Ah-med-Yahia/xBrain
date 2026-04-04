@@ -21,4 +21,10 @@ class AppTextConstants {
   static const String confirmNewPassword = 'Confirm New Password';
   static const String resetPassword = 'Reset Password';
   static const String resetPasswordQuestion = 'Reset Password?';
+  static const String verify = 'Verify';
+  static const String enterOtpCode =
+      'Enter the 6-digit code sent to\nyour email';
+  static const String verificationCode = 'Verification Code';
+  static const String didNotReceiveCode = "Didn't receive code?";
+  static const String resendCode = 'Resend Code';
 }

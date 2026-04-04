@@ -6,6 +6,21 @@ class ShowError extends ForgotPasswordSideEffects {
   ShowError(this.message);
 }
 
-class NavigateToOtpVerificationScreen extends ForgotPasswordSideEffects {}
+class NavigateToOtpVerificationScreen extends ForgotPasswordSideEffects {
+  final String email;
+  NavigateToOtpVerificationScreen({required this.email});
+}
+
+class NavigateToResetPasswordScreen extends ForgotPasswordSideEffects {
+  final String email;
+  final String resetToken;
+
+  NavigateToResetPasswordScreen({
+    required this.email,
+    required this.resetToken,
+  });
+}
 
 class ShowLoading extends ForgotPasswordSideEffects {}
+
+class NavigateToLoginScreen extends ForgotPasswordSideEffects {}
