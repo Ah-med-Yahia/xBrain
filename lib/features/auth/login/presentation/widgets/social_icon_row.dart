@@ -32,13 +32,9 @@ class _SocialIconContainer extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(100),
-      child: Container(
-        width: 56,
-        height: 56,
-        decoration: BoxDecoration(
-          border: Border.all(color: AppColors.black, width: 1.5),
-          shape: BoxShape.circle,
-        ),
+      child: CircleAvatar(
+        radius: 30,
+        backgroundColor: AppColors.offWhite,
         child: Padding(padding: const EdgeInsets.all(12), child: iconWidget),
       ),
     );

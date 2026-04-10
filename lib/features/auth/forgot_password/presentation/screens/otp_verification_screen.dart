@@ -1,8 +1,8 @@
-import 'dart:async';
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/shared/data/models/otp/verify_otp_request_model/verify_otp_request_model.dart';
+import 'package:explaino/core/shared/domain/entities/otp/resend_otp_request_entity.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_cubit.dart';
@@ -22,19 +22,15 @@ class OtpVerificationScreen extends StatefulWidget {
 }
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
-  late final ForgotPasswordCubit _forgotPasswordCubit;
-  late final StreamSubscription _sideEffectsSubscription;
+  late final ForgotPasswordCubit forgotPasswordCubit;
 
   String _otpCode = '';
 
   @override
   void initState() {
     super.initState();
-    _forgotPasswordCubit = getIt<ForgotPasswordCubit>();
-
-    _sideEffectsSubscription = _forgotPasswordCubit.sideEffects.listen((
-      effect,
-    ) {
+    forgotPasswordCubit = getIt<ForgotPasswordCubit>();
+    forgotPasswordCubit.sideEffects.listen((effect) {
       switch (effect) {
         case ShowLoading():
           _handleLoading();
@@ -48,6 +44,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             email: email,
             resetToken: resetToken,
           );
+        case ShowMessage(message: final message):
+          _handelMessage(message);
         default:
           break;
       }
@@ -65,6 +63,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     );
   }
 
+  void _handelMessage(String message) {
+    UIUtils.hideEasyLoading();
+    UIUtils.showMessage(
+      message,
+      backGroundColor: AppColors.green,
+      textColor: AppColors.white,
+    );
+  }
+
   void _handleNavigateToResetPasswordScreen({
     required String email,
     required String resetToken,
@@ -78,7 +85,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   void _onVerifyPressed() {
     if (_otpCode.length < 6) return;
-    _forgotPasswordCubit.doIntent(
+    forgotPasswordCubit.doIntent(
       VerifyOtpCodeIntent(
         verifyOtpRequestModel: VerifyOtpRequestModel(
           otp: _otpCode,
@@ -89,19 +96,22 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
   void _onResend() {
-    // Optional: trigger a resend OTP intent here
-    // _forgotPasswordCubit.doIntent(ResendOtpIntent(email: widget.email));
+    forgotPasswordCubit.doIntent(
+      ResendOtpCodeIntent(
+        resendOtpRequestEntity: ResendOtpRequestEntity(email: widget.email),
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _sideEffectsSubscription.cancel();
-    _forgotPasswordCubit.close();
+    forgotPasswordCubit.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -113,7 +123,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
-                const Spacer(),
+                SizedBox(height: size.height * 0.12),
                 Text(
                   AppTextConstants.verificationCode,
                   style: Theme.of(context).textTheme.headlineLarge,
@@ -132,10 +142,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 ),
                 const SizedBox(height: 24),
                 ResendSection(onResend: _onResend),
-                const Spacer(),
+                SizedBox(height: size.height * 0.4),
                 SizedBox(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.06,
+                  height: size.height * 0.06,
                   child: ElevatedButton(
                     onPressed: _onVerifyPressed,
                     child: Text(
@@ -146,7 +156,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 32),
               ],
             ),
           ),

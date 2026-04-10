@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/routing/app_routes_constant.dart';
@@ -34,11 +32,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final formKey = GlobalKey<FormState>();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  StreamSubscription? _subscription;
+  
   @override
   void initState() {
     forgotPasswordCubit = getIt<ForgotPasswordCubit>();
-    _subscription = forgotPasswordCubit.sideEffects.listen((effect) {
+    forgotPasswordCubit.sideEffects.listen((effect) {
       if (!mounted) return;
       switch (effect) {
         case ShowError():
@@ -78,7 +76,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   void dispose() {
-    _subscription?.cancel();
     forgotPasswordCubit.close();
     passwordController.dispose();
     confirmPasswordController.dispose();

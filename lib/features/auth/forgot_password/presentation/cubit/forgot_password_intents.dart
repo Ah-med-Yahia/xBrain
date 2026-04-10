@@ -1,4 +1,5 @@
 import 'package:explaino/core/shared/data/models/otp/verify_otp_request_model/verify_otp_request_model.dart';
+import 'package:explaino/core/shared/domain/entities/otp/resend_otp_request_entity.dart';
 import 'package:explaino/features/auth/forgot_password/data/models/reset_password_request_model.dart';
 import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code_models/forgot_password_request_model.dart';
 
@@ -20,4 +21,9 @@ class ResetPasswordIntent extends ForgotPasswordIntent {
   final ResetPasswordRequestModel resetPasswordRequestModel;
 
   ResetPasswordIntent({required this.resetPasswordRequestModel});
+}
+
+class ResendOtpCodeIntent extends ForgotPasswordIntent {
+  final ResendOtpRequestEntity resendOtpRequestEntity;
+  ResendOtpCodeIntent({required this.resendOtpRequestEntity});
 }
