@@ -48,7 +48,9 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         resetPasswordRequestModel: final resetPasswordRequestModel,
       ):
         resetPassword(resetPasswordRequestModel);
-      case ResendOtpCodeIntent(resendOtpRequestEntity: final resendOtpRequestEntity):
+      case ResendOtpCodeIntent(
+        resendOtpRequestEntity: final resendOtpRequestEntity,
+      ):
         resendOtpCode(resendOtpRequestEntity);
     }
   }
@@ -104,8 +106,10 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       },
     );
   }
-  
-  Future<void> resendOtpCode(ResendOtpRequestEntity resendOtpRequestEntity) async {
+
+  Future<void> resendOtpCode(
+    ResendOtpRequestEntity resendOtpRequestEntity,
+  ) async {
     _sideEffectController.add(ShowLoading());
     final result = await _resendOtpUseCase(resendOtpRequestEntity);
     result.when(
@@ -117,6 +121,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       },
     );
   }
+
   @override
   Future<void> close() {
     _sideEffectController.close();

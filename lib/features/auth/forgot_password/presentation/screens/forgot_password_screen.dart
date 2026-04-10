@@ -24,7 +24,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   late final ForgotPasswordCubit forgotPasswordCubit;
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
-  
 
   @override
   void initState() {

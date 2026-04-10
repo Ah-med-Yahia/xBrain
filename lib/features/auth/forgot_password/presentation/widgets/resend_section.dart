@@ -12,7 +12,7 @@ class ResendSection extends StatefulWidget {
 }
 
 class _ResendSectionState extends State<ResendSection> {
-  static const int _resendSeconds = 55; // 
+  static const int _resendSeconds = 55; //
   int _remainingSeconds = _resendSeconds;
   Timer? _resendTimer;
   bool _canResend = false;

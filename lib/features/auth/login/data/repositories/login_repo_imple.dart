@@ -11,10 +11,7 @@ class LoginRepoImple implements LoginRepo {
   final RemoteLoginDataSource _remoteLoginDataSource;
   final TokenServiceStorageContract _tokenServiceStorage;
 
-  LoginRepoImple(
-    this._remoteLoginDataSource,
-    this._tokenServiceStorage,
-  );
+  LoginRepoImple(this._remoteLoginDataSource, this._tokenServiceStorage);
 
   @override
   Future<BaseResponse<MessageEntity>> login(LoginRequestModel request) async {

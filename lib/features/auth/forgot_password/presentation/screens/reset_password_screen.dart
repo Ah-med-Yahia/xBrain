@@ -32,7 +32,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final formKey = GlobalKey<FormState>();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  
+
   @override
   void initState() {
     forgotPasswordCubit = getIt<ForgotPasswordCubit>();
