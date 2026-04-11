@@ -7,7 +7,7 @@ class LoginSubmitIntent extends LoginIntent {
   LoginSubmitIntent({required this.loginRequestModel});
 }
 
-// class ValidateLoginIntent extends LoginIntent {
-//   final LoginRequestModel loginRequestModel;
-//   ValidateLoginIntent({required this.loginRequestModel});
-// }
+class ValidateFieldsIntent extends LoginIntent {
+  final bool formsValid;
+  ValidateFieldsIntent({required this.formsValid});
+}

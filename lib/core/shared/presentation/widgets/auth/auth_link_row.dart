@@ -15,10 +15,12 @@ class AuthLinkRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(promptText, style: Theme.of(context).textTheme.bodyMedium),
+        Text(promptText, style: textTheme.bodyMedium),
         const SizedBox(width: 4),
         TextButton(
           onPressed: onLinkTap,
@@ -29,7 +31,7 @@ class AuthLinkRow extends StatelessWidget {
           ),
           child: Text(
             linkText,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            style: textTheme.bodyMedium?.copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.bold,
             ),

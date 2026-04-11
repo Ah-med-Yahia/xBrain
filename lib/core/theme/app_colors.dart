@@ -70,8 +70,8 @@ class AppColors {
   static const Color brightSkyBlue = Color(0x331197F7);
   static const Color darkBlue = Color(0xFF0A6EB8);
   static const Color offWhite = Color(0xFFF5F5F5);
-  //dark colors
   static const Color lightBlue = Color(0x331197F7);
   static const Color lightSkyBlue = Color(0x0D1197F7);
   static const Color lightBackground = Color(0xFFF2F4F7);
+  static const Color lightGrey = Color(0xFF94a3b8);
 }

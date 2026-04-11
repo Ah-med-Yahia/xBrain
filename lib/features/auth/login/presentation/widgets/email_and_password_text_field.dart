@@ -1,16 +1,21 @@
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/validators/app_validators.dart';
+import 'package:explaino/features/auth/login/presentation/cubit/login_cubit.dart';
+import 'package:explaino/features/auth/login/presentation/cubit/login_intents.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EmailAndPasswordTextField extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final GlobalKey<FormState> formKey;
 
   const EmailAndPasswordTextField({
     super.key,
     required this.emailController,
     required this.passwordController,
+    required this.formKey,
   });
 
   @override
@@ -36,6 +41,15 @@ class _EmailAndPasswordTextFieldState extends State<EmailAndPasswordTextField> {
             textInputAction: TextInputAction.next,
             autofillHints: const [AutofillHints.email],
             validator: AppValidators.validateEmail,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+            onChanged: (value) {
+              context.read<LoginCubit>().doIntent(
+                ValidateFieldsIntent(
+                  formsValid: widget.formKey.currentState!.validate(),
+                ),
+              );
+            },
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -60,10 +74,19 @@ class _EmailAndPasswordTextFieldState extends State<EmailAndPasswordTextField> {
                 },
               ),
             ),
+            onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             obscureText: _obscurePassword,
             textInputAction: TextInputAction.done,
             autofillHints: const [AutofillHints.password],
             validator: AppValidators.validateLoginPassword,
+            onChanged: (value) {
+              context.read<LoginCubit>().doIntent(
+                ValidateFieldsIntent(
+                  formsValid: widget.formKey.currentState!.validate(),
+                ),
+              );
+            },
           ),
         ],
       ),

@@ -2,8 +2,8 @@ import 'package:explaino/core/gen/assets.gen.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class SocialIconRow extends StatelessWidget {
-  const SocialIconRow({super.key});
+class ContinueWithGoogle extends StatelessWidget {
+  const ContinueWithGoogle({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +11,8 @@ class SocialIconRow extends StatelessWidget {
       alignment: WrapAlignment.center,
       spacing: 16,
       children: [
-        _SocialIconContainer(iconWidget: Assets.googleLogo.svg(), onTap: () {}),
         _SocialIconContainer(
-          iconWidget: Assets.facebookLogo.svg(),
+          iconWidget: Assets.images.googleLogo.svg(),
           onTap: () {},
         ),
       ],

@@ -37,7 +37,7 @@ class LoginLogoContainer extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Center(
-            child: Assets.loginLogo.svg(
+            child: Assets.images.loginLogo.svg(
               width: size.width * 0.06,
               height: size.height * 0.05,
             ),

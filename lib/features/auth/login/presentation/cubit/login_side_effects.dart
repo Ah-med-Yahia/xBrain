@@ -9,3 +9,5 @@ class ShowError extends LoginSideEffect {
 class NavigateToMainScreen extends LoginSideEffect {}
 
 class ShowLoading extends LoginSideEffect {}
+
+class HideLoading extends LoginSideEffect {}

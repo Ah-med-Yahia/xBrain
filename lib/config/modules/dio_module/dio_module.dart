@@ -21,9 +21,20 @@ abstract class DioModule {
       ),
     );
     dio.interceptors.add(authInterceptor);
-    if (kDebugMode) {
-      dio.interceptors.add(loggerInterceptor);
-    }
+    if (kDebugMode) dio.interceptors.add(loggerInterceptor);
     return dio;
+  }
+
+  @Named('tokenRefreshDio')
+  @singleton
+  Dio tokenRefreshDio() {
+    return Dio(
+      BaseOptions(
+        baseUrl: ApiConstants.baseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 30),
+      ),
+    );
   }
 }

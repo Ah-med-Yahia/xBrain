@@ -11,14 +11,17 @@ abstract class AppRouter {
     routes: [
       GoRoute(
         path: AppRoutesConstants.loginRoute,
+        name: AppRoutesConstants.loginRoute,
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: AppRoutesConstants.forgotPasswordRoute,
+        name: AppRoutesConstants.forgotPasswordRoute,
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
       GoRoute(
         path: AppRoutesConstants.resetPasswordRoute,
+        name: AppRoutesConstants.resetPasswordRoute,
         builder: (context, state) {
           final data = state.extra as Map<String, dynamic>;
 
@@ -30,6 +33,8 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: AppRoutesConstants.otpVerificationRoute,
+        name: AppRoutesConstants.otpVerificationRoute,
+
         builder: (context, state) =>
             OtpVerificationScreen(email: state.extra as String),
       ),

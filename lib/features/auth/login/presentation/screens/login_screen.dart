@@ -7,13 +7,15 @@ import 'package:explaino/features/auth/login/data/models/login_request_model.dar
 import 'package:explaino/features/auth/login/presentation/cubit/login_cubit.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_intents.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_side_effects.dart';
-import 'package:explaino/features/auth/login/presentation/widgets/auth_link_row.dart';
-import 'package:explaino/features/auth/login/presentation/widgets/continue_divider.dart';
+import 'package:explaino/core/shared/presentation/widgets/auth/auth_link_row.dart';
+import 'package:explaino/core/shared/presentation/widgets/auth/continue_divider.dart';
+import 'package:explaino/core/shared/presentation/widgets/auth/continue_with_google.dart';
+import 'package:explaino/features/auth/login/presentation/cubit/login_state.dart';
 import 'package:explaino/features/auth/login/presentation/widgets/email_and_password_text_field.dart';
 import 'package:explaino/features/auth/login/presentation/widgets/forget_password_row.dart';
 import 'package:explaino/features/auth/login/presentation/widgets/login_logo_container.dart';
-import 'package:explaino/features/auth/login/presentation/widgets/social_icon_row.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -28,7 +30,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  late Size size;
+  late TextTheme textTheme;
 
+  @override
   @override
   void initState() {
     super.initState();
@@ -42,6 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
           _handelNavigateToMainScreen();
         case ShowLoading():
           _handelLoading();
+        case HideLoading():
+          _handelHideLoading();
       }
     });
   }
@@ -53,7 +60,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handelError(String message) {
-    UIUtils.hideEasyLoading();
     UIUtils.showMessage(
       message,
       backGroundColor: AppColors.error,
@@ -61,8 +67,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _handelNavigateToMainScreen() {
+  void _handelHideLoading() {
     UIUtils.hideEasyLoading();
+  }
+
+  void _handelNavigateToMainScreen() {
     GoRouter.of(context).go(AppRoutesConstants.forgotPasswordRoute);
   }
 
@@ -75,67 +84,89 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    size = MediaQuery.of(context).size;
+    textTheme = Theme.of(context).textTheme;
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppColors.lightScaffoldGradient,
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.04,
-              vertical: size.height * 0.01,
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const LoginLogoContainer(),
-                  SizedBox(height: size.height * 0.04),
-                  EmailAndPasswordTextField(
-                    emailController: _emailController,
-                    passwordController: _passwordController,
-                  ),
-                  const ForgetPasswordRow(),
-                  SizedBox(
-                    height: size.height * 0.06,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-                        if (_formKey.currentState!.validate()) {
-                          loginCubit.doIntent(
-                            LoginSubmitIntent(
-                              loginRequestModel: LoginRequestModel(
-                                identifier: _emailController.text,
-                                password: _passwordController.text,
+      body: BlocProvider(
+        create: (context) => loginCubit,
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: AppColors.lightScaffoldGradient,
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.04,
+                vertical: size.height * 0.01,
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const LoginLogoContainer(),
+                    SizedBox(height: size.height * 0.04),
+                    EmailAndPasswordTextField(
+                      emailController: _emailController,
+                      passwordController: _passwordController,
+                      formKey: _formKey,
+                    ),
+                    const ForgetPasswordRow(),
+                    SizedBox(
+                      height: size.height * 0.06,
+                      width: double.infinity,
+                      child: BlocBuilder<LoginCubit, LoginState>(
+                        buildWhen: (previous, current) =>
+                            previous.fieldsValidation !=
+                            current.fieldsValidation,
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate() &&
+                                  state.fieldsValidation) {
+                                loginCubit.doIntent(
+                                  LoginSubmitIntent(
+                                    loginRequestModel: LoginRequestModel(
+                                      identifier: _emailController.text,
+                                      password: _passwordController.text,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: state.fieldsValidation
+                                  ? AppColors.primary
+                                  : AppColors.lightGrey,
+                            ),
+                            child: Text(
+                              AppTextConstants.logIn,
+                              style: textTheme.bodyLarge!.copyWith(
+                                color: Colors.white,
                               ),
                             ),
                           );
-                        }
-                      },
-                      child: Text(
-                        AppTextConstants.logIn,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodyLarge!.copyWith(color: Colors.white),
+                        },
                       ),
                     ),
-                  ),
-                  SizedBox(height: size.height * 0.03),
-                  const ContinueDivider(),
-                  SizedBox(height: size.height * 0.03),
-                  const SocialIconRow(),
-                  SizedBox(height: size.height * 0.03),
-                  AuthLinkRow(
-                    promptText: AppTextConstants.dontHaveAccount,
-                    linkText: AppTextConstants.signUp,
-                    onLinkTap: () {},
-                  ),
-                ],
+                    SizedBox(height: size.height * 0.03),
+                    const ContinueDivider(),
+                    SizedBox(height: size.height * 0.03),
+                    const ContinueWithGoogle(),
+                    SizedBox(height: size.height * 0.03),
+                    AuthLinkRow(
+                      promptText: AppTextConstants.dontHaveAccount,
+                      linkText: AppTextConstants.signUp,
+                      onLinkTap: () {},
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

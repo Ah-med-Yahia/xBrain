@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/features/auth/login/data/models/login_request_model.dart';
 import 'package:explaino/features/auth/login/domain/usecase/login_use_case.dart';
@@ -20,13 +19,9 @@ class LoginCubit extends Cubit<LoginState> {
     switch (intent) {
       case LoginSubmitIntent(loginRequestModel: final loginRequestModel):
         _login(loginRequestModel);
+      case ValidateFieldsIntent(formsValid: final formsValid):
+        _validateFields(formsValid: formsValid);
     }
-  }
-
-  @override
-  Future<void> close() {
-    _sideEffectController.close();
-    return super.close();
   }
 
   Future<void> _login(LoginRequestModel loginRequestModel) async {
@@ -34,22 +29,23 @@ class LoginCubit extends Cubit<LoginState> {
     final result = await loginUseCase(loginRequestModel);
     result.when(
       success: (data) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(NavigateToMainScreen());
       },
       failure: (failure) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(ShowError(failure.message));
       },
     );
   }
 
-  // void _validateLogin(LoginRequestModel loginRequestModel) {
-  //   final emailError = AppValidators.validateEmail(loginRequestModel.identifier);
-  //   final passwordError = AppValidators.validateLoginPassword(loginRequestModel.password);
+  void _validateFields({required bool formsValid}) {
+    emit(state.copyWith(fieldsValidation: formsValid));
+  }
 
-  //   if(emailError != null || passwordError != null){
-
-  //     emit(state.copyWith (loginBaseState: ));
-  //   }
-
-  // }
+  @override
+  Future<void> close() {
+    _sideEffectController.close();
+    return super.close();
+  }
 }
