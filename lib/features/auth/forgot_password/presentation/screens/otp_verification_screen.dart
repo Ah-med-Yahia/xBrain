@@ -2,9 +2,9 @@ import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/shared/data/models/otp/verify_otp_request_model/verify_otp_request_model.dart';
-import 'package:explaino/core/shared/domain/entities/otp/resend_otp_request_entity.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
+import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code_models/forgot_password_request_model.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_intents.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_side_effects.dart';
@@ -22,8 +22,9 @@ class OtpVerificationScreen extends StatefulWidget {
 }
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
-  late final ForgotPasswordCubit forgotPasswordCubit;
-
+  late ForgotPasswordCubit forgotPasswordCubit;
+  late Size screenSize;
+  late TextTheme textTheme;
   String _otpCode = '';
 
   @override
@@ -46,6 +47,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           );
         case ShowMessage(message: final message):
           _handelMessage(message);
+        case HideLoading():
+          _handleHideLoading();
         default:
           break;
       }
@@ -55,7 +58,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   void _handleLoading() => UIUtils.showEasyLoading();
 
   void _handleError(String message) {
-    UIUtils.hideEasyLoading();
     UIUtils.showMessage(
       message,
       backGroundColor: AppColors.error,
@@ -64,12 +66,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
   void _handelMessage(String message) {
-    UIUtils.hideEasyLoading();
     UIUtils.showMessage(
       message,
       backGroundColor: AppColors.green,
       textColor: AppColors.white,
     );
+  }
+
+  void _handleHideLoading() {
+    UIUtils.hideEasyLoading();
   }
 
   void _handleNavigateToResetPasswordScreen({
@@ -98,20 +103,22 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   void _onResend() {
     forgotPasswordCubit.doIntent(
       ResendOtpCodeIntent(
-        resendOtpRequestEntity: ResendOtpRequestEntity(email: widget.email),
+        forgotPasswordRequestModel: ForgotPasswordRequestModel(
+          email: widget.email,
+        ),
       ),
     );
   }
 
   @override
-  void dispose() {
-    forgotPasswordCubit.close();
-    super.dispose();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    screenSize = MediaQuery.sizeOf(context);
+    textTheme = Theme.of(context).textTheme;
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -121,42 +128,44 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                SizedBox(height: size.height * 0.12),
-                Text(
-                  AppTextConstants.verificationCode,
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                const SizedBox(height: 12),
-                Center(
-                  child: Text(
-                    AppTextConstants.enterOtpCode,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: screenSize.height * 0.12),
+                  Text(
+                    AppTextConstants.verificationCode,
+                    style: textTheme.headlineLarge,
                   ),
-                ),
-                const SizedBox(height: 40),
-                OtpFields(
-                  onChanged: (value) => setState(() => _otpCode = value),
-                ),
-                const SizedBox(height: 24),
-                ResendSection(onResend: _onResend),
-                SizedBox(height: size.height * 0.4),
-                SizedBox(
-                  width: double.infinity,
-                  height: size.height * 0.06,
-                  child: ElevatedButton(
-                    onPressed: _onVerifyPressed,
+                  const SizedBox(height: 12),
+                  Center(
                     child: Text(
-                      AppTextConstants.verify,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyLarge!.copyWith(color: Colors.white),
+                      AppTextConstants.enterOtpCode,
+                      textAlign: TextAlign.center,
+                      style: textTheme.titleMedium,
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 40),
+                  OtpFields(
+                    onChanged: (value) => setState(() => _otpCode = value),
+                  ),
+                  const SizedBox(height: 24),
+                  ResendSection(onResend: _onResend),
+                  SizedBox(height: screenSize.height * 0.4),
+                  SizedBox(
+                    width: double.infinity,
+                    height: screenSize.height * 0.06,
+                    child: ElevatedButton(
+                      onPressed: _onVerifyPressed,
+                      child: Text(
+                        AppTextConstants.verify,
+                        style: textTheme.bodyLarge!.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

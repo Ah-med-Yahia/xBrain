@@ -5,18 +5,29 @@ import 'package:explaino/core/shared/domain/entities/message_entity.dart';
 class LoginState extends Equatable {
   final BaseState<MessageEntity>? loginBaseState;
   final bool fieldsValidation;
-  const LoginState({this.loginBaseState, this.fieldsValidation = false});
+  final bool obscurePassword;
+  const LoginState({
+    this.loginBaseState,
+    this.fieldsValidation = false,
+    this.obscurePassword = true,
+  });
 
   LoginState copyWith({
     BaseState<MessageEntity>? loginBaseState,
     bool? fieldsValidation,
+    bool? obscurePassword,
   }) {
     return LoginState(
       loginBaseState: loginBaseState ?? this.loginBaseState,
       fieldsValidation: fieldsValidation ?? this.fieldsValidation,
+      obscurePassword: obscurePassword ?? this.obscurePassword,
     );
   }
 
   @override
-  List<Object?> get props => [loginBaseState, fieldsValidation];
+  List<Object?> get props => [
+    loginBaseState,
+    fieldsValidation,
+    obscurePassword,
+  ];
 }

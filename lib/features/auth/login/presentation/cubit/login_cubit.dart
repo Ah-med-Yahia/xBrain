@@ -21,6 +21,8 @@ class LoginCubit extends Cubit<LoginState> {
         _login(loginRequestModel);
       case ValidateFieldsIntent(formsValid: final formsValid):
         _validateFields(formsValid: formsValid);
+      case TogglePasswordVisibilityIntent():
+        _togglePasswordVisibility();
     }
   }
 
@@ -41,6 +43,10 @@ class LoginCubit extends Cubit<LoginState> {
 
   void _validateFields({required bool formsValid}) {
     emit(state.copyWith(fieldsValidation: formsValid));
+  }
+
+  void _togglePasswordVisibility() {
+    emit(state.copyWith(obscurePassword: !state.obscurePassword));
   }
 
   @override

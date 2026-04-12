@@ -9,7 +9,7 @@ import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_intents.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_side_effects.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/widgets/forgot_password_avatar.dart';
-import 'package:explaino/features/auth/login/presentation/widgets/auth_link_row.dart';
+import 'package:explaino/core/shared/presentation/widgets/auth/auth_link_row.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,9 +21,11 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  late final ForgotPasswordCubit forgotPasswordCubit;
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
+  late ForgotPasswordCubit forgotPasswordCubit;
+  late Size screenSize;
+  late TextTheme textTheme;
 
   @override
   void initState() {
@@ -38,6 +40,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           _handelNavigateToOtpVerificationScreen(email);
         case ShowLoading():
           _handelLoading();
+        case HideLoading():
+          _handelHideLoading();
         default:
       }
     });
@@ -50,7 +54,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   void _handelError(String message) {
-    UIUtils.hideEasyLoading();
     UIUtils.showMessage(
       message,
       backGroundColor: AppColors.error,
@@ -58,8 +61,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  void _handelNavigateToOtpVerificationScreen(String email) {
+  void _handelHideLoading() {
     UIUtils.hideEasyLoading();
+  }
+
+  void _handelNavigateToOtpVerificationScreen(String email) {
     GoRouter.of(
       context,
     ).go(AppRoutesConstants.otpVerificationRoute, extra: email);
@@ -67,15 +73,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   void dispose() {
-    forgotPasswordCubit.close();
     emailController.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    screenSize = MediaQuery.sizeOf(context);
+    textTheme = Theme.of(context).textTheme;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -85,8 +95,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         child: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.04,
-              vertical: size.height * 0.01,
+              horizontal: screenSize.width * 0.04,
+              vertical: screenSize.height * 0.01,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -95,19 +105,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   key: formKey,
                   child: Column(
                     children: [
-                      SizedBox(height: size.height * 0.05),
+                      SizedBox(height: screenSize.height * 0.05),
                       const ForgotPasswordAvatar(isForgotPassword: true),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.05,
+                          horizontal: screenSize.width * 0.05,
                         ),
                         child: Text(
                           AppTextConstants.forgotPasswordInstructions,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      SizedBox(height: size.height * 0.04),
+                      SizedBox(height: screenSize.height * 0.04),
                       TextFormField(
                         controller: emailController,
                         decoration: const InputDecoration(
@@ -119,11 +129,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ),
                         keyboardType: TextInputType.emailAddress,
                         validator: AppValidators.validateEmail,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onTapOutside: (_) =>
+                            FocusManager.instance.primaryFocus?.unfocus(),
                       ),
-                      SizedBox(height: size.height * 0.25),
+                      SizedBox(height: screenSize.height * 0.25),
                       SizedBox(
                         width: double.infinity,
-                        height: size.height * 0.06,
+                        height: screenSize.height * 0.06,
                         child: ElevatedButton(
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
@@ -139,15 +152,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           },
                           child: Text(
                             AppTextConstants.sendResetLink,
-                            style: Theme.of(context).textTheme.bodyLarge!
-                                .copyWith(color: Colors.white),
+                            style: textTheme.bodyLarge!.copyWith(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: size.height * 0.03),
+                SizedBox(height: screenSize.height * 0.03),
                 AuthLinkRow(
                   promptText: AppTextConstants.rememberPassword,
                   linkText: AppTextConstants.logIn,

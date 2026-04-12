@@ -16,7 +16,7 @@ class _ResendSectionState extends State<ResendSection> {
   int _remainingSeconds = _resendSeconds;
   Timer? _resendTimer;
   bool _canResend = false;
-
+  late TextTheme textTheme;
   String get _formattedTimer {
     final minutes = _remainingSeconds ~/ 60;
     final seconds = _remainingSeconds % 60;
@@ -52,13 +52,19 @@ class _ResendSectionState extends State<ResendSection> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    textTheme = Theme.of(context).textTheme;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Center(
           child: Text(
             AppTextConstants.didNotReceiveCode,
-            style: Theme.of(context).textTheme.titleSmall,
+            style: textTheme.titleSmall,
           ),
         ),
         const SizedBox(height: 8),
@@ -71,9 +77,9 @@ class _ResendSectionState extends State<ResendSection> {
                   },
                   child: Text(
                     AppTextConstants.resendCode,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleSmall!.copyWith(color: AppColors.primary),
+                    style: textTheme.titleSmall!.copyWith(
+                      color: AppColors.primary,
+                    ),
                   ),
                 )
               : Container(
@@ -96,8 +102,9 @@ class _ResendSectionState extends State<ResendSection> {
                       const SizedBox(width: 4),
                       Text(
                         _formattedTimer,
-                        style: Theme.of(context).textTheme.labelMedium!
-                            .copyWith(color: AppColors.primary),
+                        style: textTheme.labelMedium!.copyWith(
+                          color: AppColors.primary,
+                        ),
                       ),
                     ],
                   ),

@@ -9,11 +9,12 @@ class ForgotPasswordAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    final avatarRadius = width * 0.25;
-    final iconSize = (width * 0.115).clamp(32.0, 64.0);
+    final size = MediaQuery.sizeOf(context);
+    final avatarRadius = size.width * 0.25;
+    final iconSize = (size.width * 0.115).clamp(32.0, 64.0);
     final dotRadius = avatarRadius * 0.1;
     final dotOffset = avatarRadius * 0.7;
+    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Column(
       children: [
@@ -37,18 +38,21 @@ class ForgotPasswordAvatar extends StatelessWidget {
                 backgroundColor: AppColors.primary,
               ),
             ),
-            Assets.forgetPasswordLogo.svg(width: iconSize, height: iconSize),
+            Assets.images.forgetPasswordLogo.svg(
+              width: iconSize,
+              height: iconSize,
+            ),
           ],
         ),
         const SizedBox(height: 24),
         isForgotPassword
             ? Text(
                 AppTextConstants.forgotPassword,
-                style: Theme.of(context).textTheme.headlineLarge,
+                style: textTheme.headlineLarge,
               )
             : Text(
                 AppTextConstants.resetPassword,
-                style: Theme.of(context).textTheme.headlineLarge,
+                style: textTheme.headlineLarge,
               ),
         const SizedBox(height: 16),
       ],

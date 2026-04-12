@@ -11,3 +11,5 @@ class ValidateFieldsIntent extends LoginIntent {
   final bool formsValid;
   ValidateFieldsIntent({required this.formsValid});
 }
+
+class TogglePasswordVisibilityIntent extends LoginIntent {}

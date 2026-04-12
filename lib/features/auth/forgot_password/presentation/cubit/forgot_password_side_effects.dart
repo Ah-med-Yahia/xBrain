@@ -27,3 +27,5 @@ class ShowMessage extends ForgotPasswordSideEffects {
   final String message;
   ShowMessage(this.message);
 }
+
+class HideLoading extends ForgotPasswordSideEffects {}

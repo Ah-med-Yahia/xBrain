@@ -77,7 +77,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    loginCubit.close();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();

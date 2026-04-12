@@ -8,13 +8,16 @@ import 'package:explaino/features/auth/forgot_password/data/models/reset_passwor
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_intents.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_side_effects.dart';
+import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_state.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/widgets/forgot_password_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   final String email;
   final String resetToken;
+
   const ResetPasswordScreen({
     super.key,
     required this.email,
@@ -26,32 +29,52 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
-  late final ForgotPasswordCubit forgotPasswordCubit;
-  final formKey = GlobalKey<FormState>();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  late ForgotPasswordCubit forgotPasswordCubit;
+
+  late Size screenSize;
+  late TextTheme textTheme;
 
   @override
   void initState() {
+    super.initState();
+    _initCubit();
+    _listenToSideEffects();
+  }
+
+  void _initCubit() {
     forgotPasswordCubit = getIt<ForgotPasswordCubit>();
+  }
+
+  void _listenToSideEffects() {
     forgotPasswordCubit.sideEffects.listen((effect) {
       if (!mounted) return;
+
       switch (effect) {
         case ShowError():
           _handelError(effect.message);
           break;
+
         case NavigateToLoginScreen():
           _handelNavigateToLoginScreen();
           break;
+
         case ShowLoading():
           _handelLoading();
           break;
+
+        case HideLoading():
+          _handelHideLoading();
+          break;
+
         default:
       }
     });
-    super.initState();
   }
 
   void _handelLoading() {
@@ -61,7 +84,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   void _handelError(String message) {
-    UIUtils.hideEasyLoading();
     UIUtils.showMessage(
       message,
       backGroundColor: AppColors.error,
@@ -69,132 +91,176 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 
-  void _handelNavigateToLoginScreen() {
+  void _handelHideLoading() {
     UIUtils.hideEasyLoading();
+  }
+
+  void _handelNavigateToLoginScreen() {
     GoRouter.of(context).go(AppRoutesConstants.loginRoute, extra: widget.email);
+  }
+
+  void _onSubmit() {
+    if (formKey.currentState!.validate()) {
+      forgotPasswordCubit.doIntent(
+        ResetPasswordIntent(
+          resetPasswordRequestModel: ResetPasswordRequestModel(
+            email: widget.email,
+            token: widget.resetToken,
+            newPassword: passwordController.text.trim(),
+          ),
+        ),
+      );
+    }
   }
 
   @override
   void dispose() {
-    forgotPasswordCubit.close();
     passwordController.dispose();
     confirmPasswordController.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    screenSize = MediaQuery.sizeOf(context);
+    textTheme = Theme.of(context).textTheme;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: AppColors.lightScaffoldGradient,
+      body: BlocProvider(
+        create: (context) => forgotPasswordCubit,
+        child: _buildBody(),
+      ),
+    );
+  }
+
+  Widget _buildBody() {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        gradient: AppColors.lightScaffoldGradient,
+      ),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          padding: _buildPadding(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: screenSize.height * 0.05),
+              const ForgotPasswordAvatar(isForgotPassword: false),
+              SizedBox(height: screenSize.height * 0.04),
+              _buildForm(),
+            ],
+          ),
         ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.04,
-              vertical: size.height * 0.01,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: size.height * 0.05),
-                const ForgotPasswordAvatar(isForgotPassword: false),
-                SizedBox(height: size.height * 0.04),
-                Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: passwordController,
-                        decoration: InputDecoration(
-                          hintText: AppTextConstants.enterNewPassword,
-                          prefixIcon: const Icon(
-                            Icons.lock_outline,
-                            color: AppColors.black,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: AppColors.black,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscurePassword = !_obscurePassword;
-                              });
-                            },
-                          ),
-                        ),
-                        keyboardType: TextInputType.visiblePassword,
-                        validator: AppValidators.validatePassword,
-                        obscureText: _obscurePassword,
-                      ),
-                      SizedBox(height: size.height * 0.02),
-                      TextFormField(
-                        controller: confirmPasswordController,
-                        decoration: InputDecoration(
-                          hintText: AppTextConstants.confirmNewPassword,
-                          prefixIcon: const Icon(
-                            Icons.lock_outline,
-                            color: AppColors.black,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureConfirmPassword
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: AppColors.black,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureConfirmPassword =
-                                    !_obscureConfirmPassword;
-                              });
-                            },
-                          ),
-                        ),
-                        keyboardType: TextInputType.visiblePassword,
-                        validator: AppValidators.validatePassword,
-                        obscureText: _obscureConfirmPassword,
-                      ),
-                      SizedBox(height: size.height * 0.25),
-                      SizedBox(
-                        width: double.infinity,
-                        height: size.height * 0.06,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              forgotPasswordCubit.doIntent(
-                                ResetPasswordIntent(
-                                  resetPasswordRequestModel:
-                                      ResetPasswordRequestModel(
-                                        email: widget.email,
-                                        token: widget.resetToken,
-                                        newPassword: passwordController.text
-                                            .trim(),
-                                      ),
-                                ),
-                              );
-                            }
-                          },
-                          child: Text(
-                            AppTextConstants.resetPassword,
-                            style: Theme.of(context).textTheme.bodyLarge!
-                                .copyWith(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+      ),
+    );
+  }
+
+  EdgeInsets _buildPadding() {
+    return EdgeInsets.symmetric(
+      horizontal: screenSize.width * 0.04,
+      vertical: screenSize.height * 0.01,
+    );
+  }
+
+  Widget _buildForm() {
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          _buildPasswordField(),
+          SizedBox(height: screenSize.height * 0.02),
+          _buildConfirmPasswordField(),
+          SizedBox(height: screenSize.height * 0.25),
+          _buildSubmitButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPasswordField() {
+    return BlocBuilder<ForgotPasswordCubit, ForgotPasswordState>(
+      buildWhen: (previous, current) =>
+          previous.obscurePassword != current.obscurePassword,
+      builder: (context, state) {
+        return TextFormField(
+          controller: passwordController,
+          decoration: InputDecoration(
+            labelText: AppTextConstants.password,
+            prefixIcon: const Icon(Icons.lock_outline, color: AppColors.black),
+            suffixIcon: IconButton(
+              icon: Icon(
+                state.obscurePassword
+                    ? Icons.visibility_outlined
+                    : Icons.visibility_off_outlined,
+                color: AppColors.black,
+              ),
+              onPressed: () {
+                context.read<ForgotPasswordCubit>().doIntent(
+                  TogglePasswordVisibilityIntent(),
+                );
+              },
             ),
           ),
+          onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          obscureText: state.obscurePassword,
+          textInputAction: TextInputAction.done,
+          autofillHints: const [AutofillHints.password],
+          validator: AppValidators.validateLoginPassword,
+        );
+      },
+    );
+  }
+
+  Widget _buildConfirmPasswordField() {
+    return BlocBuilder<ForgotPasswordCubit, ForgotPasswordState>(
+      buildWhen: (previous, current) =>
+          previous.obscureConfirmPassword != current.obscureConfirmPassword,
+      builder: (context, state) {
+        return TextFormField(
+          controller: confirmPasswordController,
+          decoration: InputDecoration(
+            labelText: AppTextConstants.confirmNewPassword,
+            prefixIcon: const Icon(Icons.lock_outline, color: AppColors.black),
+            suffixIcon: IconButton(
+              icon: Icon(
+                state.obscureConfirmPassword
+                    ? Icons.visibility_outlined
+                    : Icons.visibility_off_outlined,
+                color: AppColors.black,
+              ),
+              onPressed: () {
+                context.read<ForgotPasswordCubit>().doIntent(
+                  ToggleConfirmPasswordVisibilityIntent(),
+                );
+              },
+            ),
+          ),
+          onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          obscureText: state.obscureConfirmPassword,
+          textInputAction: TextInputAction.done,
+          autofillHints: const [AutofillHints.password],
+          validator: AppValidators.validateLoginPassword,
+        );
+      },
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: screenSize.height * 0.06,
+      child: ElevatedButton(
+        onPressed: _onSubmit,
+        child: Text(
+          AppTextConstants.resetPassword,
+          style: textTheme.bodyLarge!.copyWith(color: Colors.white),
         ),
       ),
     );

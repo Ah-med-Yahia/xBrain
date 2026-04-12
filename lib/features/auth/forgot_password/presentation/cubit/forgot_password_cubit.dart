@@ -1,9 +1,6 @@
 import 'dart:async';
-
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/core/shared/data/models/otp/verify_otp_request_model/verify_otp_request_model.dart';
-import 'package:explaino/core/shared/domain/entities/otp/resend_otp_request_entity.dart';
-import 'package:explaino/core/shared/domain/use_cases/resend_otp_use_case.dart';
 import 'package:explaino/features/auth/forgot_password/data/models/reset_password_request_model.dart';
 import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code_models/forgot_password_request_model.dart';
 import 'package:explaino/features/auth/forgot_password/domain/use_case/reset_password_use_case.dart';
@@ -25,13 +22,11 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final SendResetCodeUseCase _sendResetCodeUseCase;
   final VerifyOtpUseCase _verifyOtpUseCase;
   final ResetPasswordUseCase _resetPasswordUseCase;
-  final ResendOtpUseCase _resendOtpUseCase;
 
   ForgotPasswordCubit(
     this._sendResetCodeUseCase,
     this._verifyOtpUseCase,
     this._resetPasswordUseCase,
-    this._resendOtpUseCase,
   ) : super(const ForgotPasswordState());
 
   void doIntent(ForgotPasswordIntent intent) {
@@ -49,9 +44,13 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       ):
         resetPassword(resetPasswordRequestModel);
       case ResendOtpCodeIntent(
-        resendOtpRequestEntity: final resendOtpRequestEntity,
+        forgotPasswordRequestModel: final forgotPasswordRequestModel,
       ):
-        resendOtpCode(resendOtpRequestEntity);
+        resendOtpCode(forgotPasswordRequestModel);
+      case TogglePasswordVisibilityIntent():
+        togglePasswordVisibility();
+      case ToggleConfirmPasswordVisibilityIntent():
+        toggleConfirmPasswordVisibility();
     }
   }
 
@@ -62,11 +61,13 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     final result = await _sendResetCodeUseCase(forgotPasswordRequestModel);
     result.when(
       success: (data) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(
           NavigateToOtpVerificationScreen(email: data.email),
         );
       },
       failure: (failure) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(ShowError(failure.message));
       },
     );
@@ -79,6 +80,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     final result = await _verifyOtpUseCase(verifyOtpRequestModel);
     result.when(
       success: (data) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(
           NavigateToResetPasswordScreen(
             email: data.email,
@@ -87,6 +89,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         );
       },
       failure: (failure) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(ShowError(failure.message));
       },
     );
@@ -99,27 +102,39 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     final result = await _resetPasswordUseCase(resetPasswordRequestModel);
     result.when(
       success: (data) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(NavigateToLoginScreen());
       },
       failure: (failure) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(ShowError(failure.message));
       },
     );
   }
 
   Future<void> resendOtpCode(
-    ResendOtpRequestEntity resendOtpRequestEntity,
+    ForgotPasswordRequestModel forgotPasswordRequestModel,
   ) async {
     _sideEffectController.add(ShowLoading());
-    final result = await _resendOtpUseCase(resendOtpRequestEntity);
+    final result = await _sendResetCodeUseCase(forgotPasswordRequestModel);
     result.when(
       success: (data) {
-        _sideEffectController.add(ShowMessage(data));
+        _sideEffectController.add(HideLoading());
+        _sideEffectController.add(ShowMessage('Code sent successfully'));
       },
       failure: (failure) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(ShowError(failure.message));
       },
     );
+  }
+
+  void togglePasswordVisibility() {
+    emit(state.copyWith(obscurePassword: !state.obscurePassword));
+  }
+
+  void toggleConfirmPasswordVisibility() {
+    emit(state.copyWith(obscureConfirmPassword: !state.obscureConfirmPassword));
   }
 
   @override
