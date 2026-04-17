@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/shared/data/models/otp/verify_otp_request_model/verify_otp_request_model.dart';
 import 'package:explaino/features/auth/forgot_password/data/models/reset_password_request_model.dart';
 import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code_models/forgot_password_request_model.dart';
@@ -34,27 +35,27 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       case SendResetCodeIntent(
         forgotPasswordRequestModel: final forgotPasswordRequestModel,
       ):
-        sendResetCode(forgotPasswordRequestModel);
+        _sendResetCode(forgotPasswordRequestModel);
       case VerifyOtpCodeIntent(
         verifyOtpRequestModel: final verifyOtpRequestModel,
       ):
-        verifyOtpCode(verifyOtpRequestModel);
+        _verifyOtpCode(verifyOtpRequestModel);
       case ResetPasswordIntent(
         resetPasswordRequestModel: final resetPasswordRequestModel,
       ):
-        resetPassword(resetPasswordRequestModel);
+        _resetPassword(resetPasswordRequestModel);
       case ResendOtpCodeIntent(
         forgotPasswordRequestModel: final forgotPasswordRequestModel,
       ):
-        resendOtpCode(forgotPasswordRequestModel);
+        _resendOtpCode(forgotPasswordRequestModel);
       case TogglePasswordVisibilityIntent():
-        togglePasswordVisibility();
+        _togglePasswordVisibility();
       case ToggleConfirmPasswordVisibilityIntent():
-        toggleConfirmPasswordVisibility();
+        _toggleConfirmPasswordVisibility();
     }
   }
 
-  Future<void> sendResetCode(
+  Future<void> _sendResetCode(
     ForgotPasswordRequestModel forgotPasswordRequestModel,
   ) async {
     _sideEffectController.add(ShowLoading());
@@ -73,7 +74,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     );
   }
 
-  Future<void> verifyOtpCode(
+  Future<void> _verifyOtpCode(
     VerifyOtpRequestModel verifyOtpRequestModel,
   ) async {
     _sideEffectController.add(ShowLoading());
@@ -95,7 +96,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     );
   }
 
-  Future<void> resetPassword(
+  Future<void> _resetPassword(
     ResetPasswordRequestModel resetPasswordRequestModel,
   ) async {
     _sideEffectController.add(ShowLoading());
@@ -112,7 +113,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     );
   }
 
-  Future<void> resendOtpCode(
+  Future<void> _resendOtpCode(
     ForgotPasswordRequestModel forgotPasswordRequestModel,
   ) async {
     _sideEffectController.add(ShowLoading());
@@ -120,7 +121,9 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     result.when(
       success: (data) {
         _sideEffectController.add(HideLoading());
-        _sideEffectController.add(ShowMessage('Code sent successfully'));
+        _sideEffectController.add(
+          ShowSuccessSendOtp(AppTextConstants.codeSentSuccessfully),
+        );
       },
       failure: (failure) {
         _sideEffectController.add(HideLoading());
@@ -129,11 +132,11 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     );
   }
 
-  void togglePasswordVisibility() {
+  void _togglePasswordVisibility() {
     emit(state.copyWith(obscurePassword: !state.obscurePassword));
   }
 
-  void toggleConfirmPasswordVisibility() {
+  void _toggleConfirmPasswordVisibility() {
     emit(state.copyWith(obscureConfirmPassword: !state.obscureConfirmPassword));
   }
 

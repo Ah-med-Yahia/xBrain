@@ -8,12 +8,6 @@ class ForgotPasswordRequestModel {
 
   ForgotPasswordRequestModel({required this.email});
 
-  // ForgotPasswordRequestModel copyWith({String? email}) {
-  //   return ForgotPasswordRequestModel(
-  //     email: email ?? this.email,
-  //   );
-  // }
-
   factory ForgotPasswordRequestModel.fromJson(Map<String, dynamic> json) =>
       _$ForgotPasswordRequestModelFromJson(json);
 

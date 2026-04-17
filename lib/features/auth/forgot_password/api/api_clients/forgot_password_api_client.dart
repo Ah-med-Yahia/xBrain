@@ -10,7 +10,7 @@ import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 part 'forgot_password_api_client.g.dart';
 
-@lazySingleton
+@Injectable()
 @RestApi(baseUrl: ApiConstants.baseUrl)
 abstract class ForgotPasswordApiClient {
   @factoryMethod

@@ -23,9 +23,9 @@ class ShowLoading extends ForgotPasswordSideEffects {}
 
 class NavigateToLoginScreen extends ForgotPasswordSideEffects {}
 
-class ShowMessage extends ForgotPasswordSideEffects {
+class ShowSuccessSendOtp extends ForgotPasswordSideEffects {
   final String message;
-  ShowMessage(this.message);
+  ShowSuccessSendOtp(this.message);
 }
 
 class HideLoading extends ForgotPasswordSideEffects {}

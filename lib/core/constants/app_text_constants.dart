@@ -27,4 +27,5 @@ class AppTextConstants {
   static const String verificationCode = 'Verification Code';
   static const String didNotReceiveCode = "Didn't receive code?";
   static const String resendCode = 'Resend Code';
+  static const String codeSentSuccessfully = 'Code sent successfully';
 }

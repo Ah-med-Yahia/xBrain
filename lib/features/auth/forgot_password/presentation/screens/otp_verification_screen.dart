@@ -45,7 +45,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             email: email,
             resetToken: resetToken,
           );
-        case ShowMessage(message: final message):
+        case ShowSuccessSendOtp(message: final message):
           _handelMessage(message);
         case HideLoading():
           _handleHideLoading();
