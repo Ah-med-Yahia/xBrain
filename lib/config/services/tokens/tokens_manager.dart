@@ -4,7 +4,7 @@ import 'package:explaino/core/constants/api_constants.dart';
 import 'package:explaino/core/shared/data/models/refresh_token_response_model/refresh_token_response_model.dart';
 import 'package:injectable/injectable.dart';
 
-@lazySingleton
+@LazySingleton(as: TokensManagerContract)
 class TokensManager implements TokensManagerContract {
   final Dio dio;
   TokensManager(this.dio);
