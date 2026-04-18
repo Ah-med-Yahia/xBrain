@@ -17,4 +17,5 @@ class ApiConstants {
   static const String verifyEmail = 'auth/verify-email/';
   static const String refreshToken = 'auth/token/refresh/';
   static const String resendOtp = 'auth/resend-otp/';
+  static const String verifyResetOtp = 'auth/verify-reset-otp/';
 }

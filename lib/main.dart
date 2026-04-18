@@ -2,6 +2,7 @@ import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/routing/app_router.dart';
 import 'package:explaino/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +17,7 @@ class ExplainoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: AppRouter.router,
+      builder: EasyLoading.init(),
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
     );
