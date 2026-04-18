@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: TokensManagerContract)
 class TokensManager implements TokensManagerContract {
   final Dio dio;
-  TokensManager(this.dio);
+  TokensManager(@Named('tokenRefreshDio') this.dio);
   @override
   Future<RefreshTokenResponseModel> refreshToken(String refreshToken) async {
     final response = await dio.post(
