@@ -3,7 +3,7 @@ import 'package:explaino/core/shared/domain/entities/auth/message_entity.dart';
 import 'package:explaino/features/auth/login/data/data_sources/local/local_login_data_source.dart';
 import 'package:explaino/features/auth/login/data/data_sources/remote/remote_login_data_source.dart';
 import 'package:explaino/features/auth/login/data/mappers/login_request_mapper.dart';
-import 'package:explaino/features/auth/login/domain/entities/login_request_entity.dart';
+import 'package:explaino/features/auth/login/domain/entities/request/login_request_entity.dart';
 import 'package:explaino/features/auth/login/domain/repositories/login_repo.dart';
 import 'package:injectable/injectable.dart';
 

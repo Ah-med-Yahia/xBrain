@@ -3,7 +3,7 @@ import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
-import 'package:explaino/features/auth/login/domain/entities/login_request_entity.dart';
+import 'package:explaino/features/auth/login/domain/entities/request/login_request_entity.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_cubit.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_intents.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_side_effects.dart';

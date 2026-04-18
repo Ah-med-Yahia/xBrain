@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:explaino/config/base_response/base_response.dart';
-import 'package:explaino/features/auth/login/domain/entities/login_request_entity.dart';
+import 'package:explaino/features/auth/login/domain/entities/request/login_request_entity.dart';
 import 'package:explaino/features/auth/login/domain/usecase/login_use_case.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_intents.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_side_effects.dart';
