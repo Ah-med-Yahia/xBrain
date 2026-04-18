@@ -5,9 +5,9 @@ import 'package:explaino/core/shared/data/models/auth/otp/otp_response_model/otp
 import 'package:explaino/core/shared/data/models/auth/otp/verify_otp_request_model/verify_otp_request_model.dart';
 import 'package:explaino/features/auth/forgot_password/api/api_clients/forgot_password_api_client.dart';
 import 'package:explaino/features/auth/forgot_password/data/data_sources/remote/remote_forgot_password_data_source.dart';
-import 'package:explaino/features/auth/forgot_password/data/models/reset_password_request_model.dart';
-import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code_models/forgot_password_request_model.dart';
-import 'package:explaino/features/auth/forgot_password/data/models/verify_email_models/verify_email_response_model.dart';
+import 'package:explaino/features/auth/forgot_password/data/models/request/reset_password_request_model.dart';
+import 'package:explaino/features/auth/forgot_password/data/models/request/send_otp_code_models/forgot_password_request_model.dart';
+import 'package:explaino/features/auth/forgot_password/data/models/response/verify_email_models/verify_email_response_model.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: RemoteForgotPasswordDataSource)

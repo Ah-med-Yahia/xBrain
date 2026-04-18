@@ -1,8 +1,8 @@
-import 'package:explaino/features/auth/forgot_password/data/models/verify_email_models/verify_email_response_model.dart';
-import 'package:explaino/features/auth/forgot_password/domain/entities/verify_email_entitt.dart';
+import 'package:explaino/features/auth/forgot_password/data/models/response/verify_email_models/verify_email_response_model.dart';
+import 'package:explaino/features/auth/forgot_password/domain/entities/response/verify_email_response_entity.dart';
 
 extension VerifyEmailMapper on VerifyEmailResponseModel {
-  VerifyEmailEntity toEntity() {
-    return VerifyEmailEntity(email: email, resetToken: resetToken);
+  VerifyEmailResponseEntity toEntity() {
+    return VerifyEmailResponseEntity(email: email, resetToken: resetToken);
   }
 }

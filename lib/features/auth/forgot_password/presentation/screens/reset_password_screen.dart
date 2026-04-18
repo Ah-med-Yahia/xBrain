@@ -4,7 +4,7 @@ import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/core/validators/app_validators.dart';
-import 'package:explaino/features/auth/forgot_password/data/models/reset_password_request_model.dart';
+import 'package:explaino/features/auth/forgot_password/domain/entities/request/reset_password_request_entity.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_intents.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_side_effects.dart';
@@ -103,7 +103,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     if (formKey.currentState!.validate()) {
       forgotPasswordCubit.doIntent(
         ResetPasswordIntent(
-          resetPasswordRequestModel: ResetPasswordRequestModel(
+          resetPasswordRequestModel: ResetPasswordRequestEntity(
             email: widget.email,
             token: widget.resetToken,
             newPassword: passwordController.text.trim(),
