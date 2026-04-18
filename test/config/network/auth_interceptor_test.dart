@@ -4,7 +4,7 @@ import 'package:explaino/config/errors/local_exception.dart';
 import 'package:explaino/config/network/auth_interceptor.dart';
 import 'package:explaino/config/services/tokens/token_service_storage_contract.dart';
 import 'package:explaino/config/services/tokens/tokens_manager_contract.dart';
-import 'package:explaino/core/shared/data/models/refresh_token_response_model/refresh_token_response_model.dart';
+import 'package:explaino/core/shared/data/models/auth/refresh_token_response_model/refresh_token_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

@@ -1,5 +1,5 @@
-import 'package:explaino/core/shared/data/models/user_model/specialization_model/specialization_model.dart';
-import 'package:explaino/core/shared/data/models/user_model/wallet_model/wallet_model.dart';
+import 'package:explaino/core/shared/data/models/auth/user_model/specialization_model/specialization_model.dart';
+import 'package:explaino/core/shared/data/models/auth/user_model/wallet_model/wallet_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'user_model.g.dart';
 

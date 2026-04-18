@@ -1,6 +1,6 @@
 import 'package:explaino/config/base_response/base_response.dart';
-import 'package:explaino/core/shared/domain/entities/otp/resend_otp_request_entity.dart';
-import 'package:explaino/core/shared/domain/repository/resend_otp_repository.dart';
+import 'package:explaino/core/shared/domain/entities/auth/otp/resend_otp_request_entity.dart';
+import 'package:explaino/core/shared/domain/repository/auth/resend_otp_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton

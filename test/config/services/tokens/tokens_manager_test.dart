@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:explaino/config/services/tokens/tokens_manager.dart';
 import 'package:explaino/core/constants/api_constants.dart';
-import 'package:explaino/core/shared/data/models/refresh_token_response_model/refresh_token_response_model.dart';
+import 'package:explaino/core/shared/data/models/auth/refresh_token_response_model/refresh_token_response_model.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';

@@ -11,7 +11,7 @@ import 'package:explaino/core/constants/errors_constants.dart';
 import 'package:explaino/core/extensions/extensions.dart';
 import 'package:explaino/core/routing/app_router.dart';
 import 'package:explaino/core/routing/app_routes_constant.dart';
-import 'package:explaino/core/shared/data/models/refresh_token_response_model/refresh_token_response_model.dart';
+import 'package:explaino/core/shared/data/models/auth/refresh_token_response_model/refresh_token_response_model.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

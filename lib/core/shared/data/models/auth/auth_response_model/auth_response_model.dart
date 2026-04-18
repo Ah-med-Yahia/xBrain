@@ -1,4 +1,4 @@
-import 'package:explaino/core/shared/data/models/user_model/user_model.dart';
+import 'package:explaino/core/shared/data/models/auth/user_model/user_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
 

@@ -1,6 +1,6 @@
-import 'package:explaino/core/shared/domain/entities/otp/resend_otp_request_entity.dart';
-import 'package:explaino/core/shared/domain/entities/otp/verify_otp_request_entity.dart';
-import 'package:explaino/core/shared/domain/use_cases/resend_otp_use_case.dart';
+import 'package:explaino/core/shared/domain/entities/auth/otp/resend_otp_request_entity.dart';
+import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
+import 'package:explaino/core/shared/domain/use_cases/auth/resend_otp_use_case.dart';
 import 'package:explaino/features/auth/register/domain/entities/request/register_request_entity.dart';
 import 'package:explaino/features/auth/register/domain/usecases/send_opt_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/verify_email_and_register.dart';

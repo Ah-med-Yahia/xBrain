@@ -1,5 +1,5 @@
-import 'package:explaino/core/shared/domain/entities/otp/resend_otp_request_entity.dart';
-import 'package:explaino/core/shared/domain/entities/otp/verify_otp_request_entity.dart';
+import 'package:explaino/core/shared/domain/entities/auth/otp/resend_otp_request_entity.dart';
+import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
 import 'package:explaino/features/auth/register/domain/entities/request/register_request_entity.dart';
 
 sealed class RegisterIntent {}

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:explaino/config/base_response/base_response.dart';
-import 'package:explaino/features/auth/login/data/models/login_request_model.dart';
+import 'package:explaino/features/auth/login/domain/entities/login_request_entity.dart';
 import 'package:explaino/features/auth/login/domain/usecase/login_use_case.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_intents.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_side_effects.dart';
@@ -17,8 +17,8 @@ class LoginCubit extends Cubit<LoginState> {
 
   void doIntent(LoginIntent intent) {
     switch (intent) {
-      case LoginSubmitIntent(loginRequestModel: final loginRequestModel):
-        _login(loginRequestModel);
+      case LoginSubmitIntent(loginRequestEntity: final loginRequestEntity):
+        _login(loginRequestEntity);
       case ValidateFieldsIntent(formsValid: final formsValid):
         _validateFields(formsValid: formsValid);
       case TogglePasswordVisibilityIntent():
@@ -26,7 +26,7 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  Future<void> _login(LoginRequestModel loginRequestModel) async {
+  Future<void> _login(LoginRequestEntity loginRequestModel) async {
     _sideEffectController.add(ShowLoading());
     final result = await loginUseCase(loginRequestModel);
     result.when(

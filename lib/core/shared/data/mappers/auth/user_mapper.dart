@@ -1,9 +1,9 @@
-import 'package:explaino/core/shared/data/models/user_model/specialization_model/specialization_model.dart';
-import 'package:explaino/core/shared/data/models/user_model/user_model.dart';
-import 'package:explaino/core/shared/data/models/user_model/wallet_model/wallet_model.dart';
-import 'package:explaino/core/shared/domain/entities/user_entity/specialization_entity/specialization_entity.dart';
-import 'package:explaino/core/shared/domain/entities/user_entity/user_entity.dart';
-import 'package:explaino/core/shared/domain/entities/user_entity/wallet_entity/wallet_entity.dart';
+import 'package:explaino/core/shared/data/models/auth/user_model/specialization_model/specialization_model.dart';
+import 'package:explaino/core/shared/data/models/auth/user_model/user_model.dart';
+import 'package:explaino/core/shared/data/models/auth/user_model/wallet_model/wallet_model.dart';
+import 'package:explaino/core/shared/domain/entities/auth/user_entity/specialization_entity/specialization_entity.dart';
+import 'package:explaino/core/shared/domain/entities/auth/user_entity/user_entity.dart';
+import 'package:explaino/core/shared/domain/entities/auth/user_entity/wallet_entity/wallet_entity.dart';
 
 extension UserMapper on UserModel {
   UserEntity toEntity() {

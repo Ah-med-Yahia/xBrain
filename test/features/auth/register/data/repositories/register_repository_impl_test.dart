@@ -1,9 +1,9 @@
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/config/errors/api_exception.dart';
-import 'package:explaino/core/shared/data/models/auth_response_model/auth_response_model.dart';
-import 'package:explaino/core/shared/data/models/user_model/user_model.dart';
-import 'package:explaino/core/shared/data/models/user_model/wallet_model/wallet_model.dart';
-import 'package:explaino/core/shared/domain/entities/otp/verify_otp_request_entity.dart';
+import 'package:explaino/core/shared/data/models/auth/auth_response_model/auth_response_model.dart';
+import 'package:explaino/core/shared/data/models/auth/user_model/user_model.dart';
+import 'package:explaino/core/shared/data/models/auth/user_model/wallet_model/wallet_model.dart';
+import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
 import 'package:explaino/features/auth/register/data/datasources/local/register_local_data_sources.dart';
 import 'package:explaino/features/auth/register/data/datasources/remote/register_remote_data_source.dart';
 import 'package:explaino/features/auth/register/data/repositories/register_repository_impl.dart';

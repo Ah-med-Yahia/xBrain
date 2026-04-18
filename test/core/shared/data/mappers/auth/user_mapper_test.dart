@@ -1,7 +1,7 @@
-import 'package:explaino/core/shared/data/mappers/user_mapper.dart';
-import 'package:explaino/core/shared/data/models/user_model/user_model.dart';
-import 'package:explaino/core/shared/data/models/user_model/wallet_model/wallet_model.dart';
-import 'package:explaino/core/shared/domain/entities/user_entity/user_entity.dart';
+import 'package:explaino/core/shared/data/mappers/auth/user_mapper.dart';
+import 'package:explaino/core/shared/data/models/auth/user_model/user_model.dart';
+import 'package:explaino/core/shared/data/models/auth/user_model/wallet_model/wallet_model.dart';
+import 'package:explaino/core/shared/domain/entities/auth/user_entity/user_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:explaino/core/constants/api_constants.dart';
-import 'package:explaino/core/shared/data/models/auth_response_model/auth_response_model.dart';
-import 'package:explaino/core/shared/data/models/otp/otp_response_model/otp_response_model.dart';
+import 'package:explaino/core/shared/data/models/auth/auth_response_model/auth_response_model.dart';
+import 'package:explaino/core/shared/data/models/auth/otp/otp_response_model/otp_response_model.dart';
 import 'package:explaino/features/auth/register/data/models/request/register_request_model/register_request_model.dart';
-import 'package:explaino/core/shared/data/models/otp/verify_otp_request_model/verify_otp_request_model.dart';
+import 'package:explaino/core/shared/data/models/auth/otp/verify_otp_request_model/verify_otp_request_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 

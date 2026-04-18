@@ -1,9 +1,9 @@
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/config/errors/api_exception.dart';
-import 'package:explaino/core/shared/data/data_sources/remote/resend_otp_remote_data_source.dart';
-import 'package:explaino/core/shared/data/models/otp/otp_response_model/otp_response_model.dart';
-import 'package:explaino/core/shared/data/repository/resend_otp_repository_impl.dart';
-import 'package:explaino/core/shared/domain/entities/otp/resend_otp_request_entity.dart';
+import 'package:explaino/core/shared/data/data_sources/remote/auth/resend_otp_remote_data_source.dart';
+import 'package:explaino/core/shared/data/models/auth/otp/otp_response_model/otp_response_model.dart';
+import 'package:explaino/core/shared/data/repository/auth/resend_otp_repository_impl.dart';
+import 'package:explaino/core/shared/domain/entities/auth/otp/resend_otp_request_entity.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
