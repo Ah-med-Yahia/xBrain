@@ -77,11 +77,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     });
   }
 
-  void _handelLoading() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      UIUtils.showEasyLoading();
-    });
-  }
+  void _handelLoading() => UIUtils.showEasyLoading();
 
   void _handelError(String message) {
     UIUtils.showMessage(
@@ -153,6 +149,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               const ForgotPasswordAvatar(isForgotPassword: false),
               SizedBox(height: screenSize.height * 0.04),
               _buildForm(),
+              SizedBox(height: screenSize.height * 0.25),
+              _buildSubmitButton(),
             ],
           ),
         ),
@@ -170,13 +168,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget _buildForm() {
     return Form(
       key: formKey,
+      onChanged: () {
+        forgotPasswordCubit.doIntent(
+          ValidateFieldsIntent(formsValid: formKey.currentState!.validate()),
+        );
+      },
       child: Column(
         children: [
           _buildPasswordField(),
           SizedBox(height: screenSize.height * 0.02),
           _buildConfirmPasswordField(),
-          SizedBox(height: screenSize.height * 0.25),
-          _buildSubmitButton(),
         ],
       ),
     );
@@ -209,7 +210,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           obscureText: state.obscurePassword,
-          textInputAction: TextInputAction.done,
+          textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.password],
           validator: AppValidators.validateLoginPassword,
         );
@@ -246,7 +247,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           obscureText: state.obscureConfirmPassword,
           textInputAction: TextInputAction.done,
           autofillHints: const [AutofillHints.password],
-          validator: AppValidators.validateLoginPassword,
+          validator: (value) {
+            if (value != passwordController.text.trim()) {
+              return AppTextConstants.passwordsDoNotMatch;
+            }
+            return AppValidators.validateLoginPassword(value);
+          },
         );
       },
     );
@@ -256,12 +262,22 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return SizedBox(
       width: double.infinity,
       height: screenSize.height * 0.06,
-      child: ElevatedButton(
-        onPressed: _onSubmit,
-        child: Text(
-          AppTextConstants.resetPassword,
-          style: textTheme.bodyLarge!.copyWith(color: Colors.white),
-        ),
+      child: BlocBuilder<ForgotPasswordCubit, ForgotPasswordState>(
+        buildWhen: (previous, current) =>
+            previous.fieldsValidation != current.fieldsValidation,
+        builder: (context, state) {
+          return ElevatedButton(
+            onPressed:
+                (passwordController.text.trim() ==
+                    confirmPasswordController.text.trim())
+                ? _onSubmit
+                : null,
+            child: Text(
+              AppTextConstants.resetPassword,
+              style: textTheme.bodyLarge!.copyWith(color: Colors.white),
+            ),
+          );
+        },
       ),
     );
   }

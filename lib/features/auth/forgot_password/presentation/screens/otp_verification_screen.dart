@@ -8,9 +8,11 @@ import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_intents.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_side_effects.dart';
+import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_state.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/widgets/otp_fields.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/widgets/resend_section.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
@@ -32,6 +34,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     super.initState();
     forgotPasswordCubit = getIt<ForgotPasswordCubit>();
     forgotPasswordCubit.sideEffects.listen((effect) {
+      if (!mounted) return;
       switch (effect) {
         case ShowLoading():
           _handleLoading();
@@ -81,7 +84,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     required String email,
     required String resetToken,
   }) {
-    UIUtils.hideEasyLoading();
     GoRouter.of(context).go(
       AppRoutesConstants.resetPasswordRoute,
       extra: {'email': email, 'resetToken': resetToken},
@@ -120,51 +122,75 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: AppColors.lightScaffoldGradient,
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: screenSize.height * 0.12),
-                  Text(
-                    AppTextConstants.verificationCode,
-                    style: textTheme.headlineLarge,
-                  ),
-                  const SizedBox(height: 12),
-                  Center(
-                    child: Text(
-                      AppTextConstants.enterOtpCode,
-                      textAlign: TextAlign.center,
-                      style: textTheme.titleMedium,
+      body: BlocProvider(
+        create: (context) => forgotPasswordCubit,
+        child: Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: AppColors.lightScaffoldGradient,
+          ),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: screenSize.height * 0.12),
+                    Text(
+                      AppTextConstants.verificationCode,
+                      style: textTheme.headlineLarge,
                     ),
-                  ),
-                  const SizedBox(height: 40),
-                  OtpFields(
-                    onChanged: (value) => setState(() => _otpCode = value),
-                  ),
-                  const SizedBox(height: 24),
-                  ResendSection(onResend: _onResend),
-                  SizedBox(height: screenSize.height * 0.4),
-                  SizedBox(
-                    width: double.infinity,
-                    height: screenSize.height * 0.06,
-                    child: ElevatedButton(
-                      onPressed: _onVerifyPressed,
+                    const SizedBox(height: 12),
+                    Center(
                       child: Text(
-                        AppTextConstants.verify,
-                        style: textTheme.bodyLarge!.copyWith(
-                          color: Colors.white,
-                        ),
+                        AppTextConstants.enterOtpCode,
+                        textAlign: TextAlign.center,
+                        style: textTheme.titleMedium,
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 40),
+                    OtpFields(
+                      onChanged: (value) {
+                        setState(() => _otpCode = value);
+                        forgotPasswordCubit.doIntent(
+                          ValidateFieldsIntent(
+                            formsValid: _otpCode.length == 6,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    ResendSection(onResend: _onResend),
+                    SizedBox(height: screenSize.height * 0.4),
+                    SizedBox(
+                      width: double.infinity,
+                      height: screenSize.height * 0.06,
+                      child: BlocBuilder<ForgotPasswordCubit, ForgotPasswordState>(
+                        buildWhen: (previous, current) =>
+                            previous.fieldsValidation !=
+                            current.fieldsValidation,
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: state.fieldsValidation
+                                ? _onVerifyPressed
+                                : null,
+                            // style: ElevatedButton.styleFrom(
+                            //   backgroundColor: state.fieldsValidation
+                            //       ? AppColors.primary
+                            //       : AppColors.primary.withValues(alpha: .3),
+                            // ),
+                            child: Text(
+                              AppTextConstants.verify,
+                              style: textTheme.bodyLarge!.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

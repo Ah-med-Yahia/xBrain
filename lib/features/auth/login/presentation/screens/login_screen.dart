@@ -126,24 +126,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             current.fieldsValidation,
                         builder: (context, state) {
                           return ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate() &&
-                                  state.fieldsValidation) {
-                                loginCubit.doIntent(
-                                  LoginSubmitIntent(
-                                    loginRequestModel: LoginRequestModel(
-                                      identifier: _emailController.text,
-                                      password: _passwordController.text,
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: state.fieldsValidation
-                                  ? AppColors.primary
-                                  : AppColors.lightGrey,
-                            ),
+                            onPressed: state.fieldsValidation
+                                ? () {
+                                    loginCubit.doIntent(
+                                      LoginSubmitIntent(
+                                        loginRequestModel: LoginRequestModel(
+                                          identifier: _emailController.text
+                                              .trim(),
+                                          password: _passwordController.text
+                                              .trim(),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                : null,
                             child: Text(
                               AppTextConstants.logIn,
                               style: textTheme.bodyLarge!.copyWith(

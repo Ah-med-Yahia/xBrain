@@ -28,4 +28,5 @@ class AppTextConstants {
   static const String didNotReceiveCode = "Didn't receive code?";
   static const String resendCode = 'Resend Code';
   static const String codeSentSuccessfully = 'Code sent successfully';
+  static const String passwordsDoNotMatch = 'Passwords do not match';
 }

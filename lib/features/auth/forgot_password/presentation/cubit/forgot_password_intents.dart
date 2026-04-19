@@ -27,3 +27,8 @@ class ResendOtpCodeIntent extends ForgotPasswordIntent {
 class TogglePasswordVisibilityIntent extends ForgotPasswordIntent {}
 
 class ToggleConfirmPasswordVisibilityIntent extends ForgotPasswordIntent {}
+
+class ValidateFieldsIntent extends ForgotPasswordIntent {
+  final bool formsValid;
+  ValidateFieldsIntent({required this.formsValid});
+}

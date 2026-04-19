@@ -8,9 +8,11 @@ import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_intents.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_side_effects.dart';
+import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_state.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/widgets/forgot_password_avatar.dart';
 import 'package:explaino/core/shared/presentation/widgets/auth/auth_link_row.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -47,11 +49,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     });
   }
 
-  void _handelLoading() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      UIUtils.showEasyLoading();
-    });
-  }
+  void _handelLoading() => UIUtils.showEasyLoading();
 
   void _handelError(String message) {
     UIUtils.showMessage(
@@ -61,9 +59,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  void _handelHideLoading() {
-    UIUtils.hideEasyLoading();
-  }
+  void _handelHideLoading() => UIUtils.hideEasyLoading();
 
   void _handelNavigateToOtpVerificationScreen(String email) {
     GoRouter.of(
@@ -87,23 +83,23 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: AppColors.lightScaffoldGradient,
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenSize.width * 0.04,
-              vertical: screenSize.height * 0.01,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Form(
-                  key: formKey,
-                  child: Column(
+      body: BlocProvider(
+        create: (context) => forgotPasswordCubit,
+        child: Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: AppColors.lightScaffoldGradient,
+          ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                horizontal: screenSize.width * 0.04,
+                vertical: screenSize.height * 0.01,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
                     children: [
                       SizedBox(height: screenSize.height * 0.05),
                       const ForgotPasswordAvatar(isForgotPassword: true),
@@ -118,58 +114,90 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ),
                       ),
                       SizedBox(height: screenSize.height * 0.04),
-                      TextFormField(
-                        controller: emailController,
-                        decoration: const InputDecoration(
-                          label: Text(AppTextConstants.email),
-                          prefixIcon: Icon(
-                            Icons.email_outlined,
-                            color: AppColors.black,
-                          ),
+                      Form(
+                        key: formKey,
+                        onChanged: () {
+                          forgotPasswordCubit.doIntent(
+                            ValidateFieldsIntent(
+                              formsValid: formKey.currentState!.validate(),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: emailController,
+                              decoration: const InputDecoration(
+                                label: Text(AppTextConstants.email),
+                                prefixIcon: Icon(
+                                  Icons.email_outlined,
+                                  color: AppColors.black,
+                                ),
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: AppValidators.validateEmail,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              onTapOutside: (_) =>
+                                  FocusManager.instance.primaryFocus?.unfocus(),
+                            ),
+                          ],
                         ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: AppValidators.validateEmail,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onTapOutside: (_) =>
-                            FocusManager.instance.primaryFocus?.unfocus(),
                       ),
-                      SizedBox(height: screenSize.height * 0.25),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: screenSize.height * 0.25,
+                        ),
+                        child: const SizedBox(),
+                      ),
                       SizedBox(
                         width: double.infinity,
                         height: screenSize.height * 0.06,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              forgotPasswordCubit.doIntent(
-                                SendResetCodeIntent(
-                                  forgotPasswordRequestModel:
-                                      ForgotPasswordRequestModel(
-                                        email: emailController.text.trim(),
-                                      ),
-                                ),
-                              );
-                            }
-                          },
-                          child: Text(
-                            AppTextConstants.sendResetLink,
-                            style: textTheme.bodyLarge!.copyWith(
-                              color: Colors.white,
+                        child:
+                            BlocBuilder<
+                              ForgotPasswordCubit,
+                              ForgotPasswordState
+                            >(
+                              buildWhen: (previous, current) =>
+                                  previous.fieldsValidation !=
+                                  current.fieldsValidation,
+                              builder: (context, state) {
+                                return ElevatedButton(
+                                  onPressed: state.fieldsValidation
+                                      ? () {
+                                          forgotPasswordCubit.doIntent(
+                                            SendResetCodeIntent(
+                                              forgotPasswordRequestModel:
+                                                  ForgotPasswordRequestModel(
+                                                    email: emailController.text
+                                                        .trim(),
+                                                  ),
+                                            ),
+                                          );
+                                        }
+                                      : null,
+                                  child: Text(
+                                    AppTextConstants.sendResetLink,
+                                    style: textTheme.bodyLarge!.copyWith(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                          ),
-                        ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(height: screenSize.height * 0.03),
-                AuthLinkRow(
-                  promptText: AppTextConstants.rememberPassword,
-                  linkText: AppTextConstants.logIn,
-                  onLinkTap: () {
-                    GoRouter.of(context).go(AppRoutesConstants.loginRoute);
-                  },
-                ),
-              ],
+                  SizedBox(height: screenSize.height * 0.03),
+                  AuthLinkRow(
+                    promptText: AppTextConstants.rememberPassword,
+                    linkText: AppTextConstants.logIn,
+                    onLinkTap: () {
+                      GoRouter.of(context).go(AppRoutesConstants.loginRoute);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
