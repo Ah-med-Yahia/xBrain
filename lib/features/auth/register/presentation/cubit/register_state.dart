@@ -3,6 +3,7 @@ import 'package:explaino/features/auth/register/presentation/ui_models/setup_pro
 class RegisterState {
   final String email;
   final SetupProfileUIModel setupProfileUIModel;
+  final String otpCode;
   final bool enabledNextButton;
   final bool enabledCreateAccountButton;
   final bool enabledVerifyButton;
@@ -13,6 +14,7 @@ class RegisterState {
   RegisterState({
     this.email = '',
     this.setupProfileUIModel = const SetupProfileUIModel(),
+    this.otpCode = '',
     this.enabledNextButton = false,
     this.enabledCreateAccountButton = false,
     this.enabledVerifyButton = false,
@@ -24,6 +26,7 @@ class RegisterState {
   RegisterState copyWith({
     String? email,
     SetupProfileUIModel? setupProfileUIModel,
+    String? otpCode,
     bool? enabledNextButton,
     bool? enabledCreateAccountButton,
     bool? enabledVerifyButton,
@@ -34,6 +37,7 @@ class RegisterState {
     return RegisterState(
       email: email ?? this.email,
       setupProfileUIModel: setupProfileUIModel ?? this.setupProfileUIModel,
+      otpCode: otpCode ?? this.otpCode,
       enabledNextButton: enabledNextButton ?? this.enabledNextButton,
       enabledCreateAccountButton:
           enabledCreateAccountButton ?? this.enabledCreateAccountButton,

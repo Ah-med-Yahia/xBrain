@@ -7,7 +7,7 @@ import 'package:explaino/features/auth/register/presentation/cubit/register_stat
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PasswordAndConfirmField extends StatelessWidget {
+class PasswordAndConfirmField extends StatefulWidget {
   const PasswordAndConfirmField({
     super.key,
     required this.passwordController,
@@ -21,6 +21,16 @@ class PasswordAndConfirmField extends StatelessWidget {
   final VoidCallback onSubmit;
 
   @override
+  State<PasswordAndConfirmField> createState() =>
+      _PasswordAndConfirmFieldState();
+}
+
+class _PasswordAndConfirmFieldState extends State<PasswordAndConfirmField> {
+  final FocusNode passwordFocus = FocusNode();
+
+  final FocusNode nextFieldFocus = FocusNode();
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -29,7 +39,7 @@ class PasswordAndConfirmField extends StatelessWidget {
               current.obscurePassword != previous.obscurePassword,
           builder: (context, state) {
             return TextFormField(
-              controller: passwordController,
+              controller: widget.passwordController,
               obscureText: state.obscurePassword,
               obscuringCharacter: String.fromCharCode(0x2726),
               cursorColor: AppColors.primary,
@@ -56,10 +66,14 @@ class PasswordAndConfirmField extends StatelessWidget {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               onTapOutside: (_) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
+              focusNode: passwordFocus,
+              onFieldSubmitted: (_) {
+                nextFieldFocus.requestFocus();
+              },
               onChanged: (value) {
                 context.read<RegisterCubit>().doIntent(
                   ValidateCreateAccountButtonIntent(
-                    enabled: formKey.currentState!.validate(),
+                    enabled: widget.formKey.currentState!.validate(),
                   ),
                 );
               },
@@ -72,7 +86,7 @@ class PasswordAndConfirmField extends StatelessWidget {
               current.obscureConfirmPassword != previous.obscureConfirmPassword,
           builder: (context, state) {
             return TextFormField(
-              controller: confirmPasswordController,
+              controller: widget.confirmPasswordController,
               obscureText: state.obscureConfirmPassword,
               obscuringCharacter: String.fromCharCode(0x2726),
               cursorColor: AppColors.primary,
@@ -97,21 +111,22 @@ class PasswordAndConfirmField extends StatelessWidget {
               autofillHints: const [AutofillHints.newPassword],
               validator: (value) => AppValidators.validateConfirmPassword(
                 value,
-                passwordController.text,
+                widget.passwordController.text,
               ),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               onTapOutside: (_) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
+              focusNode: nextFieldFocus,
               onChanged: (value) {
                 context.read<RegisterCubit>().doIntent(
                   ValidateCreateAccountButtonIntent(
-                    enabled: formKey.currentState!.validate(),
+                    enabled: widget.formKey.currentState!.validate(),
                   ),
                 );
               },
               onFieldSubmitted: (value) {
-                if (formKey.currentState!.validate()) {
-                  onSubmit();
+                if (widget.formKey.currentState!.validate()) {
+                  widget.onSubmit();
                 }
               },
             );

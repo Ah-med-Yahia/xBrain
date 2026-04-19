@@ -27,7 +27,7 @@ class PhoneField extends StatelessWidget {
       keyboardType: TextInputType.phone,
       textInputAction: TextInputAction.next,
       autofillHints: const [AutofillHints.telephoneNumber],
-      validator: (value) => AppValidators.validateRequired(value),
+      validator: (value) => AppValidators.validatePhoneNumber(value),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       onChanged: (value) {

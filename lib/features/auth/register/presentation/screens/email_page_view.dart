@@ -108,19 +108,18 @@ class _EmailPageViewState extends State<EmailPageView> {
                     previous.enabledNextButton != current.enabledNextButton,
                 builder: (context, state) {
                   return ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        widget.onSubmit();
-                        context.read<RegisterCubit>().doIntent(
-                          UpdateEmailIntent(email: widget.emailController.text),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: state.enabledNextButton
-                          ? AppColors.primary
-                          : AppColors.primary.withValues(alpha: 0.3),
-                    ),
+                    onPressed: state.enabledNextButton
+                        ? () {
+                            if (_formKey.currentState!.validate()) {
+                              widget.onSubmit();
+                              context.read<RegisterCubit>().doIntent(
+                                UpdateEmailIntent(
+                                  email: widget.emailController.text,
+                                ),
+                              );
+                            }
+                          }
+                        : null,
                     child: Text(
                       AppTextConstants.next,
                       style: textTheme.bodyMedium?.copyWith(

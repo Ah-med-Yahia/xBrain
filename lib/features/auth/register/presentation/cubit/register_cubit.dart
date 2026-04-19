@@ -38,6 +38,8 @@ class RegisterCubit extends Cubit<RegisterState> {
         setupProfileUIModel: final setupProfileUIModel,
       ):
         _updateSetupProfile(setupProfileUIModel);
+      case UpdateOtpCodeIntent(otpCode: final otpCode):
+        _updateOtpCode(otpCode);
       case SendOtpIntent(registerRequestEntity: final registerRequestEntity):
         _sendOtp(registerRequestEntity);
       case ResendOtpIntent(
@@ -54,6 +56,8 @@ class RegisterCubit extends Cubit<RegisterState> {
         _validateCreateAccountButton(enabled: enabled);
       case ValidateVerifyButtonIntent(enabled: final enabled):
         _validateVerifyButton(enabled: enabled);
+      case ValidateOtpCodeIntent(enabled: final enabled):
+        _validateOtpCode(enabled: enabled);
       case TogglePasswordVisibilityIntent():
         _togglePasswordVisibility();
       case ToggleConfirmPasswordVisibilityIntent():
@@ -87,8 +91,16 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   void _resendOtp(ResendOtpRequestEntity request) async {
     _sideEffectsController.add(ShowLoading());
-    await _resendOtpUseCase(request);
+    final response = await _resendOtpUseCase(request);
     _sideEffectsController.add(HideLoading());
+    response.when(
+      success: (data) {
+        _sideEffectsController.add(ShowMessage(data));
+      },
+      failure: (failure) {
+        _sideEffectsController.add(ShowError(failure.message));
+      },
+    );
   }
 
   void _verifyEmailAndRegister(VerifyOtpRequestEntity request) async {
@@ -97,12 +109,16 @@ class RegisterCubit extends Cubit<RegisterState> {
     _sideEffectsController.add(HideLoading());
     response.when(
       success: (data) {
-        _sideEffectsController.add(NavigateToHome(data));
+        _sideEffectsController.add(NavigateToProfilePicture(data));
       },
       failure: (failure) {
         _sideEffectsController.add(ShowError(failure.message));
       },
     );
+  }
+
+  void _updateOtpCode(String otpCode) {
+    emit(state.copyWith(otpCode: otpCode));
   }
 
   void _validateNextButton({required bool enabled}) {
@@ -114,6 +130,10 @@ class RegisterCubit extends Cubit<RegisterState> {
   }
 
   void _validateVerifyButton({required bool enabled}) {
+    emit(state.copyWith(enabledVerifyButton: enabled));
+  }
+
+  void _validateOtpCode({required bool enabled}) {
     emit(state.copyWith(enabledVerifyButton: enabled));
   }
 

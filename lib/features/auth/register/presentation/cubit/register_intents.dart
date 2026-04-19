@@ -15,6 +15,11 @@ class UpdateSetupProfileIntent extends RegisterIntent {
   UpdateSetupProfileIntent(this.setupProfileUIModel);
 }
 
+class UpdateOtpCodeIntent extends RegisterIntent {
+  final String otpCode;
+  UpdateOtpCodeIntent({required this.otpCode});
+}
+
 class SendOtpIntent extends RegisterIntent {
   final RegisterRequestEntity registerRequestEntity;
   SendOtpIntent(this.registerRequestEntity);
@@ -22,7 +27,7 @@ class SendOtpIntent extends RegisterIntent {
 
 class ResendOtpIntent extends RegisterIntent {
   final ResendOtpRequestEntity resendOtpRequestEntity;
-  ResendOtpIntent(this.resendOtpRequestEntity);
+  ResendOtpIntent({required this.resendOtpRequestEntity});
 }
 
 class VerifyEmailAndRegisterIntent extends RegisterIntent {
@@ -43,6 +48,11 @@ class ValidateCreateAccountButtonIntent extends RegisterIntent {
 class ValidateVerifyButtonIntent extends RegisterIntent {
   final bool enabled;
   ValidateVerifyButtonIntent({required this.enabled});
+}
+
+class ValidateOtpCodeIntent extends RegisterIntent {
+  final bool enabled;
+  ValidateOtpCodeIntent({required this.enabled});
 }
 
 class TogglePasswordVisibilityIntent extends RegisterIntent {

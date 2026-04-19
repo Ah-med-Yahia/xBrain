@@ -159,7 +159,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       child: Text(
                         AppTextConstants.verify,
                         style: textTheme.bodyLarge!.copyWith(
-                          color: Colors.white,
+                          color: AppColors.white,
                         ),
                       ),
                     ),

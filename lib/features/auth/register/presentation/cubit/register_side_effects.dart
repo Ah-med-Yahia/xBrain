@@ -9,9 +9,19 @@ class ShowError extends RegisterSideEffect {
   ShowError(this.message);
 }
 
+class ShowMessage extends RegisterSideEffect {
+  final String message;
+  ShowMessage(this.message);
+}
+
 class NavigateToVerifyEmail extends RegisterSideEffect {
   final String successMessage;
   NavigateToVerifyEmail(this.successMessage);
+}
+
+class NavigateToProfilePicture extends RegisterSideEffect {
+  final String successMessage;
+  NavigateToProfilePicture(this.successMessage);
 }
 
 class NavigateToHome extends RegisterSideEffect {

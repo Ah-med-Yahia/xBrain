@@ -6,6 +6,7 @@ import 'package:explaino/features/auth/register/presentation/cubit/register_inte
 import 'package:explaino/features/auth/register/presentation/cubit/register_side_effects.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_state.dart';
 import 'package:explaino/features/auth/register/presentation/screens/email_page_view.dart';
+import 'package:explaino/features/auth/register/presentation/screens/profile_picture_page_view.dart';
 import 'package:explaino/features/auth/register/presentation/screens/profile_setup_page_view.dart';
 import 'package:explaino/features/auth/register/presentation/screens/verify_email_page_view.dart';
 import 'package:flutter/material.dart';
@@ -43,9 +44,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         case ShowError():
           _showError(event.message);
         case NavigateToVerifyEmail():
-          _navigateToVerifyEmail(event.successMessage);
+          _navigateToNextPage(event.successMessage);
         case NavigateToHome():
-          _navigateToHome(event.successMessage);
+          _navigateToNextPage(event.successMessage);
+        case ShowMessage():
+          _showMessage(event.message);
+        case NavigateToProfilePicture():
+          _navigateToNextPage(event.successMessage);
       }
     });
   }
@@ -58,6 +63,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     UIUtils.hideEasyLoading();
   }
 
+  void _showMessage(String message) {
+    UIUtils.showMessage(
+      message,
+      backGroundColor: AppColors.green,
+      textColor: AppColors.white,
+    );
+  }
+
   void _showError(String message) {
     UIUtils.showMessage(
       message,
@@ -66,21 +79,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void _navigateToVerifyEmail(String successMessage) {
+  void _navigateToNextPage(String successMessage) {
     UIUtils.showMessage(
       successMessage,
       backGroundColor: AppColors.green,
       textColor: AppColors.white,
     );
     _nextPage();
-  }
-
-  void _navigateToHome(String successMessage) {
-    UIUtils.showMessage(
-      successMessage,
-      backGroundColor: AppColors.green,
-      textColor: AppColors.white,
-    );
   }
 
   void _nextPage() {
@@ -173,6 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   _confirmPasswordController,
                             ),
                             const VerifyEmailPageView(),
+                            const ProfilePicturePageView(),
                           ],
                         ),
                       ),
