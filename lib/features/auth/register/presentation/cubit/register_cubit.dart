@@ -10,6 +10,7 @@ import 'package:explaino/features/auth/register/domain/usecases/verify_email_and
 import 'package:explaino/features/auth/register/presentation/cubit/register_intents.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_side_effects.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_state.dart';
+import 'package:explaino/features/auth/register/presentation/ui_models/setup_profile_ui_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -31,6 +32,12 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   void doIntent(RegisterIntent intent) {
     switch (intent) {
+      case UpdateEmailIntent(email: final email):
+        _updateEmail(email);
+      case UpdateSetupProfileIntent(
+        setupProfileUIModel: final setupProfileUIModel,
+      ):
+        _updateSetupProfile(setupProfileUIModel);
       case SendOtpIntent(registerRequestEntity: final registerRequestEntity):
         _sendOtp(registerRequestEntity);
       case ResendOtpIntent(
@@ -51,7 +58,17 @@ class RegisterCubit extends Cubit<RegisterState> {
         _togglePasswordVisibility();
       case ToggleConfirmPasswordVisibilityIntent():
         _toggleConfirmPasswordVisibility();
+      case NavigateToPageIntent(currentPage: final currentPage):
+        _navigateToPage(currentPage: currentPage);
     }
+  }
+
+  void _updateEmail(String email) {
+    emit(state.copyWith(email: email));
+  }
+
+  void _updateSetupProfile(SetupProfileUIModel setupProfileUIModel) {
+    emit(state.copyWith(setupProfileUIModel: setupProfileUIModel));
   }
 
   void _sendOtp(RegisterRequestEntity request) async {
@@ -106,6 +123,10 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   void _toggleConfirmPasswordVisibility() {
     emit(state.copyWith(obscureConfirmPassword: !state.obscureConfirmPassword));
+  }
+
+  void _navigateToPage({required int currentPage}) {
+    emit(state.copyWith(currentPage: currentPage));
   }
 
   @override

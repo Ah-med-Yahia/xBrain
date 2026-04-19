@@ -1,3 +1,4 @@
+import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/validators/app_validators.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_cubit.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_intents.dart';
@@ -22,6 +23,7 @@ class NameTextFormField extends StatelessWidget {
       controller: nameController,
       decoration: InputDecoration(labelText: labelText),
       keyboardType: TextInputType.name,
+      cursorColor: AppColors.primary,
       textInputAction: TextInputAction.next,
       autofillHints: const [AutofillHints.name],
       validator: (value) => AppValidators.validateRequired(value),

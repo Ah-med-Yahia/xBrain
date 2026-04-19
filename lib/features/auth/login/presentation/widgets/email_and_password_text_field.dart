@@ -32,6 +32,7 @@ class _EmailAndPasswordTextFieldState extends State<EmailAndPasswordTextField> {
         children: [
           TextFormField(
             controller: widget.emailController,
+            cursorColor: AppColors.primary,
             decoration: const InputDecoration(
               labelText: AppTextConstants.email,
               prefixIcon: Icon(Icons.email_outlined),
@@ -57,6 +58,7 @@ class _EmailAndPasswordTextFieldState extends State<EmailAndPasswordTextField> {
             builder: (context, state) {
               return TextFormField(
                 controller: widget.passwordController,
+                cursorColor: AppColors.primary,
                 decoration: InputDecoration(
                   labelText: AppTextConstants.password,
                   prefixIcon: const Icon(

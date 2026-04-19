@@ -1,4 +1,5 @@
 import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/validators/app_validators.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_cubit.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_intents.dart';
@@ -31,6 +32,7 @@ class PasswordAndConfirmField extends StatelessWidget {
               controller: passwordController,
               obscureText: state.obscurePassword,
               obscuringCharacter: String.fromCharCode(0x2726),
+              cursorColor: AppColors.primary,
               decoration: InputDecoration(
                 labelText: AppTextConstants.password,
                 prefixIcon: const Icon(Icons.lock),
@@ -73,6 +75,7 @@ class PasswordAndConfirmField extends StatelessWidget {
               controller: confirmPasswordController,
               obscureText: state.obscureConfirmPassword,
               obscuringCharacter: String.fromCharCode(0x2726),
+              cursorColor: AppColors.primary,
               decoration: InputDecoration(
                 labelText: AppTextConstants.confirmPassword,
                 prefixIcon: const Icon(Icons.lock),

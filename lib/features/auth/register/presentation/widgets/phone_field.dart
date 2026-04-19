@@ -1,4 +1,5 @@
 import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/validators/app_validators.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_cubit.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_intents.dart';
@@ -18,6 +19,7 @@ class PhoneField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: phoneController,
+      cursorColor: AppColors.primary,
       decoration: const InputDecoration(
         labelText: AppTextConstants.phoneNumber,
         prefixIcon: Icon(Icons.phone_android),

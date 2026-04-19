@@ -189,6 +189,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       builder: (context, state) {
         return TextFormField(
           controller: passwordController,
+          cursorColor: AppColors.primary,
           decoration: InputDecoration(
             labelText: AppTextConstants.password,
             prefixIcon: const Icon(Icons.lock_outline, color: AppColors.black),
@@ -225,6 +226,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       builder: (context, state) {
         return TextFormField(
           controller: confirmPasswordController,
+          cursorColor: AppColors.primary,
           decoration: InputDecoration(
             labelText: AppTextConstants.confirmNewPassword,
             prefixIcon: const Icon(Icons.lock_outline, color: AppColors.black),
