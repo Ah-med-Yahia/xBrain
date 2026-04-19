@@ -9,4 +9,12 @@ class ShowError extends RegisterSideEffect {
   ShowError(this.message);
 }
 
-class NavigateToVerifyEmail extends RegisterSideEffect {}
+class NavigateToVerifyEmail extends RegisterSideEffect {
+  final String successMessage;
+  NavigateToVerifyEmail(this.successMessage);
+}
+
+class NavigateToHome extends RegisterSideEffect {
+  final String successMessage;
+  NavigateToHome(this.successMessage);
+}

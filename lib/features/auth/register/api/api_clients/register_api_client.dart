@@ -9,7 +9,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'register_api_client.g.dart';
 
-@lazySingleton
+@injectable
 @RestApi(baseUrl: ApiConstants.baseUrl)
 abstract class RegisterApiClient {
   @factoryMethod

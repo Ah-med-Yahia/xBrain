@@ -164,7 +164,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 SizedBox(height: screenSize.height * 0.03),
                 AuthLinkRow(
                   promptText: AppTextConstants.rememberPassword,
-                  linkText: AppTextConstants.logIn,
+                  linkText: AppTextConstants.login,
                   onLinkTap: () {
                     GoRouter.of(context).go(AppRoutesConstants.loginRoute);
                   },

@@ -8,7 +8,7 @@ import 'package:explaino/features/auth/register/domain/entities/request/register
 import 'package:explaino/features/auth/register/domain/repositories/register_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: RegisterRepository)
+@Injectable(as: RegisterRepository)
 class RegisterRepositoryImpl implements RegisterRepository {
   final RegisterRemoteDataSource _registerRemoteDataSource;
   final RegisterLocalDataSource _registerLocalDataSource;

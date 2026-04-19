@@ -34,7 +34,7 @@ class _EmailAndPasswordTextFieldState extends State<EmailAndPasswordTextField> {
             controller: widget.emailController,
             decoration: const InputDecoration(
               labelText: AppTextConstants.email,
-              prefixIcon: Icon(Icons.email_outlined, color: AppColors.black),
+              prefixIcon: Icon(Icons.email_outlined),
             ),
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
@@ -81,6 +81,7 @@ class _EmailAndPasswordTextFieldState extends State<EmailAndPasswordTextField> {
                     FocusManager.instance.primaryFocus?.unfocus(),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 obscureText: state.obscurePassword,
+                obscuringCharacter: String.fromCharCode(0x2726),
                 textInputAction: TextInputAction.done,
                 autofillHints: const [AutofillHints.password],
                 validator: AppValidators.validateLoginPassword,

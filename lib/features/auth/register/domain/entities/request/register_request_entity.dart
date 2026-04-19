@@ -6,7 +6,6 @@ class RegisterRequestEntity {
   final String lastName;
   final String phoneNumber;
   final String? bio;
-  final String? profileImage;
 
   RegisterRequestEntity({
     required this.email,
@@ -16,6 +15,5 @@ class RegisterRequestEntity {
     required this.lastName,
     required this.phoneNumber,
     this.bio,
-    this.profileImage,
   });
 }

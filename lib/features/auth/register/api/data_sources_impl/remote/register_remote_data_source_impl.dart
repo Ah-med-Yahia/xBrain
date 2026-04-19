@@ -8,7 +8,7 @@ import 'package:explaino/features/auth/register/data/models/request/register_req
 import 'package:explaino/core/shared/data/models/auth/otp/verify_otp_request_model/verify_otp_request_model.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: RegisterRemoteDataSource)
+@Injectable(as: RegisterRemoteDataSource)
 class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
   final RegisterApiClient _registerApiClient;
 

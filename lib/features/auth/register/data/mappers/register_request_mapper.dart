@@ -11,7 +11,6 @@ extension RegisterRequestMapper on RegisterRequestEntity {
       lastName: lastName,
       phoneNumber: phoneNumber,
       bio: bio,
-      profileImage: profileImage,
     );
   }
 }

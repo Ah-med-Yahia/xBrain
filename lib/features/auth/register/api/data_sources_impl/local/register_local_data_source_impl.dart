@@ -3,7 +3,7 @@ import 'package:explaino/config/services/tokens/token_service_storage_contract.d
 import 'package:explaino/features/auth/register/data/datasources/local/register_local_data_sources.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: RegisterLocalDataSource)
+@Injectable(as: RegisterLocalDataSource)
 class RegisterLocalDataSourceImpl implements RegisterLocalDataSource {
   final TokenServiceStorageContract _tokenServiceStorageContract;
 

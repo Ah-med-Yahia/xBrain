@@ -18,3 +18,26 @@ class VerifyEmailAndRegisterIntent extends RegisterIntent {
   final VerifyOtpRequestEntity verifyOtpRequestEntity;
   VerifyEmailAndRegisterIntent(this.verifyOtpRequestEntity);
 }
+
+class ValidateNextButtonIntent extends RegisterIntent {
+  final bool enabled;
+  ValidateNextButtonIntent({required this.enabled});
+}
+
+class ValidateCreateAccountButtonIntent extends RegisterIntent {
+  final bool enabled;
+  ValidateCreateAccountButtonIntent({required this.enabled});
+}
+
+class ValidateVerifyButtonIntent extends RegisterIntent {
+  final bool enabled;
+  ValidateVerifyButtonIntent({required this.enabled});
+}
+
+class TogglePasswordVisibilityIntent extends RegisterIntent {
+  TogglePasswordVisibilityIntent();
+}
+
+class ToggleConfirmPasswordVisibilityIntent extends RegisterIntent {
+  ToggleConfirmPasswordVisibilityIntent();
+}
