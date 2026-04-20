@@ -1,10 +1,10 @@
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/routing/app_routes_constant.dart';
-import 'package:explaino/core/shared/data/models/otp/verify_otp_request_model/verify_otp_request_model.dart';
+import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
-import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code_models/forgot_password_request_model.dart';
+import 'package:explaino/features/auth/forgot_password/domain/entities/request/forgot_password_request_entity.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_intents.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_side_effects.dart';
@@ -94,7 +94,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     if (_otpCode.length < 6) return;
     forgotPasswordCubit.doIntent(
       VerifyOtpCodeIntent(
-        verifyOtpRequestModel: VerifyOtpRequestModel(
+        verifyOtpRequestModel: VerifyOtpRequestEntity(
           otp: _otpCode,
           email: widget.email,
         ),
@@ -105,7 +105,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   void _onResend() {
     forgotPasswordCubit.doIntent(
       ResendOtpCodeIntent(
-        forgotPasswordRequestModel: ForgotPasswordRequestModel(
+        forgotPasswordRequestModel: ForgotPasswordRequestEntity(
           email: widget.email,
         ),
       ),

@@ -3,13 +3,11 @@ import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
-import 'package:explaino/features/auth/login/data/models/login_request_model.dart';
+import 'package:explaino/features/auth/login/domain/entities/request/login_request_entity.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_cubit.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_intents.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_side_effects.dart';
 import 'package:explaino/core/shared/presentation/widgets/auth/auth_link_row.dart';
-import 'package:explaino/core/shared/presentation/widgets/auth/continue_divider.dart';
-import 'package:explaino/core/shared/presentation/widgets/auth/continue_with_google.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_state.dart';
 import 'package:explaino/features/auth/login/presentation/widgets/email_and_password_text_field.dart';
 import 'package:explaino/features/auth/login/presentation/widgets/forget_password_row.dart';
@@ -141,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   }
                                 : null,
                             child: Text(
-                              AppTextConstants.logIn,
+                              AppTextConstants.login,
                               style: textTheme.bodyLarge!.copyWith(
                                 color: Colors.white,
                               ),
@@ -150,10 +148,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                     ),
-                    SizedBox(height: size.height * 0.03),
-                    const ContinueDivider(),
-                    SizedBox(height: size.height * 0.03),
-                    const ContinueWithGoogle(),
                     SizedBox(height: size.height * 0.03),
                     AuthLinkRow(
                       promptText: AppTextConstants.dontHaveAccount,

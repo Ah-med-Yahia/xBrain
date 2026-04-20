@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 
 class OtpFields extends StatefulWidget {
   final ValueChanged<String> onChanged;
-  const OtpFields({super.key, required this.onChanged});
+  final String? initialValue;
+  const OtpFields({super.key, required this.onChanged, this.initialValue});
 
   @override
   State<OtpFields> createState() => _OtpFieldsState();
@@ -20,6 +21,12 @@ class _OtpFieldsState extends State<OtpFields> {
     super.initState();
     _controllers = List.generate(_otpLength, (_) => TextEditingController());
     _focusNodes = List.generate(_otpLength, (_) => FocusNode());
+    if (widget.initialValue != null) {
+      final digits = widget.initialValue!.split('');
+      for (int i = 0; i < digits.length && i < _otpLength; i++) {
+        _controllers[i].text = digits[i];
+      }
+    }
   }
 
   void _onOtpChanged(String value, int index) {
@@ -68,6 +75,7 @@ class _OtpFieldsState extends State<OtpFields> {
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
             maxLength: 1,
+            cursorColor: AppColors.primary,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             onChanged: (value) => _onOtpChanged(value, index),
             decoration: InputDecoration(
@@ -86,6 +94,9 @@ class _OtpFieldsState extends State<OtpFields> {
                 ),
               ),
             ),
+            onTapOutside: (_) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),

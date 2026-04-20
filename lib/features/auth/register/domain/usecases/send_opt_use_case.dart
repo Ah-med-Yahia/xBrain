@@ -3,7 +3,7 @@ import 'package:explaino/features/auth/register/domain/entities/request/register
 import 'package:explaino/features/auth/register/domain/repositories/register_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@lazySingleton
+@injectable
 class SendOptUseCase {
   final RegisterRepository _registerRepository;
 

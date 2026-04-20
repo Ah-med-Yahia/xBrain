@@ -1,26 +1,26 @@
-import 'package:explaino/core/shared/data/models/otp/verify_otp_request_model/verify_otp_request_model.dart';
-import 'package:explaino/features/auth/forgot_password/data/models/reset_password_request_model.dart';
-import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code_models/forgot_password_request_model.dart';
+import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
+import 'package:explaino/features/auth/forgot_password/domain/entities/request/forgot_password_request_entity.dart';
+import 'package:explaino/features/auth/forgot_password/domain/entities/request/reset_password_request_entity.dart';
 
 sealed class ForgotPasswordIntent {}
 
 class SendResetCodeIntent extends ForgotPasswordIntent {
-  final ForgotPasswordRequestModel forgotPasswordRequestModel;
+  final ForgotPasswordRequestEntity forgotPasswordRequestModel;
   SendResetCodeIntent({required this.forgotPasswordRequestModel});
 }
 
 class VerifyOtpCodeIntent extends ForgotPasswordIntent {
-  final VerifyOtpRequestModel verifyOtpRequestModel;
+  final VerifyOtpRequestEntity verifyOtpRequestModel;
   VerifyOtpCodeIntent({required this.verifyOtpRequestModel});
 }
 
 class ResetPasswordIntent extends ForgotPasswordIntent {
-  final ResetPasswordRequestModel resetPasswordRequestModel;
+  final ResetPasswordRequestEntity resetPasswordRequestModel;
   ResetPasswordIntent({required this.resetPasswordRequestModel});
 }
 
 class ResendOtpCodeIntent extends ForgotPasswordIntent {
-  final ForgotPasswordRequestModel forgotPasswordRequestModel;
+  final ForgotPasswordRequestEntity forgotPasswordRequestModel;
   ResendOtpCodeIntent({required this.forgotPasswordRequestModel});
 }
 

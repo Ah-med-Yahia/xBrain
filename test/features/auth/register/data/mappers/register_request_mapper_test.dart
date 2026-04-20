@@ -12,7 +12,6 @@ void main() {
     lastName: 'test',
     phoneNumber: 'test',
     bio: 'test',
-    profileImage: 'test',
   );
   test('register request mapper', () {
     final registerRequestModel = registerRequestEntity.toModel();
