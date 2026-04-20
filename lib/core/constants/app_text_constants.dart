@@ -43,4 +43,10 @@ class AppTextConstants {
   static const String next = 'Next';
   static const String createAccount = 'Create Account';
   static const String phoneNumber = 'Phone Number';
+  static const String uploadPhoto = 'Upload Photo';
+  static const String gallery = 'Gallery';
+  static const String camera = 'Camera';
+  static const String chooseFromYourPhotos = 'Choose from your photos';
+  static const String takeNewPhoto = 'Take a new photo';
+  static const String cancel = 'Cancel';
 }
