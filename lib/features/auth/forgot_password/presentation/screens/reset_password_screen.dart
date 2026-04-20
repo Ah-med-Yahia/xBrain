@@ -252,7 +252,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           autofillHints: const [AutofillHints.password],
           validator: (value) {
             if (value != passwordController.text.trim()) {
-              return AppTextConstants.passwordsDoNotMatch;
+              return AppTextConstants.passwordNotMatch;
             }
             return AppValidators.validateLoginPassword(value);
           },

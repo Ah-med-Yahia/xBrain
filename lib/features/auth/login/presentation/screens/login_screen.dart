@@ -128,9 +128,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ? () {
                                     loginCubit.doIntent(
                                       LoginSubmitIntent(
-                                        loginRequestModel: LoginRequestModel(
-                                          identifier: _emailController.text
-                                              .trim(),
+                                        loginRequestEntity: LoginRequestEntity(
+                                          email: _emailController.text.trim(),
                                           password: _passwordController.text
                                               .trim(),
                                         ),
@@ -152,7 +151,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     AuthLinkRow(
                       promptText: AppTextConstants.dontHaveAccount,
                       linkText: AppTextConstants.signUp,
-                      onLinkTap: () {},
+                      onLinkTap: () {
+                        context.go(AppRoutesConstants.registerRoute);
+                      },
                     ),
                   ],
                 ),

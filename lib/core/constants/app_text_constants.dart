@@ -43,4 +43,5 @@ class AppTextConstants {
   static const String next = 'Next';
   static const String createAccount = 'Create Account';
   static const String phoneNumber = 'Phone Number';
+  static const String passwordNotMatch = 'Password does not match';
 }
