@@ -27,8 +27,8 @@ abstract class DioModule {
 
   @Named('tokenRefreshDio')
   @singleton
-  Dio tokenRefreshDio() {
-    return Dio(
+  Dio tokenRefreshDio(PrettyDioLoggerInterceptor loggerInterceptor) {
+    final dio = Dio(
       BaseOptions(
         baseUrl: ApiConstants.baseUrl,
         connectTimeout: const Duration(seconds: 30),
@@ -36,5 +36,8 @@ abstract class DioModule {
         sendTimeout: const Duration(seconds: 30),
       ),
     );
+
+    if (kDebugMode) dio.interceptors.add(loggerInterceptor);
+    return dio;
   }
 }

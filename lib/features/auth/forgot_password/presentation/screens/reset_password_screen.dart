@@ -4,7 +4,7 @@ import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/core/validators/app_validators.dart';
-import 'package:explaino/features/auth/forgot_password/data/models/reset_password_request_model.dart';
+import 'package:explaino/features/auth/forgot_password/domain/entities/request/reset_password_request_entity.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_intents.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_side_effects.dart';
@@ -103,7 +103,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     if (formKey.currentState!.validate()) {
       forgotPasswordCubit.doIntent(
         ResetPasswordIntent(
-          resetPasswordRequestModel: ResetPasswordRequestModel(
+          resetPasswordRequestModel: ResetPasswordRequestEntity(
             email: widget.email,
             token: widget.resetToken,
             newPassword: passwordController.text.trim(),
@@ -189,6 +189,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       builder: (context, state) {
         return TextFormField(
           controller: passwordController,
+          cursorColor: AppColors.primary,
           decoration: InputDecoration(
             labelText: AppTextConstants.password,
             prefixIcon: const Icon(Icons.lock_outline, color: AppColors.black),
@@ -209,6 +210,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           obscureText: state.obscurePassword,
+          obscuringCharacter: String.fromCharCode(0x2726),
           textInputAction: TextInputAction.done,
           autofillHints: const [AutofillHints.password],
           validator: AppValidators.validateLoginPassword,
@@ -224,6 +226,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       builder: (context, state) {
         return TextFormField(
           controller: confirmPasswordController,
+          cursorColor: AppColors.primary,
           decoration: InputDecoration(
             labelText: AppTextConstants.confirmNewPassword,
             prefixIcon: const Icon(Icons.lock_outline, color: AppColors.black),
@@ -244,6 +247,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           obscureText: state.obscureConfirmPassword,
+          obscuringCharacter: String.fromCharCode(0x2726),
           textInputAction: TextInputAction.done,
           autofillHints: const [AutofillHints.password],
           validator: AppValidators.validateLoginPassword,

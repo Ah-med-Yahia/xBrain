@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
-import 'package:explaino/core/shared/data/models/otp/verify_otp_request_model/verify_otp_request_model.dart';
-import 'package:explaino/features/auth/forgot_password/data/models/reset_password_request_model.dart';
-import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code_models/forgot_password_request_model.dart';
+import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
+import 'package:explaino/features/auth/forgot_password/domain/entities/request/forgot_password_request_entity.dart';
+import 'package:explaino/features/auth/forgot_password/domain/entities/request/reset_password_request_entity.dart';
 import 'package:explaino/features/auth/forgot_password/domain/use_case/reset_password_use_case.dart';
 import 'package:explaino/features/auth/forgot_password/domain/use_case/send_reset_code_usecase.dart';
 import 'package:explaino/features/auth/forgot_password/domain/use_case/verify_otp_usecase.dart';
@@ -56,10 +56,10 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   }
 
   Future<void> _sendResetCode(
-    ForgotPasswordRequestModel forgotPasswordRequestModel,
+    ForgotPasswordRequestEntity forgotPasswordRequestEntity,
   ) async {
     _sideEffectController.add(ShowLoading());
-    final result = await _sendResetCodeUseCase(forgotPasswordRequestModel);
+    final result = await _sendResetCodeUseCase(forgotPasswordRequestEntity);
     result.when(
       success: (data) {
         _sideEffectController.add(HideLoading());
@@ -75,10 +75,10 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   }
 
   Future<void> _verifyOtpCode(
-    VerifyOtpRequestModel verifyOtpRequestModel,
+    VerifyOtpRequestEntity verifyOtpRequestEntity,
   ) async {
     _sideEffectController.add(ShowLoading());
-    final result = await _verifyOtpUseCase(verifyOtpRequestModel);
+    final result = await _verifyOtpUseCase(verifyOtpRequestEntity);
     result.when(
       success: (data) {
         _sideEffectController.add(HideLoading());
@@ -97,10 +97,10 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   }
 
   Future<void> _resetPassword(
-    ResetPasswordRequestModel resetPasswordRequestModel,
+    ResetPasswordRequestEntity resetPasswordRequestEntity,
   ) async {
     _sideEffectController.add(ShowLoading());
-    final result = await _resetPasswordUseCase(resetPasswordRequestModel);
+    final result = await _resetPasswordUseCase(resetPasswordRequestEntity);
     result.when(
       success: (data) {
         _sideEffectController.add(HideLoading());
@@ -114,10 +114,10 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   }
 
   Future<void> _resendOtpCode(
-    ForgotPasswordRequestModel forgotPasswordRequestModel,
+    ForgotPasswordRequestEntity forgotPasswordRequestEntity,
   ) async {
     _sideEffectController.add(ShowLoading());
-    final result = await _sendResetCodeUseCase(forgotPasswordRequestModel);
+    final result = await _sendResetCodeUseCase(forgotPasswordRequestEntity);
     result.when(
       success: (data) {
         _sideEffectController.add(HideLoading());

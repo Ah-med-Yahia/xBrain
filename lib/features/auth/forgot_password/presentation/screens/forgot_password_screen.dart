@@ -4,7 +4,7 @@ import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/core/validators/app_validators.dart';
-import 'package:explaino/features/auth/forgot_password/data/models/send_otp_code_models/forgot_password_request_model.dart';
+import 'package:explaino/features/auth/forgot_password/domain/entities/request/forgot_password_request_entity.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_intents.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/cubit/forgot_password_side_effects.dart';
@@ -120,6 +120,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       SizedBox(height: screenSize.height * 0.04),
                       TextFormField(
                         controller: emailController,
+                        cursorColor: AppColors.primary,
                         decoration: const InputDecoration(
                           label: Text(AppTextConstants.email),
                           prefixIcon: Icon(
@@ -143,7 +144,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               forgotPasswordCubit.doIntent(
                                 SendResetCodeIntent(
                                   forgotPasswordRequestModel:
-                                      ForgotPasswordRequestModel(
+                                      ForgotPasswordRequestEntity(
                                         email: emailController.text.trim(),
                                       ),
                                 ),
@@ -164,7 +165,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 SizedBox(height: screenSize.height * 0.03),
                 AuthLinkRow(
                   promptText: AppTextConstants.rememberPassword,
-                  linkText: AppTextConstants.logIn,
+                  linkText: AppTextConstants.login,
                   onLinkTap: () {
                     GoRouter.of(context).go(AppRoutesConstants.loginRoute);
                   },

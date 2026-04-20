@@ -23,10 +23,8 @@ class RegisterRequestModel {
   final String lastName;
   @JsonKey(name: 'phone_number')
   final String phoneNumber;
-  @JsonKey(name: 'bio')
+  @JsonKey(name: 'bio', includeIfNull: false)
   final String? bio;
-  @JsonKey(name: 'profile_image')
-  final String? profileImage;
 
   RegisterRequestModel({
     required this.email,
@@ -36,7 +34,6 @@ class RegisterRequestModel {
     required this.lastName,
     required this.phoneNumber,
     this.bio,
-    this.profileImage,
   });
 
   factory RegisterRequestModel.fromJson(Map<String, dynamic> json) =>

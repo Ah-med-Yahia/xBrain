@@ -1,10 +1,10 @@
-import 'package:explaino/features/auth/login/data/models/login_request_model.dart';
+import 'package:explaino/features/auth/login/domain/entities/request/login_request_entity.dart';
 
 sealed class LoginIntent {}
 
 class LoginSubmitIntent extends LoginIntent {
-  final LoginRequestModel loginRequestModel;
-  LoginSubmitIntent({required this.loginRequestModel});
+  final LoginRequestEntity loginRequestEntity;
+  LoginSubmitIntent({required this.loginRequestEntity});
 }
 
 class ValidateFieldsIntent extends LoginIntent {
