@@ -8,9 +8,18 @@ Future<File?> showImagePickerDialog(BuildContext context) async {
   final ImagePicker picker = ImagePicker();
   File? selectedFile;
 
-  await showDialog(
+  await showGeneralDialog(
     context: context,
-    builder: (context) => AlertDialog(
+    barrierDismissible: true,
+    barrierLabel: '',
+    transitionDuration: const Duration(milliseconds: 200),
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return ScaleTransition(
+        scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+        child: child,
+      );
+    },
+    pageBuilder: (context, animation, secondaryAnimation) => AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
         AppTextConstants.uploadPhoto,

@@ -28,4 +28,6 @@ class ApiConstants {
   static const String refreshToken = 'auth/token/refresh/';
   static const String resendOtp = 'auth/resend-otp/';
   static const String verifyResetOtp = 'auth/verify-reset-otp/';
+  //==================== Profile============================
+  static const String updateProfile = 'users/me/';
 }

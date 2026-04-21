@@ -49,4 +49,7 @@ class AppTextConstants {
   static const String chooseFromYourPhotos = 'Choose from your photos';
   static const String takeNewPhoto = 'Take a new photo';
   static const String cancel = 'Cancel';
+  static const String profilePicture = 'Profile picture';
+  static const String addPhoto = 'Add a photo so people can recognise you';
+  static const String skipForNow = 'Skip for now';
 }
