@@ -25,11 +25,11 @@ abstract class RegisterApiClient {
 
   @PATCH(ApiConstants.updateProfile)
   @MultiPart()
-  Future<UserModel> updateProfile(
-    @Part(name: 'first_name') String firstName,
-    @Part(name: 'last_name') String lastName,
-    @Part(name: 'phone_number') String phoneNumber,
-    @Part(name: 'bio') String bio,
-    @Part(name: 'profile_image') MultipartFile image,
-  );
+  Future<UserModel> updateProfile({
+    @Part(name: 'first_name') String? firstName,
+    @Part(name: 'last_name') String? lastName,
+    @Part(name: 'phone_number') String? phoneNumber,
+    @Part(name: 'bio') String? bio,
+    @Part(name: 'profile_image') required MultipartFile image,
+  });
 }
