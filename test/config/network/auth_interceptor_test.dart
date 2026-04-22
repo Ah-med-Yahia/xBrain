@@ -190,7 +190,6 @@ void main() {
       verifyNever(tokenStorage.getRefreshToken());
     });
 
-
     test(
       'should refresh token, save tokens, and resolve request on 401',
       () async {
