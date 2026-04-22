@@ -13,15 +13,52 @@ class ApiException extends AppException {
   }
 
   static String getAllErrorMessage(Map<String, dynamic> errors) {
-    if (errors.isNullOrEmpty()) return ErrorsConstant.defaultError;
+    if (errors.isNullOrEmpty()) {
+      return ErrorsConstant.defaultError;
+    }
 
     final errorMessage = errors.entries
-        .map((entry) {
-          final key = entry.key;
-          final value = entry.value;
-          return "$key: ${value.join(', ')}";
-        })
+        .map((entry) => _formatEntry(entry.key, entry.value))
+        .where((message) => message.trim().isNotEmpty)
         .join('\n');
-    return errorMessage;
+
+    return errorMessage.isEmpty ? ErrorsConstant.defaultError : errorMessage;
+  }
+
+  static String _formatEntry(String key, dynamic value) {
+    final formattedValue = _formatValue(value);
+
+    if (formattedValue.isEmpty) return '';
+
+    return '$key: $formattedValue';
+  }
+
+  static String _formatValue(dynamic value) {
+    if (value == null) return '';
+
+    if (value is String) return value;
+
+    if (value is List) {
+      return value
+          .map((item) => _formatValue(item))
+          .where((item) => item.trim().isNotEmpty)
+          .join(', ');
+    }
+
+    if (value is Map<String, dynamic>) {
+      return value.entries
+          .map((entry) => '${entry.key}: ${_formatValue(entry.value)}')
+          .where((item) => item.trim().isNotEmpty)
+          .join(', ');
+    }
+
+    if (value is Map) {
+      return value.entries
+          .map((entry) => '${entry.key}: ${_formatValue(entry.value)}')
+          .where((item) => item.trim().isNotEmpty)
+          .join(', ');
+    }
+
+    return value.toString();
   }
 }

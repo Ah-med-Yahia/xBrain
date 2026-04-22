@@ -26,19 +26,24 @@ class AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final accessToken = await _tokenStorage.getAccessToken();
-
-    accessToken.when(
-      success: (token) {
-        if (!token.isNullOrEmpty()) {
-          options.headers[ApiConstants.authorization] =
-              '${ApiConstants.bearer} $token';
-        }
-      },
-      failure: (error) {
-        appLogger.e(CacheConstants.accessTokenReadFailed);
-      },
+    final isPublic = ApiConstants.publicEndpoints.any(
+      (endpoint) => options.path.contains(endpoint),
     );
+    if (!isPublic) {
+      final accessToken = await _tokenStorage.getAccessToken();
+
+      accessToken.when(
+        success: (token) {
+          if (!token.isNullOrEmpty()) {
+            options.headers[ApiConstants.authorization] =
+                '${ApiConstants.bearer} $token';
+          }
+        },
+        failure: (error) {
+          appLogger.e(CacheConstants.accessTokenReadFailed);
+        },
+      );
+    }
 
     handler.next(options);
   }
@@ -79,8 +84,9 @@ class AuthInterceptor extends Interceptor {
           return CacheException(CacheConstants.refreshTokenReadFailed);
         },
       );
+    } else {
+      handler.next(err);
     }
-    handler.next(err);
   }
 
   void _clearAndNavigateToLogin(

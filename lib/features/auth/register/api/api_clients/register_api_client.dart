@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:explaino/core/constants/api_constants.dart';
 import 'package:explaino/core/shared/data/models/auth/auth_response_model/auth_response_model.dart';
 import 'package:explaino/core/shared/data/models/auth/otp/otp_response_model/otp_response_model.dart';
+import 'package:explaino/core/shared/data/models/auth/user_model/user_model.dart';
 import 'package:explaino/features/auth/register/data/models/request/register_request_model/register_request_model.dart';
 import 'package:explaino/core/shared/data/models/auth/otp/verify_otp_request_model/verify_otp_request_model.dart';
 import 'package:injectable/injectable.dart';
@@ -21,4 +22,14 @@ abstract class RegisterApiClient {
   Future<AuthResponseModel> verifyEmailAndRegister(
     @Body() VerifyOtpRequestModel request,
   );
+
+  @PATCH(ApiConstants.updateProfile)
+  @MultiPart()
+  Future<UserModel> updateProfile({
+    @Part(name: 'first_name') String? firstName,
+    @Part(name: 'last_name') String? lastName,
+    @Part(name: 'phone_number') String? phoneNumber,
+    @Part(name: 'bio') String? bio,
+    @Part(name: 'profile_image') required MultipartFile image,
+  });
 }
