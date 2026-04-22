@@ -165,24 +165,25 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     SizedBox(
                       width: double.infinity,
                       height: screenSize.height * 0.06,
-                      child: BlocBuilder<ForgotPasswordCubit, ForgotPasswordState>(
-                        buildWhen: (previous, current) =>
-                            previous.fieldsValidation !=
-                            current.fieldsValidation,
-                        builder: (context, state) {
-                          return ElevatedButton(
-                            onPressed: state.fieldsValidation
-                                ? _onVerifyPressed
-                                : null,
-                            child: Text(
-                              AppTextConstants.verify,
-                              style: textTheme.bodyLarge!.copyWith(
-                                color: Colors.white,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                      child:
+                          BlocBuilder<ForgotPasswordCubit, ForgotPasswordState>(
+                            buildWhen: (previous, current) =>
+                                previous.fieldsValidation !=
+                                current.fieldsValidation,
+                            builder: (context, state) {
+                              return ElevatedButton(
+                                onPressed: state.fieldsValidation
+                                    ? _onVerifyPressed
+                                    : null,
+                                child: Text(
+                                  AppTextConstants.verify,
+                                  style: textTheme.bodyLarge!.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                     ),
                   ],
                 ),
