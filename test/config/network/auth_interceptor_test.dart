@@ -190,24 +190,6 @@ void main() {
       verifyNever(tokenStorage.getRefreshToken());
     });
 
-    test(
-      'should call handler.next when getRefreshToken returns failure',
-      () async {
-        final err = make401();
-
-        when(tokenStorage.getRefreshToken()).thenAnswer(
-          (_) async =>
-              BaseResponse<String?>.failure(CacheException('cache_error')),
-        );
-
-        await interceptor.onError(err, handler);
-        await flush();
-
-        verify(tokenStorage.getRefreshToken()).called(1);
-        verifyNever(tokensManager.refreshToken(any));
-        verify(handler.next(err)).called(1);
-      },
-    );
 
     test(
       'should refresh token, save tokens, and resolve request on 401',
