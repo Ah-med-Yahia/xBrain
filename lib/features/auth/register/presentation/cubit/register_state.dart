@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:explaino/features/auth/register/presentation/ui_models/setup_profile_ui_model.dart';
 
 class RegisterState {
   final String email;
   final SetupProfileUIModel setupProfileUIModel;
   final String otpCode;
+  final File? imageFile;
   final bool enabledNextButton;
   final bool enabledCreateAccountButton;
   final bool enabledVerifyButton;
@@ -15,6 +18,7 @@ class RegisterState {
     this.email = '',
     this.setupProfileUIModel = const SetupProfileUIModel(),
     this.otpCode = '',
+    this.imageFile,
     this.enabledNextButton = false,
     this.enabledCreateAccountButton = false,
     this.enabledVerifyButton = false,
@@ -27,6 +31,7 @@ class RegisterState {
     String? email,
     SetupProfileUIModel? setupProfileUIModel,
     String? otpCode,
+    File? imageFile,
     bool? enabledNextButton,
     bool? enabledCreateAccountButton,
     bool? enabledVerifyButton,
@@ -38,6 +43,7 @@ class RegisterState {
       email: email ?? this.email,
       setupProfileUIModel: setupProfileUIModel ?? this.setupProfileUIModel,
       otpCode: otpCode ?? this.otpCode,
+      imageFile: imageFile ?? this.imageFile,
       enabledNextButton: enabledNextButton ?? this.enabledNextButton,
       enabledCreateAccountButton:
           enabledCreateAccountButton ?? this.enabledCreateAccountButton,

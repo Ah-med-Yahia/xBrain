@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/core/shared/domain/entities/auth/otp/resend_otp_request_entity.dart';
@@ -32,16 +33,27 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   void doIntent(RegisterIntent intent) {
     switch (intent) {
+      // ==================== page view 1 ====================
       case UpdateEmailIntent(email: final email):
         _updateEmail(email);
+      case ValidateNextButtonIntent(enabled: final enabled):
+        _validateNextButton(enabled: enabled);
+      // ==================== page view 2 ====================
       case UpdateSetupProfileIntent(
         setupProfileUIModel: final setupProfileUIModel,
       ):
         _updateSetupProfile(setupProfileUIModel);
-      case UpdateOtpCodeIntent(otpCode: final otpCode):
-        _updateOtpCode(otpCode);
       case SendOtpIntent(registerRequestEntity: final registerRequestEntity):
         _sendOtp(registerRequestEntity);
+      case ValidateCreateAccountButtonIntent(enabled: final enabled):
+        _validateCreateAccountButton(enabled: enabled);
+      case TogglePasswordVisibilityIntent():
+        _togglePasswordVisibility();
+      case ToggleConfirmPasswordVisibilityIntent():
+        _toggleConfirmPasswordVisibility();
+      // ==================== page view 3 ====================
+      case UpdateOtpCodeIntent(otpCode: final otpCode):
+        _updateOtpCode(otpCode);
       case ResendOtpIntent(
         resendOtpRequestEntity: final resendOtpRequestEntity,
       ):
@@ -50,18 +62,12 @@ class RegisterCubit extends Cubit<RegisterState> {
         verifyOtpRequestEntity: final verifyOtpRequestEntity,
       ):
         _verifyEmailAndRegister(verifyOtpRequestEntity);
-      case ValidateNextButtonIntent(enabled: final enabled):
-        _validateNextButton(enabled: enabled);
-      case ValidateCreateAccountButtonIntent(enabled: final enabled):
-        _validateCreateAccountButton(enabled: enabled);
       case ValidateVerifyButtonIntent(enabled: final enabled):
         _validateVerifyButton(enabled: enabled);
-      case ValidateOtpCodeIntent(enabled: final enabled):
-        _validateOtpCode(enabled: enabled);
-      case TogglePasswordVisibilityIntent():
-        _togglePasswordVisibility();
-      case ToggleConfirmPasswordVisibilityIntent():
-        _toggleConfirmPasswordVisibility();
+      // ==================== page view 4 ====================
+      case PickImageIntent(imageFile: final imageFile):
+        _pickImage(imageFile);
+      // ==================== shared ====================
       case NavigateToPageIntent(currentPage: final currentPage):
         _navigateToPage(currentPage: currentPage);
     }
@@ -69,6 +75,10 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   void _updateEmail(String email) {
     emit(state.copyWith(email: email));
+  }
+
+  void _validateNextButton({required bool enabled}) {
+    emit(state.copyWith(enabledNextButton: enabled));
   }
 
   void _updateSetupProfile(SetupProfileUIModel setupProfileUIModel) {
@@ -81,12 +91,28 @@ class RegisterCubit extends Cubit<RegisterState> {
     _sideEffectsController.add(HideLoading());
     response.when(
       success: (data) {
-        _sideEffectsController.add(NavigateToVerifyEmail(data));
+        _sideEffectsController.add(NavigateToNextPage(successMessage: data));
       },
       failure: (failure) {
         _sideEffectsController.add(ShowError(failure.message));
       },
     );
+  }
+
+  void _validateCreateAccountButton({required bool enabled}) {
+    emit(state.copyWith(enabledCreateAccountButton: enabled));
+  }
+
+  void _togglePasswordVisibility() {
+    emit(state.copyWith(obscurePassword: !state.obscurePassword));
+  }
+
+  void _toggleConfirmPasswordVisibility() {
+    emit(state.copyWith(obscureConfirmPassword: !state.obscureConfirmPassword));
+  }
+
+  void _updateOtpCode(String otpCode) {
+    emit(state.copyWith(otpCode: otpCode));
   }
 
   void _resendOtp(ResendOtpRequestEntity request) async {
@@ -109,7 +135,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     _sideEffectsController.add(HideLoading());
     response.when(
       success: (data) {
-        _sideEffectsController.add(NavigateToProfilePicture(data));
+        _sideEffectsController.add(NavigateToNextPage(successMessage: data));
       },
       failure: (failure) {
         _sideEffectsController.add(ShowError(failure.message));
@@ -117,32 +143,12 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
   }
 
-  void _updateOtpCode(String otpCode) {
-    emit(state.copyWith(otpCode: otpCode));
-  }
-
-  void _validateNextButton({required bool enabled}) {
-    emit(state.copyWith(enabledNextButton: enabled));
-  }
-
-  void _validateCreateAccountButton({required bool enabled}) {
-    emit(state.copyWith(enabledCreateAccountButton: enabled));
-  }
-
   void _validateVerifyButton({required bool enabled}) {
     emit(state.copyWith(enabledVerifyButton: enabled));
   }
 
-  void _validateOtpCode({required bool enabled}) {
-    emit(state.copyWith(enabledVerifyButton: enabled));
-  }
-
-  void _togglePasswordVisibility() {
-    emit(state.copyWith(obscurePassword: !state.obscurePassword));
-  }
-
-  void _toggleConfirmPasswordVisibility() {
-    emit(state.copyWith(obscureConfirmPassword: !state.obscureConfirmPassword));
+  void _pickImage(File imageFile) {
+    emit(state.copyWith(imageFile: imageFile));
   }
 
   void _navigateToPage({required int currentPage}) {

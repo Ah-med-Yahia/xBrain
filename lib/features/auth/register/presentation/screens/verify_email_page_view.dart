@@ -49,7 +49,7 @@ class _VerifyEmailPageViewState extends State<VerifyEmailPageView> {
 
   void _onChanged() {
     context.read<RegisterCubit>().doIntent(
-      ValidateOtpCodeIntent(enabled: _otpCode.length == 6),
+      ValidateVerifyButtonIntent(enabled: _otpCode.length == 6),
     );
     context.read<RegisterCubit>().doIntent(
       UpdateOtpCodeIntent(otpCode: _otpCode),

@@ -43,14 +43,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _hideLoading();
         case ShowError():
           _showError(event.message);
-        case NavigateToVerifyEmail():
-          _navigateToNextPage(event.successMessage);
-        case NavigateToHome():
+        case NavigateToNextPage():
           _navigateToNextPage(event.successMessage);
         case ShowMessage():
           _showMessage(event.message);
-        case NavigateToProfilePicture():
-          _navigateToNextPage(event.successMessage);
       }
     });
   }
@@ -79,12 +75,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void _navigateToNextPage(String successMessage) {
-    UIUtils.showMessage(
-      successMessage,
-      backGroundColor: AppColors.green,
-      textColor: AppColors.white,
-    );
+  void _navigateToNextPage(String? successMessage) {
+    if (successMessage != null) {
+      UIUtils.showMessage(
+        successMessage,
+        backGroundColor: AppColors.green,
+        textColor: AppColors.white,
+      );
+    }
     _nextPage();
   }
 
@@ -163,6 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
+                            ProfilePicturePageView(onSkip: _nextPage),
                             EmailPageView(
                               onSubmit: _nextPage,
                               emailController: _emailController,
@@ -178,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   _confirmPasswordController,
                             ),
                             const VerifyEmailPageView(),
-                            const ProfilePicturePageView(),
+                            // const ProfilePicturePageView(),
                           ],
                         ),
                       ),

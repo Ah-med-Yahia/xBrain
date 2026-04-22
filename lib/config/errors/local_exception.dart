@@ -7,3 +7,7 @@ sealed class LocalException extends AppException {
 class CacheException extends LocalException {
   CacheException(super.message, {super.code});
 }
+
+class FileException extends LocalException {
+  FileException(super.message, {super.code});
+}

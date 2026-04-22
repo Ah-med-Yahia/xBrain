@@ -44,6 +44,8 @@ class AppColors {
   static const Color darkInputIcon = Color(0xFF94a3b8);
   static const Color lightInputOverlay = Color(0x1A000000);
   static const Color darkInputOverlay = Color(0x1A94a3b8);
+  static const Color lightAvatar = Color(0xFFF5F5F5);
+  static const Color darkAvatar = Color(0xFF102f4f);
 
   // =========================
   // Text Colors
