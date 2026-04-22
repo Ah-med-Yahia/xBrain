@@ -62,9 +62,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   void _handelHideLoading() => UIUtils.hideEasyLoading();
 
   void _handelNavigateToOtpVerificationScreen(String email) {
-    GoRouter.of(
-      context,
-    ).go(AppRoutesConstants.otpVerificationRoute, extra: email);
+    GoRouter.of(context).pushNamed(AppRoutesConstants.otpVerificationRoute, extra: email);
   }
 
   @override

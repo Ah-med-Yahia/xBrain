@@ -84,7 +84,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     required String email,
     required String resetToken,
   }) {
-    GoRouter.of(context).go(
+    GoRouter.of(context).pushNamed(
       AppRoutesConstants.resetPasswordRoute,
       extra: {'email': email, 'resetToken': resetToken},
     );
@@ -174,11 +174,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             onPressed: state.fieldsValidation
                                 ? _onVerifyPressed
                                 : null,
-                            // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: state.fieldsValidation
-                            //       ? AppColors.primary
-                            //       : AppColors.primary.withValues(alpha: .3),
-                            // ),
                             child: Text(
                               AppTextConstants.verify,
                               style: textTheme.bodyLarge!.copyWith(

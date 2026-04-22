@@ -147,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                     ),
-                    SizedBox(height: size.height * 0.03),
+                    SizedBox(height: size.height * 0.1),
                     AuthLinkRow(
                       promptText: AppTextConstants.dontHaveAccount,
                       linkText: AppTextConstants.signUp,
