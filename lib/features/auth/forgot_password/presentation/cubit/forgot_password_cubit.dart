@@ -52,6 +52,8 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         _togglePasswordVisibility();
       case ToggleConfirmPasswordVisibilityIntent():
         _toggleConfirmPasswordVisibility();
+      case ValidateFieldsIntent(formsValid: final formsValid):
+        _validateFields(formsValid);
     }
   }
 
@@ -138,6 +140,10 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   void _toggleConfirmPasswordVisibility() {
     emit(state.copyWith(obscureConfirmPassword: !state.obscureConfirmPassword));
+  }
+
+  void _validateFields(bool formsValid) {
+    emit(state.copyWith(fieldsValidation: formsValid));
   }
 
   @override
