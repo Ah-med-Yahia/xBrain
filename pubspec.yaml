@@ -22,7 +22,12 @@ dependencies:
   lottie: ^3.3.2                    # Lottie animations
   carousel_slider: ^5.1.1           # Image / content sliders
   pinput: ^6.0.1                    # OTP / PIN input UI
-
+  image_picker: ^1.2.1              # Image picker
+  mime: ^1.0.5                      # Mime type
+  http_parser: ^4.0.2               # HTTP parser
+  flutter_image_compress: ^2.4.0    # Image compression
+  path_provider: ^2.1.5             # Path provider
+  path: ^1.9.1                      # Path
   # ===============================
   # App Setup / Splash
   # ===============================
@@ -100,6 +105,7 @@ dev_dependencies:
   mockito: ^5.5.1
   test: ^1.26.2
   bloc_test: ^10.0.0
+  
 
 flutter:
 
