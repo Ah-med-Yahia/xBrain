@@ -7,6 +7,7 @@ import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request
 import 'package:explaino/core/shared/domain/use_cases/auth/resend_otp_use_case.dart';
 import 'package:explaino/features/auth/register/domain/entities/request/register_request_entity.dart';
 import 'package:explaino/features/auth/register/domain/usecases/send_opt_use_case.dart';
+import 'package:explaino/features/auth/register/domain/usecases/upload_profile_pic_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/verify_email_and_register.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_intents.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_side_effects.dart';
@@ -20,6 +21,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   final SendOptUseCase _sendOtpUseCase;
   final ResendOtpUseCase _resendOtpUseCase;
   final VerifyEmailAndRegisterUseCase _verifyEmailAndRegisterUseCase;
+  final UploadProfilePicUseCase _uploadProfilePicUseCase;
 
   final StreamController<RegisterSideEffect> _sideEffectsController =
       StreamController<RegisterSideEffect>.broadcast();
@@ -29,6 +31,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     this._sendOtpUseCase,
     this._resendOtpUseCase,
     this._verifyEmailAndRegisterUseCase,
+    this._uploadProfilePicUseCase,
   ) : super(RegisterState());
 
   void doIntent(RegisterIntent intent) {
@@ -67,6 +70,8 @@ class RegisterCubit extends Cubit<RegisterState> {
       // ==================== page view 4 ====================
       case PickImageIntent(imageFile: final imageFile):
         _pickImage(imageFile);
+      case UploadProfilePicIntent(imageFile: final imageFile):
+        _uploadProfilePic(imageFile);
       // ==================== shared ====================
       case NavigateToPageIntent(currentPage: final currentPage):
         _navigateToPage(currentPage: currentPage);
@@ -149,6 +154,20 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   void _pickImage(File imageFile) {
     emit(state.copyWith(imageFile: imageFile));
+  }
+
+  void _uploadProfilePic(File imageFile) async {
+    _sideEffectsController.add(ShowLoading());
+    final response = await _uploadProfilePicUseCase(imageFile);
+    _sideEffectsController.add(HideLoading());
+    response.when(
+      success: (data) {
+        _sideEffectsController.add(NavigateToNextPage());
+      },
+      failure: (failure) {
+        _sideEffectsController.add(ShowError(failure.message));
+      },
+    );
   }
 
   void _navigateToPage({required int currentPage}) {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/core/shared/data/mappers/auth/otp/verify_otp_request_mapper.dart';
 import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
@@ -45,6 +47,17 @@ class RegisterRepositoryImpl implements RegisterRepository {
         );
       },
       failure: (error) => BaseResponse.failure(error),
+    );
+  }
+
+  @override
+  Future<BaseResponse<void>> updateProfile({required File image}) async {
+    final response = await _registerRemoteDataSource.updateProfile(
+      image: image,
+    );
+    return response.when(
+      success: (data) => const BaseResponse<void>.success(null),
+      failure: (error) => BaseResponse<void>.failure(error),
     );
   }
 }

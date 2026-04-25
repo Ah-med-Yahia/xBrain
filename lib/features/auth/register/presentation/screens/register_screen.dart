@@ -161,7 +161,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            ProfilePicturePageView(onSkip: _nextPage),
                             EmailPageView(
                               onSubmit: _nextPage,
                               emailController: _emailController,
@@ -177,7 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   _confirmPasswordController,
                             ),
                             const VerifyEmailPageView(),
-                            // const ProfilePicturePageView(),
+                            ProfilePicturePageView(onSkip: _nextPage),
                           ],
                         ),
                       ),

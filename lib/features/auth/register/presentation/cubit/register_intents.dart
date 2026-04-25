@@ -73,6 +73,11 @@ class PickImageIntent extends RegisterIntent {
   PickImageIntent({required this.imageFile});
 }
 
+class UploadProfilePicIntent extends RegisterIntent {
+  final File imageFile;
+  UploadProfilePicIntent({required this.imageFile});
+}
+
 // ==================== shared ====================
 
 class NavigateToPageIntent extends RegisterIntent {
