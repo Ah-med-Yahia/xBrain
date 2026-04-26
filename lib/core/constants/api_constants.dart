@@ -30,4 +30,5 @@ class ApiConstants {
   static const String verifyResetOtp = 'auth/verify-reset-otp/';
   //==================== Profile============================
   static const String updateProfile = 'users/me/';
+  static const String getProfile = 'users/me/';
 }
