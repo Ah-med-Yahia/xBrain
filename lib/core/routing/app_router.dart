@@ -4,11 +4,12 @@ import 'package:explaino/features/auth/forgot_password/presentation/screens/otp_
 import 'package:explaino/features/auth/forgot_password/presentation/screens/reset_password_screen.dart';
 import 'package:explaino/features/auth/login/presentation/screens/login_screen.dart';
 import 'package:explaino/features/auth/register/presentation/screens/register_screen.dart';
+import 'package:explaino/features/tabs/profile/main_profile/presentation/screens/main_profile_screen.dart';
 import 'package:go_router/go_router.dart';
 
 abstract class AppRouter {
   static GoRouter router = GoRouter(
-    initialLocation: AppRoutesConstants.registerRoute,
+    initialLocation: AppRoutesConstants.loginRoute,
     routes: [
       GoRoute(
         path: AppRoutesConstants.registerRoute,
@@ -43,6 +44,11 @@ abstract class AppRouter {
 
         builder: (context, state) =>
             OtpVerificationScreen(email: state.extra as String),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.mainProfileRoute,
+        name: AppRoutesConstants.mainProfileRoute,
+        builder: (context, state) => const ProfileScreen(),
       ),
     ],
   );

@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handelNavigateToMainScreen() {
-    GoRouter.of(context).go(AppRoutesConstants.forgotPasswordRoute);
+    GoRouter.of(context).go(AppRoutesConstants.mainProfileRoute);
   }
 
   @override

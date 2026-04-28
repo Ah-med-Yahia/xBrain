@@ -53,4 +53,10 @@ class AppTextConstants {
   static const String addPhoto = 'Add a photo so people can recognise you';
   static const String skipForNow = 'Skip for now';
   static const String passwordNotMatch = 'Password does not match';
+  //==================== Profile============================
+  static const String questionsAsked = 'Questions Asked';
+  static const String answersProvided = 'Answers Provided';
+  static const String communityReputation = 'Community Reputation';
+  static const String pts = 'PTS';
+  static const String editProfile = 'Edit Profile';
 }

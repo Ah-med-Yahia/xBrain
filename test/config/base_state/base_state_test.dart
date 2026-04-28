@@ -6,19 +6,19 @@ void main() {
     test('should create BaseState with default values', () {
       const state = BaseState<String>();
 
-      expect(state.isError, false);
+      expect(state.errorMessage, null);
       expect(state.isEmpty, false);
       expect(state.data, null);
     });
 
     test('should create BaseState with provided values', () {
       const state = BaseState<String>(
-        isError: true,
+        errorMessage: 'error',
         isEmpty: true,
         data: 'test',
       );
 
-      expect(state.isError, true);
+      expect(state.errorMessage, 'error');
       expect(state.isEmpty, true);
       expect(state.data, 'test');
     });
@@ -26,23 +26,23 @@ void main() {
     test('copyWith should update provided values', () {
       const state = BaseState<String>(data: 'old');
 
-      final newState = state.copyWith(isError: true, data: 'new');
+      final newState = state.copyWith(errorMessage: 'error', data: 'new');
 
-      expect(newState.isError, true);
+      expect(newState.errorMessage, 'error');
       expect(newState.isEmpty, false);
       expect(newState.data, 'new');
     });
 
     test('copyWith should keep old values when parameters are null', () {
       const state = BaseState<String>(
-        isError: false,
+        errorMessage: 'error',
         isEmpty: true,
         data: 'data',
       );
 
       final newState = state.copyWith();
 
-      expect(newState.isError, false);
+      expect(newState.errorMessage, 'error');
       expect(newState.isEmpty, true);
       expect(newState.data, 'data');
     });
@@ -56,12 +56,12 @@ void main() {
 
     test('props should return isError, isEmpty and data', () {
       const state = BaseState<String>(
-        isError: true,
+        errorMessage: 'error',
         isEmpty: false,
         data: 'test',
       );
 
-      expect(state.props, [true, false, 'test']);
+      expect(state.props, ['error', false, 'test']);
     });
   });
 }
