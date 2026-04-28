@@ -1,4 +1,4 @@
-import 'package:explaino/core/constants/errors_constants.dart';
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +30,7 @@ class CustomErrorWidget extends StatelessWidget {
                 width: 200,
                 child: ElevatedButton(
                   onPressed: onTryAgain,
-                  child: const Text(ErrorsConstant.retryAgainMessage),
+                  child: const Text(AppTextConstants.retryAgainMessage),
                 ),
               ),
           ],

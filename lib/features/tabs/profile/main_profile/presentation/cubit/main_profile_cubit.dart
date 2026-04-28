@@ -26,7 +26,11 @@ class MainProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> _getProfileData() async {
-    _sideEffectController.add(ShowLoading());
+    emit(
+      state.copyWith(
+        profileBaseState: state.profileBaseState?.copyWith(isFetching: true),
+      ),
+    );
     final result = await _getUserUseCase();
     result.when(
       success: (data) {

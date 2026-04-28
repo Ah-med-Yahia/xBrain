@@ -27,5 +27,4 @@ class ErrorsConstant {
 
   //================== Unknown Error ==================================
   static const String defaultError = 'Something went wrong. Please try again.';
-  static const String retryAgainMessage = 'Retry Again';
 }

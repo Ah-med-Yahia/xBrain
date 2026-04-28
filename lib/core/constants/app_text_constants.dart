@@ -59,4 +59,5 @@ class AppTextConstants {
   static const String communityReputation = 'Community Reputation';
   static const String pts = 'PTS';
   static const String editProfile = 'Edit Profile';
+  static const String retryAgainMessage = 'Retry Again';
 }

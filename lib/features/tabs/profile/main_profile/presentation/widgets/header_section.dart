@@ -31,8 +31,8 @@ class HeaderSection extends StatelessWidget {
   Widget _shimmerPlaceholder(BuildContext context) {
     final radius = MediaQuery.of(context).size.width * 0.15;
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: AppColors.shimmerBaseColor,
+      baseColor: AppColors.shimmerBaseColor,
+      highlightColor: AppColors.shimmerHighlightColor,
       child: CircleAvatar(
         radius: radius,
         backgroundColor: AppColors.shimmerBaseColor,

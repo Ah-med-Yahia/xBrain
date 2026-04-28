@@ -16,14 +16,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late Size size;
   late final MainProfileCubit mainProfileCubit;
 
   @override
   void initState() {
     super.initState();
     mainProfileCubit = getIt<MainProfileCubit>();
-    mainProfileCubit.onIntent(GetProfileDataIntent());
     mainProfileCubit.sideEffects.listen((sideEffect) {
       switch (sideEffect) {
         case ShowLoading():
@@ -34,6 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _handleError(sideEffect.message);
       }
     });
+    mainProfileCubit.onIntent(GetProfileDataIntent());
   }
 
   void _handleShowLoading() {
