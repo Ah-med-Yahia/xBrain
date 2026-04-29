@@ -108,9 +108,10 @@ abstract class AppTheme {
 
     // Floating Action Button Theme
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      elevation: 0,
       backgroundColor: AppColors.primary,
       foregroundColor: AppColors.onPrimary,
-      shape: CircleBorder(),
+      // shape: CircleBorder(),
     ),
 
     // Input Decoration Theme

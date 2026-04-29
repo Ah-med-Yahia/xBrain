@@ -57,4 +57,19 @@ class AppTextConstants {
       'Choose the technologies and topics you want to\nfollow in your feed.';
   static const String retryAgain = 'Retry Again';
   static const String passwordNotMatch = 'Password does not match';
+  //==================== Profile============================
+  static const String questionsAsked = 'Questions Asked';
+  static const String answersProvided = 'Answers Provided';
+  static const String communityReputation = 'Community Reputation';
+  static const String pts = 'PTS';
+  static const String editProfile = 'Edit Profile';
+  static const String retryAgainMessage = 'Retry Again';
+
+  //constants for text on main screen
+  static const String xBrain = 'xBrain';
+  static const String home = 'Home';
+  static const String search = 'Search';
+  static const String post = 'Post';
+  static const String groups = 'Groups';
+  static const String profile = 'Profile';
 }

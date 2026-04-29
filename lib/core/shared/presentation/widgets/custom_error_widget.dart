@@ -30,11 +30,7 @@ class CustomErrorWidget extends StatelessWidget {
                 width: 200,
                 child: ElevatedButton(
                   onPressed: onTryAgain,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.red,
-                    foregroundColor: AppColors.white,
-                  ),
-                  child: const Text(AppTextConstants.retryAgain),
+                  child: const Text(AppTextConstants.retryAgainMessage),
                 ),
               ),
           ],

@@ -61,7 +61,7 @@ void main() {
         data: 'test',
       );
 
-      expect(state.props, ['error', false, 'test']);
+      expect(state.props, ['error', false, false, 'test']);
     });
   });
 }

@@ -28,6 +28,7 @@ dependencies:
   flutter_image_compress: ^2.4.0    # Image compression
   path_provider: ^2.1.5             # Path provider
   path: ^1.9.1                      # Path
+  flutter_launcher_icons: ^0.14.4   # App launcher icons
   # ===============================
   # App Setup / Splash
   # ===============================
@@ -89,6 +90,7 @@ dependencies:
   logger: ^2.6.2                    # Logging utility
   pretty_dio_logger: ^1.4.0         # Network logs interceptor
   flutter_easyloading: ^3.0.5
+  shimmer: ^3.0.0
 
 
 dev_dependencies:
