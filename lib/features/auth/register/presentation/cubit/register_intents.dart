@@ -78,6 +78,12 @@ class UploadProfilePicIntent extends RegisterIntent {
   UploadProfilePicIntent({required this.imageFile});
 }
 
+// ==================== page view 5 ====================
+
+class GetTracksIntent extends RegisterIntent {
+  GetTracksIntent();
+}
+
 // ==================== shared ====================
 
 class NavigateToPageIntent extends RegisterIntent {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
@@ -8,6 +10,7 @@ import 'package:explaino/features/auth/register/presentation/cubit/register_stat
 import 'package:explaino/features/auth/register/presentation/screens/email_page_view.dart';
 import 'package:explaino/features/auth/register/presentation/screens/profile_picture_page_view.dart';
 import 'package:explaino/features/auth/register/presentation/screens/profile_setup_page_view.dart';
+import 'package:explaino/features/auth/register/presentation/screens/tracks_page_view.dart';
 import 'package:explaino/features/auth/register/presentation/screens/verify_email_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,12 +33,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  StreamSubscription<RegisterSideEffect>? _sideEffectsSub;
 
   @override
   void initState() {
     super.initState();
     _registerCubit = getIt<RegisterCubit>();
-    _registerCubit.sideEffects.listen((event) {
+    _sideEffectsSub = _registerCubit.sideEffects.listen((event) {
       switch (event) {
         case ShowLoading():
           _showLoading();
@@ -110,6 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _phoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _sideEffectsSub?.cancel();
     _registerCubit.close();
     super.dispose();
   }
@@ -134,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Visibility(
-                        visible: state.currentPage > 0,
+                        visible: state.currentPage > 0 && state.currentPage < 3,
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
@@ -161,6 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
+                            const TracksPageView(),
                             EmailPageView(
                               onSubmit: _nextPage,
                               emailController: _emailController,
@@ -177,6 +183,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             const VerifyEmailPageView(),
                             ProfilePicturePageView(onSkip: _nextPage),
+                            const TracksPageView(),
                           ],
                         ),
                       ),

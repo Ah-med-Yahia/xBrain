@@ -10,6 +10,7 @@ import 'package:explaino/features/auth/register/api/api_clients/register_api_cli
 import 'package:explaino/features/auth/register/data/datasources/remote/register_remote_data_source.dart';
 import 'package:explaino/features/auth/register/data/models/request/register_request_model/register_request_model.dart';
 import 'package:explaino/core/shared/data/models/auth/otp/verify_otp_request_model/verify_otp_request_model.dart';
+import 'package:explaino/features/auth/register/data/models/response/get_tracks_response_model.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: RegisterRemoteDataSource)
@@ -38,5 +39,10 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
     return safeApiCall(
       () => _registerApiClient.updateProfile(image: imageFile),
     );
+  }
+
+  @override
+  Future<BaseResponse<GetTracksResponseModel>> getTracks() {
+    return safeApiCall(() => _registerApiClient.getTracks());
   }
 }

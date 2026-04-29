@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:explaino/config/base_state/base_state.dart';
+import 'package:explaino/features/auth/register/domain/entities/response/get_tracks_response_entity.dart';
 import 'package:explaino/features/auth/register/presentation/ui_models/setup_profile_ui_model.dart';
 
 class RegisterState {
@@ -13,6 +15,7 @@ class RegisterState {
   final bool obscurePassword;
   final bool obscureConfirmPassword;
   final int currentPage;
+  final BaseState<GetTracksResponseEntity>? tracks;
 
   RegisterState({
     this.email = '',
@@ -25,6 +28,7 @@ class RegisterState {
     this.obscurePassword = true,
     this.obscureConfirmPassword = true,
     this.currentPage = 0,
+    this.tracks,
   });
 
   RegisterState copyWith({
@@ -38,6 +42,7 @@ class RegisterState {
     bool? obscurePassword,
     bool? obscureConfirmPassword,
     int? currentPage,
+    BaseState<GetTracksResponseEntity>? tracks,
   }) {
     return RegisterState(
       email: email ?? this.email,
@@ -52,6 +57,7 @@ class RegisterState {
       obscureConfirmPassword:
           obscureConfirmPassword ?? this.obscureConfirmPassword,
       currentPage: currentPage ?? this.currentPage,
+      tracks: tracks ?? this.tracks,
     );
   }
 }

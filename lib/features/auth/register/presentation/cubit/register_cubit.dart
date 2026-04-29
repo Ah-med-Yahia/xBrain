@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/config/base_state/base_state.dart';
 import 'package:explaino/core/shared/domain/entities/auth/otp/resend_otp_request_entity.dart';
 import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
 import 'package:explaino/core/shared/domain/use_cases/auth/resend_otp_use_case.dart';
 import 'package:explaino/features/auth/register/domain/entities/request/register_request_entity.dart';
+import 'package:explaino/features/auth/register/domain/entities/response/get_tracks_response_entity.dart';
+import 'package:explaino/features/auth/register/domain/usecases/get_tracks_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/send_opt_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/upload_profile_pic_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/verify_email_and_register.dart';
@@ -22,6 +25,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   final ResendOtpUseCase _resendOtpUseCase;
   final VerifyEmailAndRegisterUseCase _verifyEmailAndRegisterUseCase;
   final UploadProfilePicUseCase _uploadProfilePicUseCase;
+  final GetTracksUseCase _getTracksUseCase;
 
   final StreamController<RegisterSideEffect> _sideEffectsController =
       StreamController<RegisterSideEffect>.broadcast();
@@ -32,6 +36,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     this._resendOtpUseCase,
     this._verifyEmailAndRegisterUseCase,
     this._uploadProfilePicUseCase,
+    this._getTracksUseCase,
   ) : super(RegisterState());
 
   void doIntent(RegisterIntent intent) {
@@ -72,6 +77,9 @@ class RegisterCubit extends Cubit<RegisterState> {
         _pickImage(imageFile);
       case UploadProfilePicIntent(imageFile: final imageFile):
         _uploadProfilePic(imageFile);
+      // ==================== page view 5 ====================
+      case GetTracksIntent():
+        _getTracks();
       // ==================== shared ====================
       case NavigateToPageIntent(currentPage: final currentPage):
         _navigateToPage(currentPage: currentPage);
@@ -166,6 +174,30 @@ class RegisterCubit extends Cubit<RegisterState> {
       },
       failure: (failure) {
         _sideEffectsController.add(ShowError(failure.message));
+      },
+    );
+  }
+
+  void _getTracks() async {
+    _sideEffectsController.add(ShowLoading());
+    final response = await _getTracksUseCase();
+    _sideEffectsController.add(HideLoading());
+    response.when(
+      success: (data) {
+        emit(
+          state.copyWith(
+            tracks: BaseState<GetTracksResponseEntity>(data: data),
+          ),
+        );
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            tracks: BaseState<GetTracksResponseEntity>(
+              errorMessage: failure.message,
+            ),
+          ),
+        );
       },
     );
   }

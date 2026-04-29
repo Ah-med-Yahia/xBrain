@@ -52,4 +52,7 @@ class AppTextConstants {
   static const String profilePicture = 'Profile picture';
   static const String addPhoto = 'Add a photo so people can recognise you';
   static const String skipForNow = 'Skip for now';
+  static const String selectYourTrack = 'Select Your Track';
+  static const String selectYourTrackDescription =
+      'Choose the technologies and topics you want to\nfollow in your feed.';
 }
