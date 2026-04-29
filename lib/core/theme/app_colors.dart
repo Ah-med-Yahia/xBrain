@@ -46,6 +46,7 @@ class AppColors {
   static const Color darkInputOverlay = Color(0x1A94a3b8);
   static const Color lightAvatar = Color(0xFFF5F5F5);
   static const Color darkAvatar = Color(0xFF102f4f);
+  static const Color buttonBorder = Color(0xFFE0E7F0);
 
   // =========================
   // Text Colors
@@ -54,7 +55,8 @@ class AppColors {
   static const Color lightTextSecondary = Color(0xFF94a3b8);
   static const Color darkTextPrimary = Color(0xFFFFFFFF);
   static const Color darkTextSecondary = Color(0xFF94a3b8);
-
+  static const Color shimmerBaseColor = Color(0xFFE0E0E0);
+  static const Color shimmerHighlightColor = Color(0xFFF5F5F5);
   // =========================
   // Misc
   // =========================
@@ -64,6 +66,8 @@ class AppColors {
   // Common Colors
   // =========================
   static const Color white = Color(0xFFFFFFFF);
+  static const Color white70 = Color(0xB3FFFFFF);
+  static const Color grey = Color(0xFF94a3b8);
   static const Color black = Color(0xFF000000);
   static const Color transparent = Color(0x00000000);
   static const Color red = Color(0xFFF40909);
@@ -76,4 +80,7 @@ class AppColors {
   static const Color lightSkyBlue = Color(0x0D1197F7);
   static const Color lightBackground = Color(0xFFF2F4F7);
   static const Color lightGrey = Color(0xFF94a3b8);
+  static const Color greyScale = Color(0xFF9CA3AF);
+  static const Color kSoftBlueGray = Color(0xFF8CA0B8);
+  static const Color kSoftLightGray = Color(0xFFF4F6FB);
 }

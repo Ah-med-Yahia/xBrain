@@ -2,7 +2,7 @@ sealed class ForgotPasswordSideEffects {}
 
 class ShowError extends ForgotPasswordSideEffects {
   final String message;
-  ShowError(this.message);
+  ShowError(this.message, {required});
 }
 
 class NavigateToOtpVerificationScreen extends ForgotPasswordSideEffects {

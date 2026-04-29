@@ -53,4 +53,19 @@ class AppTextConstants {
   static const String addPhoto = 'Add a photo so people can recognise you';
   static const String skipForNow = 'Skip for now';
   static const String passwordNotMatch = 'Password does not match';
+  //==================== Profile============================
+  static const String questionsAsked = 'Questions Asked';
+  static const String answersProvided = 'Answers Provided';
+  static const String communityReputation = 'Community Reputation';
+  static const String pts = 'PTS';
+  static const String editProfile = 'Edit Profile';
+  static const String retryAgainMessage = 'Retry Again';
+
+  //constants for text on main screen
+  static const String xBrain = 'xBrain';
+  static const String home = 'Home';
+  static const String search = 'Search';
+  static const String post = 'Post';
+  static const String groups = 'Groups';
+  static const String profile = 'Profile';
 }

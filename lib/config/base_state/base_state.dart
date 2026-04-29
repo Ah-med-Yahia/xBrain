@@ -1,20 +1,32 @@
 import 'package:equatable/equatable.dart';
 
 class BaseState<T> extends Equatable {
-  final bool isError;
+  final String? errorMessage;
   final bool isEmpty;
+  final bool isFetching;
   final T? data;
 
-  const BaseState({this.isError = false, this.isEmpty = false, this.data});
+  const BaseState({
+    this.errorMessage,
+    this.isEmpty = false,
+    this.isFetching = false,
+    this.data,
+  });
 
-  BaseState<T> copyWith({bool? isError, bool? isEmpty, T? data}) {
+  BaseState<T> copyWith({
+    String? errorMessage,
+    bool? isEmpty,
+    bool? isFetching,
+    T? data,
+  }) {
     return BaseState<T>(
-      isError: isError ?? this.isError,
+      errorMessage: errorMessage ?? this.errorMessage,
       isEmpty: isEmpty ?? this.isEmpty,
+      isFetching: isFetching ?? this.isFetching,
       data: data ?? this.data,
     );
   }
 
   @override
-  List<Object?> get props => [isError, isEmpty, data];
+  List<Object?> get props => [errorMessage, isEmpty, isFetching, data];
 }
