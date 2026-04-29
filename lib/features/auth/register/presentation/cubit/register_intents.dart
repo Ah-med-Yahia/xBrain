@@ -84,9 +84,13 @@ class GetSpecializationsIntent extends RegisterIntent {
   GetSpecializationsIntent();
 }
 
-class SelectSpecializationIntent extends RegisterIntent {
+class ClickOnSpecializationIntent extends RegisterIntent {
   final String specializationId;
-  SelectSpecializationIntent({required this.specializationId});
+  ClickOnSpecializationIntent({required this.specializationId});
+}
+
+class SelectSpecializationsIntent extends RegisterIntent {
+  SelectSpecializationsIntent();
 }
 
 // ==================== shared ====================

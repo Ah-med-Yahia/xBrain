@@ -1,5 +1,5 @@
 import 'package:explaino/core/theme/app_colors.dart';
-import 'package:explaino/features/auth/register/presentation/model_ui/specialization_model_ui.dart';
+import 'package:explaino/features/auth/register/presentation/ui_models/specialization_model_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

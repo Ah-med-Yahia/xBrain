@@ -7,14 +7,16 @@ import 'package:explaino/core/shared/domain/entities/auth/otp/resend_otp_request
 import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
 import 'package:explaino/core/shared/domain/use_cases/auth/resend_otp_use_case.dart';
 import 'package:explaino/features/auth/register/domain/entities/request/register_request_entity.dart';
+import 'package:explaino/features/auth/register/domain/entities/request/select_specialization_request_entity.dart';
 import 'package:explaino/features/auth/register/domain/usecases/get_specializations_use_case.dart';
+import 'package:explaino/features/auth/register/domain/usecases/select_specialization_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/send_opt_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/upload_profile_pic_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/verify_email_and_register.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_intents.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_side_effects.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_state.dart';
-import 'package:explaino/features/auth/register/presentation/model_ui/get_specializations_response_model_ui.dart';
+import 'package:explaino/features/auth/register/presentation/ui_models/get_specializations_response_model_ui.dart';
 import 'package:explaino/features/auth/register/presentation/ui_models/setup_profile_ui_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -26,6 +28,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   final VerifyEmailAndRegisterUseCase _verifyEmailAndRegisterUseCase;
   final UploadProfilePicUseCase _uploadProfilePicUseCase;
   final GetSpecializationsUseCase _getspecializationsUseCase;
+  final SelectSpecializationUseCase _selectSpecializationUseCase;
 
   final StreamController<RegisterSideEffect> _sideEffectsController =
       StreamController<RegisterSideEffect>.broadcast();
@@ -37,6 +40,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     this._verifyEmailAndRegisterUseCase,
     this._uploadProfilePicUseCase,
     this._getspecializationsUseCase,
+    this._selectSpecializationUseCase,
   ) : super(RegisterState());
 
   void doIntent(RegisterIntent intent) {
@@ -80,8 +84,12 @@ class RegisterCubit extends Cubit<RegisterState> {
       // ==================== page view 5 ====================
       case GetSpecializationsIntent():
         _getSpecializations();
-      case SelectSpecializationIntent(specializationId: final specializationId):
-        _selectSpecialization(specializationId: specializationId);
+      case ClickOnSpecializationIntent(
+        specializationId: final specializationId,
+      ):
+        _clickOnSpecialization(specializationId: specializationId);
+      case SelectSpecializationsIntent():
+        _selectSpecializations();
       // ==================== shared ====================
       case NavigateToPageIntent(currentPage: final currentPage):
         _navigateToPage(currentPage: currentPage);
@@ -206,7 +214,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
   }
 
-  void _selectSpecialization({required String specializationId}) {
+  void _clickOnSpecialization({required String specializationId}) {
     final currentSpecializations = List<String>.from(
       state.selectedSpecializations,
     );
@@ -218,6 +226,24 @@ class RegisterCubit extends Cubit<RegisterState> {
     }
 
     emit(state.copyWith(selectedSpecializations: currentSpecializations));
+  }
+
+  void _selectSpecializations() async {
+    _sideEffectsController.add(ShowLoading());
+    final response = await _selectSpecializationUseCase(
+      SelectSpecializationRequestEntity(
+        specializationIds: state.selectedSpecializations,
+      ),
+    );
+    _sideEffectsController.add(HideLoading());
+    response.when(
+      success: (data) {
+        _sideEffectsController.add(NavigateToMainScreen());
+      },
+      failure: (failure) {
+        _sideEffectsController.add(ShowError(failure.message));
+      },
+    );
   }
 
   void _navigateToPage({required int currentPage}) {

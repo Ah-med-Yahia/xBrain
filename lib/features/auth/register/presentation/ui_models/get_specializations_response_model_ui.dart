@@ -1,4 +1,4 @@
-import 'package:explaino/features/auth/register/presentation/model_ui/specialization_model_ui.dart';
+import 'package:explaino/features/auth/register/presentation/ui_models/specialization_model_ui.dart';
 
 class GetSpecializationsResponseModelUi {
   final int count;

@@ -95,7 +95,7 @@ class _SpecializationsPageViewState extends State<SpecializationsPageView> {
                     specialization: specializations.specializations[index],
                     onTap: () {
                       context.read<RegisterCubit>().doIntent(
-                        SelectSpecializationIntent(
+                        ClickOnSpecializationIntent(
                           specializationId:
                               specializations.specializations[index].id,
                         ),
@@ -120,7 +120,7 @@ class _SpecializationsPageViewState extends State<SpecializationsPageView> {
                       ? null
                       : () {
                           context.read<RegisterCubit>().doIntent(
-                            NavigateToPageIntent(currentPage: 1),
+                            SelectSpecializationsIntent(),
                           );
                         },
                   child: const Text(AppTextConstants.next),

@@ -3,8 +3,8 @@ import 'package:explaino/core/constants/specializations_names_constants.dart';
 import 'package:explaino/core/gen/assets.gen.dart';
 import 'package:explaino/features/auth/register/domain/entities/response/get_specializations_response_entity.dart';
 import 'package:explaino/features/auth/register/domain/repositories/register_repository.dart';
-import 'package:explaino/features/auth/register/presentation/model_ui/get_specializations_response_model_ui.dart';
-import 'package:explaino/features/auth/register/presentation/model_ui/specialization_model_ui.dart';
+import 'package:explaino/features/auth/register/presentation/ui_models/get_specializations_response_model_ui.dart';
+import 'package:explaino/features/auth/register/presentation/ui_models/specialization_model_ui.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

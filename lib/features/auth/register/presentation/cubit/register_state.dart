@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:explaino/config/base_state/base_state.dart';
-import 'package:explaino/features/auth/register/presentation/model_ui/get_specializations_response_model_ui.dart';
+import 'package:explaino/features/auth/register/presentation/ui_models/get_specializations_response_model_ui.dart';
 import 'package:explaino/features/auth/register/presentation/ui_models/setup_profile_ui_model.dart';
 
 class RegisterState {

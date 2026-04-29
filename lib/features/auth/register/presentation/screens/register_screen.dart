@@ -50,6 +50,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _navigateToNextPage(event.successMessage);
         case ShowMessage():
           _showMessage(event.message);
+        case NavigateToMainScreen():
+          _navigateToMainScreen();
       }
     });
   }
@@ -88,6 +90,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
     _nextPage();
   }
+
+  void _navigateToMainScreen() {}
 
   void _nextPage() {
     _pageController.nextPage(
