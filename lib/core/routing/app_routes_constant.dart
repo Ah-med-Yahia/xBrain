@@ -5,5 +5,7 @@ abstract class AppRoutesConstants {
   static const String forgotPasswordRoute = '/forgot-password';
   static const String resetPasswordRoute = '/reset-password';
   static const String otpVerificationRoute = '/otp-verification';
-  static const String mainProfileRoute = '/main-profile';
+  static const String mainScreenRoute = '/main-screen';
+  static const String emailKey = 'email';
+  static const String resetTokenKey = 'resetToken';
 }

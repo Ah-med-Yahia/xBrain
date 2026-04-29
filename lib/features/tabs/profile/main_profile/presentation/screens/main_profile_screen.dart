@@ -59,21 +59,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.kSoftLightGray,
-      body: BlocProvider(
-        create: (context) => mainProfileCubit,
-        child: const SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: MainBody(),
-                ),
-              ),
-            ],
-          ),
+    return BlocProvider(
+      create: (context) => mainProfileCubit,
+      child: const SafeArea(
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: MainBody(),
+            ),
+          ],
         ),
       ),
     );

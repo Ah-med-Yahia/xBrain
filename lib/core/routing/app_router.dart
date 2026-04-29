@@ -4,7 +4,7 @@ import 'package:explaino/features/auth/forgot_password/presentation/screens/otp_
 import 'package:explaino/features/auth/forgot_password/presentation/screens/reset_password_screen.dart';
 import 'package:explaino/features/auth/login/presentation/screens/login_screen.dart';
 import 'package:explaino/features/auth/register/presentation/screens/register_screen.dart';
-import 'package:explaino/features/tabs/profile/main_profile/presentation/screens/main_profile_screen.dart';
+import 'package:explaino/features/main/presentation/screens/main_screen.dart';
 import 'package:go_router/go_router.dart';
 
 abstract class AppRouter {
@@ -33,8 +33,8 @@ abstract class AppRouter {
           final data = state.extra as Map<String, dynamic>;
 
           return ResetPasswordScreen(
-            email: data['email'] as String,
-            resetToken: data['resetToken'] as String,
+            email: data[AppRoutesConstants.emailKey] as String,
+            resetToken: data[AppRoutesConstants.resetTokenKey] as String,
           );
         },
       ),
@@ -46,9 +46,9 @@ abstract class AppRouter {
             OtpVerificationScreen(email: state.extra as String),
       ),
       GoRoute(
-        path: AppRoutesConstants.mainProfileRoute,
-        name: AppRoutesConstants.mainProfileRoute,
-        builder: (context, state) => const ProfileScreen(),
+        path: AppRoutesConstants.mainScreenRoute,
+        name: AppRoutesConstants.mainScreenRoute,
+        builder: (context, state) => const MainScreen(),
       ),
     ],
   );

@@ -1,4 +1,4 @@
-import 'package:explaino/core/shared/presentation/widgets/tabs/custom_error_widget.dart';
+import 'package:explaino/core/shared/presentation/widgets/custom_error_widget.dart';
 import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/main_profile_cubit.dart';
 import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/main_profile_intents.dart';
 import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/main_profile_state.dart';
