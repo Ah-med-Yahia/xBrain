@@ -124,24 +124,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             current.fieldsValidation,
                         builder: (context, state) {
                           return ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate() &&
-                                  state.fieldsValidation) {
-                                loginCubit.doIntent(
-                                  LoginSubmitIntent(
-                                    loginRequestEntity: LoginRequestEntity(
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: state.fieldsValidation
-                                  ? AppColors.primary
-                                  : AppColors.primary.withValues(alpha: 0.3),
-                            ),
+                            onPressed: state.fieldsValidation
+                                ? () {
+                                    loginCubit.doIntent(
+                                      LoginSubmitIntent(
+                                        loginRequestEntity: LoginRequestEntity(
+                                          email: _emailController.text.trim(),
+                                          password: _passwordController.text
+                                              .trim(),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                : null,
                             child: Text(
                               AppTextConstants.login,
                               style: textTheme.bodyLarge!.copyWith(
@@ -152,11 +147,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                     ),
-                    SizedBox(height: size.height * 0.03),
+                    SizedBox(height: size.height * 0.1),
                     AuthLinkRow(
                       promptText: AppTextConstants.dontHaveAccount,
                       linkText: AppTextConstants.signUp,
-                      onLinkTap: () {},
+                      onLinkTap: () {
+                        context.go(AppRoutesConstants.registerRoute);
+                      },
                     ),
                   ],
                 ),

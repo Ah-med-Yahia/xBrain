@@ -12,7 +12,7 @@ class AppTextConstants {
   static const String forgotPassword = 'Forgot Password?';
   static const String forgotPasswordInstructions =
       "Don't worry! It happens. Please enter the email \naddress associated with your account.";
-  static const String sendResetLink = 'Send Reset Link';
+  static const String sendResetLink = 'Send Otp';
   static const String rememberPassword = 'Remember Password?';
   static const String setupYourProfile = 'Set up your profile';
   static const String completeYourInformationToJoinTheCommunity =
@@ -56,4 +56,5 @@ class AppTextConstants {
   static const String selectYourTrackDescription =
       'Choose the technologies and topics you want to\nfollow in your feed.';
   static const String retryAgain = 'Retry Again';
+  static const String passwordNotMatch = 'Password does not match';
 }

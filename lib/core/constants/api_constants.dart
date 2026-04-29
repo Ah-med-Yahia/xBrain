@@ -33,4 +33,5 @@ class ApiConstants {
   //==================== Specializations============================
   static const String specializations = 'specializations/';
   static const String selectSpecializations = 'users/me/specializations/';
+  static const String getProfile = 'users/me/';
 }

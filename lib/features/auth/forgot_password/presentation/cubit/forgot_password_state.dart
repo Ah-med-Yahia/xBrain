@@ -4,23 +4,27 @@ import 'package:explaino/core/shared/domain/entities/auth/message_entity.dart';
 
 class ForgotPasswordState extends Equatable {
   final BaseState<MessageEntity>? forgotPasswordBaseState;
+  final bool fieldsValidation;
   final bool obscurePassword;
   final bool obscureConfirmPassword;
 
   const ForgotPasswordState({
     this.forgotPasswordBaseState,
+    this.fieldsValidation = false,
     this.obscurePassword = true,
     this.obscureConfirmPassword = true,
   });
 
   ForgotPasswordState copyWith({
     BaseState<MessageEntity>? forgotPasswordBaseState,
+    bool? fieldsValidation,
     bool? obscurePassword,
     bool? obscureConfirmPassword,
   }) {
     return ForgotPasswordState(
       forgotPasswordBaseState:
           forgotPasswordBaseState ?? this.forgotPasswordBaseState,
+      fieldsValidation: fieldsValidation ?? this.fieldsValidation,
       obscurePassword: obscurePassword ?? this.obscurePassword,
       obscureConfirmPassword:
           obscureConfirmPassword ?? this.obscureConfirmPassword,
@@ -30,6 +34,7 @@ class ForgotPasswordState extends Equatable {
   @override
   List<Object?> get props => [
     forgotPasswordBaseState,
+    fieldsValidation,
     obscurePassword,
     obscureConfirmPassword,
   ];
