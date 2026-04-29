@@ -72,4 +72,5 @@ class AppTextConstants {
   static const String post = 'Post';
   static const String groups = 'Groups';
   static const String profile = 'Profile';
+  static const String welcomeToXbrain = 'Welcome To xBrain';
 }

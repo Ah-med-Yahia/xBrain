@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:explaino/config/di/di.dart';
+import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_cubit.dart';
@@ -13,6 +15,7 @@ import 'package:explaino/features/auth/register/presentation/screens/specializat
 import 'package:explaino/features/auth/register/presentation/screens/verify_email_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -91,7 +94,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _nextPage();
   }
 
-  void _navigateToMainScreen() {}
+  void _navigateToMainScreen() {
+    context.go(AppRoutesConstants.mainScreenRoute);
+    UIUtils.showSnackBar(
+      context: context,
+      message: AppTextConstants.welcomeToXbrain,
+    );
+  }
 
   void _nextPage() {
     _pageController.nextPage(
@@ -169,7 +178,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            const SpecializationsPageView(),
                             EmailPageView(
                               onSubmit: _nextPage,
                               emailController: _emailController,
