@@ -28,6 +28,7 @@ dependencies:
   flutter_image_compress: ^2.4.0    # Image compression
   path_provider: ^2.1.5             # Path provider
   path: ^1.9.1                      # Path
+  flutter_launcher_icons: ^0.14.4   # App launcher icons
   # ===============================
   # App Setup / Splash
   # ===============================
@@ -113,6 +114,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/icons/
 
 flutter_gen:
   output: lib/core/gen/
