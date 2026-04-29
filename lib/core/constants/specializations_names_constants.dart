@@ -1,4 +1,4 @@
-class TrackNamesConstants {
+class SpecializationsNamesConstants {
   static const String backendDevelopment = 'backend development';
   static const String cybersecurity = 'cybersecurity';
   static const String dataScience = 'data science';

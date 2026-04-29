@@ -5,7 +5,7 @@ import 'package:explaino/core/shared/data/models/auth/otp/otp_response_model/otp
 import 'package:explaino/core/shared/data/models/auth/user_model/user_model.dart';
 import 'package:explaino/features/auth/register/data/models/request/register_request_model/register_request_model.dart';
 import 'package:explaino/core/shared/data/models/auth/otp/verify_otp_request_model/verify_otp_request_model.dart';
-import 'package:explaino/features/auth/register/data/models/response/get_tracks_response_model.dart';
+import 'package:explaino/features/auth/register/data/models/response/get_specializations_response_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -34,6 +34,9 @@ abstract class RegisterApiClient {
     @Part(name: 'profile_image') required MultipartFile image,
   });
 
-  @GET(ApiConstants.tracks)
-  Future<GetTracksResponseModel> getTracks();
+  @GET(ApiConstants.specializations)
+  Future<GetSpecializationsResponseModel> getSpecializations();
+
+  @PUT(ApiConstants.selectSpecializations)
+  Future<void> selectSpecializations(@Body() List<String> trackIds);
 }

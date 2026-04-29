@@ -5,10 +5,10 @@ import 'package:explaino/core/shared/data/mappers/auth/otp/verify_otp_request_ma
 import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
 import 'package:explaino/features/auth/register/data/datasources/local/register_local_data_sources.dart';
 import 'package:explaino/features/auth/register/data/datasources/remote/register_remote_data_source.dart';
-import 'package:explaino/features/auth/register/data/mappers/get_tracks_response_mapper.dart';
+import 'package:explaino/features/auth/register/data/mappers/get_specializations_response_mapper.dart';
 import 'package:explaino/features/auth/register/data/mappers/register_request_mapper.dart';
 import 'package:explaino/features/auth/register/domain/entities/request/register_request_entity.dart';
-import 'package:explaino/features/auth/register/domain/entities/response/get_tracks_response_entity.dart';
+import 'package:explaino/features/auth/register/domain/entities/response/get_specializations_response_entity.dart';
 import 'package:explaino/features/auth/register/domain/repositories/register_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -64,8 +64,9 @@ class RegisterRepositoryImpl implements RegisterRepository {
   }
 
   @override
-  Future<BaseResponse<GetTracksResponseEntity>> getTracks() async {
-    final response = await _registerRemoteDataSource.getTracks();
+  Future<BaseResponse<GetSpecializationsResponseEntity>>
+  getSpecializations() async {
+    final response = await _registerRemoteDataSource.getSpecializations();
     return response.when(
       success: (data) => BaseResponse.success(data.toEntity()),
       failure: (error) => BaseResponse.failure(error),

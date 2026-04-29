@@ -7,14 +7,14 @@ import 'package:explaino/core/shared/domain/entities/auth/otp/resend_otp_request
 import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
 import 'package:explaino/core/shared/domain/use_cases/auth/resend_otp_use_case.dart';
 import 'package:explaino/features/auth/register/domain/entities/request/register_request_entity.dart';
-import 'package:explaino/features/auth/register/domain/usecases/get_tracks_use_case.dart';
+import 'package:explaino/features/auth/register/domain/usecases/get_specializations_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/send_opt_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/upload_profile_pic_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/verify_email_and_register.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_intents.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_side_effects.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_state.dart';
-import 'package:explaino/features/auth/register/presentation/model_ui/get_track_response_model_ui.dart';
+import 'package:explaino/features/auth/register/presentation/model_ui/get_specializations_response_model_ui.dart';
 import 'package:explaino/features/auth/register/presentation/ui_models/setup_profile_ui_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -25,7 +25,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   final ResendOtpUseCase _resendOtpUseCase;
   final VerifyEmailAndRegisterUseCase _verifyEmailAndRegisterUseCase;
   final UploadProfilePicUseCase _uploadProfilePicUseCase;
-  final GetTracksUseCase _getTracksUseCase;
+  final GetSpecializationsUseCase _getspecializationsUseCase;
 
   final StreamController<RegisterSideEffect> _sideEffectsController =
       StreamController<RegisterSideEffect>.broadcast();
@@ -36,7 +36,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     this._resendOtpUseCase,
     this._verifyEmailAndRegisterUseCase,
     this._uploadProfilePicUseCase,
-    this._getTracksUseCase,
+    this._getspecializationsUseCase,
   ) : super(RegisterState());
 
   void doIntent(RegisterIntent intent) {
@@ -78,8 +78,10 @@ class RegisterCubit extends Cubit<RegisterState> {
       case UploadProfilePicIntent(imageFile: final imageFile):
         _uploadProfilePic(imageFile);
       // ==================== page view 5 ====================
-      case GetTracksIntent():
-        _getTracks();
+      case GetSpecializationsIntent():
+        _getSpecializations();
+      case SelectSpecializationIntent(specializationId: final specializationId):
+        _selectSpecialization(specializationId: specializationId);
       // ==================== shared ====================
       case NavigateToPageIntent(currentPage: final currentPage):
         _navigateToPage(currentPage: currentPage);
@@ -178,28 +180,44 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
   }
 
-  void _getTracks() async {
+  void _getSpecializations() async {
     _sideEffectsController.add(ShowLoading());
-    final response = await _getTracksUseCase();
+    final response = await _getspecializationsUseCase();
     _sideEffectsController.add(HideLoading());
     response.when(
       success: (data) {
         emit(
           state.copyWith(
-            tracks: BaseState<GetTrackResponseModelUi>(data: data),
+            specializations: BaseState<GetSpecializationsResponseModelUi>(
+              data: data,
+            ),
           ),
         );
       },
       failure: (failure) {
         emit(
           state.copyWith(
-            tracks: BaseState<GetTrackResponseModelUi>(
+            specializations: BaseState<GetSpecializationsResponseModelUi>(
               errorMessage: failure.message,
             ),
           ),
         );
       },
     );
+  }
+
+  void _selectSpecialization({required String specializationId}) {
+    final currentSpecializations = List<String>.from(
+      state.selectedSpecializations,
+    );
+
+    if (currentSpecializations.contains(specializationId)) {
+      currentSpecializations.remove(specializationId);
+    } else {
+      currentSpecializations.add(specializationId);
+    }
+
+    emit(state.copyWith(selectedSpecializations: currentSpecializations));
   }
 
   void _navigateToPage({required int currentPage}) {

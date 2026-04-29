@@ -80,8 +80,13 @@ class UploadProfilePicIntent extends RegisterIntent {
 
 // ==================== page view 5 ====================
 
-class GetTracksIntent extends RegisterIntent {
-  GetTracksIntent();
+class GetSpecializationsIntent extends RegisterIntent {
+  GetSpecializationsIntent();
+}
+
+class SelectSpecializationIntent extends RegisterIntent {
+  final String specializationId;
+  SelectSpecializationIntent({required this.specializationId});
 }
 
 // ==================== shared ====================

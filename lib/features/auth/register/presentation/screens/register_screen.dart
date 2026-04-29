@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
@@ -10,7 +9,7 @@ import 'package:explaino/features/auth/register/presentation/cubit/register_stat
 import 'package:explaino/features/auth/register/presentation/screens/email_page_view.dart';
 import 'package:explaino/features/auth/register/presentation/screens/profile_picture_page_view.dart';
 import 'package:explaino/features/auth/register/presentation/screens/profile_setup_page_view.dart';
-import 'package:explaino/features/auth/register/presentation/screens/tracks_page_view.dart';
+import 'package:explaino/features/auth/register/presentation/screens/specializations_page_view.dart';
 import 'package:explaino/features/auth/register/presentation/screens/verify_email_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -166,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            const TracksPageView(),
+                            const SpecializationsPageView(),
                             EmailPageView(
                               onSubmit: _nextPage,
                               emailController: _emailController,
@@ -183,7 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             const VerifyEmailPageView(),
                             ProfilePicturePageView(onSkip: _nextPage),
-                            const TracksPageView(),
+                            const SpecializationsPageView(),
                           ],
                         ),
                       ),

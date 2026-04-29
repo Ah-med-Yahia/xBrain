@@ -1,17 +1,18 @@
 import 'package:explaino/core/theme/app_colors.dart';
-import 'package:explaino/features/auth/register/presentation/model_ui/track_model_ui.dart';
+import 'package:explaino/features/auth/register/presentation/model_ui/specialization_model_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
-class TrackCard extends StatelessWidget {
-  const TrackCard({
+class SpecializationCard extends StatelessWidget {
+  const SpecializationCard({
     super.key,
     required this.isSelected,
     required this.onTap,
-    required this.track,
+    required this.specialization,
   });
   final bool isSelected;
   final VoidCallback onTap;
-  final TrackModelUI track;
+  final SpecializationModelUI specialization;
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +45,22 @@ class TrackCard extends StatelessWidget {
         child: Stack(
           children: [
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Icon(track.icon, color: textColor, size: 26),
+                SvgPicture.asset(
+                  specialization.icon,
+                  width: 24,
+                  height: 24,
+                  fit: BoxFit.scaleDown,
+                  colorFilter: ColorFilter.mode(
+                    isSelected ? AppColors.white : AppColors.black,
+                    BlendMode.srcIn,
+                  ),
+                ),
                 const SizedBox(height: 10),
                 Text(
-                  track.name,
+                  specialization.name,
                   style: textTheme.bodyLarge?.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
