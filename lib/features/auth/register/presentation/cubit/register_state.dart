@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:explaino/config/base_state/base_state.dart';
+import 'package:explaino/features/auth/register/presentation/ui_models/get_specializations_response_model_ui.dart';
 import 'package:explaino/features/auth/register/presentation/ui_models/setup_profile_ui_model.dart';
 
 class RegisterState {
@@ -13,6 +14,8 @@ class RegisterState {
   final bool obscurePassword;
   final bool obscureConfirmPassword;
   final int currentPage;
+  final BaseState<GetSpecializationsResponseModelUi>? specializations;
+  final List<String> selectedSpecializations;
 
   RegisterState({
     this.email = '',
@@ -25,6 +28,8 @@ class RegisterState {
     this.obscurePassword = true,
     this.obscureConfirmPassword = true,
     this.currentPage = 0,
+    this.specializations,
+    this.selectedSpecializations = const [],
   });
 
   RegisterState copyWith({
@@ -38,6 +43,8 @@ class RegisterState {
     bool? obscurePassword,
     bool? obscureConfirmPassword,
     int? currentPage,
+    BaseState<GetSpecializationsResponseModelUi>? specializations,
+    List<String>? selectedSpecializations,
   }) {
     return RegisterState(
       email: email ?? this.email,
@@ -52,6 +59,9 @@ class RegisterState {
       obscureConfirmPassword:
           obscureConfirmPassword ?? this.obscureConfirmPassword,
       currentPage: currentPage ?? this.currentPage,
+      specializations: specializations ?? this.specializations,
+      selectedSpecializations:
+          selectedSpecializations ?? this.selectedSpecializations,
     );
   }
 }

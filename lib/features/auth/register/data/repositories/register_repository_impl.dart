@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/core/shared/data/mappers/auth/otp/verify_otp_request_mapper.dart';
 import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
 import 'package:explaino/features/auth/register/data/datasources/local/register_local_data_sources.dart';
 import 'package:explaino/features/auth/register/data/datasources/remote/register_remote_data_source.dart';
+import 'package:explaino/features/auth/register/data/mappers/get_specializations_response_mapper.dart';
 import 'package:explaino/features/auth/register/data/mappers/register_request_mapper.dart';
+import 'package:explaino/features/auth/register/data/mappers/select_specialization_request_mapper.dart';
 import 'package:explaino/features/auth/register/domain/entities/request/register_request_entity.dart';
+import 'package:explaino/features/auth/register/domain/entities/request/select_specialization_request_entity.dart';
+import 'package:explaino/features/auth/register/domain/entities/response/get_specializations_response_entity.dart';
 import 'package:explaino/features/auth/register/domain/repositories/register_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -45,6 +51,40 @@ class RegisterRepositoryImpl implements RegisterRepository {
         );
       },
       failure: (error) => BaseResponse.failure(error),
+    );
+  }
+
+  @override
+  Future<BaseResponse<void>> updateProfile({required File image}) async {
+    final response = await _registerRemoteDataSource.updateProfile(
+      image: image,
+    );
+    return response.when(
+      success: (data) => const BaseResponse<void>.success(null),
+      failure: (error) => BaseResponse<void>.failure(error),
+    );
+  }
+
+  @override
+  Future<BaseResponse<GetSpecializationsResponseEntity>>
+  getSpecializations() async {
+    final response = await _registerRemoteDataSource.getSpecializations();
+    return response.when(
+      success: (data) => BaseResponse.success(data.toEntity()),
+      failure: (error) => BaseResponse.failure(error),
+    );
+  }
+
+  @override
+  Future<BaseResponse<void>> selectSpecializations(
+    SelectSpecializationRequestEntity request,
+  ) async {
+    final response = await _registerRemoteDataSource.selectSpecializations(
+      request.toModel(),
+    );
+    return response.when(
+      success: (data) => const BaseResponse<void>.success(null),
+      failure: (error) => BaseResponse<void>.failure(error),
     );
   }
 }

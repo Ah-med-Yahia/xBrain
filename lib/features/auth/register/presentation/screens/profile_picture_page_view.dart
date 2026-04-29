@@ -1,6 +1,7 @@
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_cubit.dart';
+import 'package:explaino/features/auth/register/presentation/cubit/register_intents.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_state.dart';
 import 'package:explaino/features/auth/register/presentation/widgets/profile_pic_avatar.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,15 @@ class _ProfilePicturePageViewState extends State<ProfilePicturePageView> {
               width: size.width * 0.8,
               height: size.height * 0.06,
               child: ElevatedButton(
-                onPressed: state.imageFile != null ? () {} : null,
+                onPressed: state.imageFile != null
+                    ? () {
+                        if (state.imageFile != null) {
+                          context.read<RegisterCubit>().doIntent(
+                            UploadProfilePicIntent(imageFile: state.imageFile!),
+                          );
+                        }
+                      }
+                    : null,
                 child: const Text(AppTextConstants.uploadPhoto),
               ),
             );

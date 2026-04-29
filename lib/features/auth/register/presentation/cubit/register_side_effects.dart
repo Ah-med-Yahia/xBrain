@@ -18,3 +18,5 @@ class NavigateToNextPage extends RegisterSideEffect {
   final String? successMessage;
   NavigateToNextPage({this.successMessage});
 }
+
+class NavigateToMainScreen extends RegisterSideEffect {}

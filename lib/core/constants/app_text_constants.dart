@@ -52,6 +52,10 @@ class AppTextConstants {
   static const String profilePicture = 'Profile picture';
   static const String addPhoto = 'Add a photo so people can recognise you';
   static const String skipForNow = 'Skip for now';
+  static const String selectYourTrack = 'Select Your Track';
+  static const String selectYourTrackDescription =
+      'Choose the technologies and topics you want to\nfollow in your feed.';
+  static const String retryAgain = 'Retry Again';
   static const String passwordNotMatch = 'Password does not match';
   //==================== Profile============================
   static const String questionsAsked = 'Questions Asked';
@@ -68,4 +72,5 @@ class AppTextConstants {
   static const String post = 'Post';
   static const String groups = 'Groups';
   static const String profile = 'Profile';
+  static const String welcomeToXbrain = 'Welcome To xBrain';
 }

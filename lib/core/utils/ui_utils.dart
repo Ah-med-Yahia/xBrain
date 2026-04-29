@@ -17,24 +17,6 @@ class UIUtils {
     EasyLoading.show(status: status ?? AppTextConstants.loading);
   }
 
-  // static void showLoading(BuildContext context) => showDialog(
-  //   context: context,
-  //   barrierDismissible: false,
-  //   builder: (_) => PopScope(
-  //     canPop: false,
-  //     child: AlertDialog(
-  //       backgroundColor: Colors.transparent,
-  //       content: SizedBox(
-  //         height: MediaQuery.sizeOf(context).height * 0.2,
-  //         child: const Column(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [LoadingIndicator()],
-  //         ),
-  //       ),
-  //     ),
-  //   ),
-  // );
-
   static void hideLoading(BuildContext context) => Navigator.of(context).pop();
   static void hideEasyLoading() => EasyLoading.dismiss();
 
@@ -47,5 +29,24 @@ class UIUtils {
     toastLength: Toast.LENGTH_LONG,
     backgroundColor: backGroundColor,
     textColor: textColor,
+  );
+
+  static void showSnackBar({
+    required BuildContext context,
+    required String message,
+    Color? backGroundColor,
+    Color? textColor,
+  }) => ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: TextStyle(
+          color: textColor ?? AppColors.white,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      duration: const Duration(seconds: 2),
+      backgroundColor: backGroundColor ?? AppColors.green,
+    ),
   );
 }

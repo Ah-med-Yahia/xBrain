@@ -73,6 +73,26 @@ class PickImageIntent extends RegisterIntent {
   PickImageIntent({required this.imageFile});
 }
 
+class UploadProfilePicIntent extends RegisterIntent {
+  final File imageFile;
+  UploadProfilePicIntent({required this.imageFile});
+}
+
+// ==================== page view 5 ====================
+
+class GetSpecializationsIntent extends RegisterIntent {
+  GetSpecializationsIntent();
+}
+
+class ClickOnSpecializationIntent extends RegisterIntent {
+  final String specializationId;
+  ClickOnSpecializationIntent({required this.specializationId});
+}
+
+class SelectSpecializationsIntent extends RegisterIntent {
+  SelectSpecializationsIntent();
+}
+
 // ==================== shared ====================
 
 class NavigateToPageIntent extends RegisterIntent {

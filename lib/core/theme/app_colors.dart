@@ -67,7 +67,6 @@ class AppColors {
   // =========================
   static const Color white = Color(0xFFFFFFFF);
   static const Color white70 = Color(0xB3FFFFFF);
-  static const Color grey = Color(0xFF94a3b8);
   static const Color black = Color(0xFF000000);
   static const Color transparent = Color(0x00000000);
   static const Color red = Color(0xFFF40909);
@@ -75,12 +74,15 @@ class AppColors {
   static const Color lightPeriwinkle = Color(0xFFE8EBF1);
   static const Color brightSkyBlue = Color(0x331197F7);
   static const Color darkBlue = Color(0xFF0A6EB8);
+  static const Color skyBlue = Color(0xFF239CF3);
+  static const Color blue = Color(0xFF0D6EFD);
+  static const Color primaryDark = Color(0xFF1197F7);
   static const Color offWhite = Color(0xFFF5F5F5);
-  static const Color lightBlue = Color(0x331197F7);
   static const Color lightSkyBlue = Color(0x0D1197F7);
   static const Color lightBackground = Color(0xFFF2F4F7);
   static const Color lightGrey = Color(0xFF94a3b8);
   static const Color greyScale = Color(0xFF9CA3AF);
   static const Color kSoftBlueGray = Color(0xFF8CA0B8);
   static const Color kSoftLightGray = Color(0xFFF4F6FB);
+  static const Color grey = Color(0xFF8794A7);
 }
