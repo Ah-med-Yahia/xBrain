@@ -55,4 +55,5 @@ class AppTextConstants {
   static const String selectYourTrack = 'Select Your Track';
   static const String selectYourTrackDescription =
       'Choose the technologies and topics you want to\nfollow in your feed.';
+  static const String retryAgain = 'Retry Again';
 }

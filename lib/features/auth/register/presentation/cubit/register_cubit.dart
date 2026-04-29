@@ -7,7 +7,6 @@ import 'package:explaino/core/shared/domain/entities/auth/otp/resend_otp_request
 import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
 import 'package:explaino/core/shared/domain/use_cases/auth/resend_otp_use_case.dart';
 import 'package:explaino/features/auth/register/domain/entities/request/register_request_entity.dart';
-import 'package:explaino/features/auth/register/domain/entities/response/get_tracks_response_entity.dart';
 import 'package:explaino/features/auth/register/domain/usecases/get_tracks_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/send_opt_use_case.dart';
 import 'package:explaino/features/auth/register/domain/usecases/upload_profile_pic_use_case.dart';
@@ -15,6 +14,7 @@ import 'package:explaino/features/auth/register/domain/usecases/verify_email_and
 import 'package:explaino/features/auth/register/presentation/cubit/register_intents.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_side_effects.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_state.dart';
+import 'package:explaino/features/auth/register/presentation/model_ui/get_track_response_model_ui.dart';
 import 'package:explaino/features/auth/register/presentation/ui_models/setup_profile_ui_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -186,14 +186,14 @@ class RegisterCubit extends Cubit<RegisterState> {
       success: (data) {
         emit(
           state.copyWith(
-            tracks: BaseState<GetTracksResponseEntity>(data: data),
+            tracks: BaseState<GetTrackResponseModelUi>(data: data),
           ),
         );
       },
       failure: (failure) {
         emit(
           state.copyWith(
-            tracks: BaseState<GetTracksResponseEntity>(
+            tracks: BaseState<GetTrackResponseModelUi>(
               errorMessage: failure.message,
             ),
           ),

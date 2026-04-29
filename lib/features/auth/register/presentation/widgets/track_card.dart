@@ -1,10 +1,17 @@
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/features/auth/register/presentation/model_ui/track_model_ui.dart';
 import 'package:flutter/material.dart';
 
 class TrackCard extends StatelessWidget {
-  const TrackCard({super.key, required this.isSelected, required this.onTap});
+  const TrackCard({
+    super.key,
+    required this.isSelected,
+    required this.onTap,
+    required this.track,
+  });
   final bool isSelected;
   final VoidCallback onTap;
+  final TrackModelUI track;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +50,7 @@ class TrackCard extends StatelessWidget {
                 // Icon(track.icon, color: textColor, size: 26),
                 const SizedBox(height: 10),
                 Text(
-                  'track.label',
+                  track.name,
                   style: textTheme.bodyLarge?.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

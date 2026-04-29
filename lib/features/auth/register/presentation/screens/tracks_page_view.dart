@@ -1,4 +1,5 @@
 import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/shared/presentation/widgets/custom_error_widget.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_cubit.dart';
 import 'package:explaino/features/auth/register/presentation/cubit/register_intents.dart';
@@ -16,10 +17,12 @@ class TracksPageView extends StatefulWidget {
 
 class _TracksPageViewState extends State<TracksPageView> {
   late TextTheme textTheme;
+  late Size screenSize;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     textTheme = Theme.of(context).textTheme;
+    screenSize = MediaQuery.of(context).size;
   }
 
   @override
@@ -49,9 +52,25 @@ class _TracksPageViewState extends State<TracksPageView> {
             style: textTheme.bodyLarge?.copyWith(color: AppColors.grey),
           ),
           const SizedBox(height: 28),
+
           BlocBuilder<RegisterCubit, RegisterState>(
             buildWhen: (previous, current) => previous.tracks != current.tracks,
             builder: (context, state) {
+              if (state.tracks?.errorMessage != null) {
+                return SizedBox(
+                  height: screenSize.height * 0.6,
+                  child: CustomErrorWidget(
+                    error: state.tracks!.errorMessage!,
+                    onTryAgain: () {
+                      context.read<RegisterCubit>().doIntent(GetTracksIntent());
+                    },
+                  ),
+                );
+              }
+              if (state.tracks?.data == null) {
+                return const SizedBox.shrink();
+              }
+              final tracks = state.tracks!.data!;
               return GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -61,9 +80,13 @@ class _TracksPageViewState extends State<TracksPageView> {
                   mainAxisSpacing: 12,
                   childAspectRatio: 185 / 128,
                 ),
-                itemCount: 10,
+                itemCount: tracks.count,
                 itemBuilder: (context, index) {
-                  return TrackCard(isSelected: false, onTap: () {});
+                  return TrackCard(
+                    isSelected: false,
+                    track: tracks.tracks[index],
+                    onTap: () {},
+                  );
                 },
               );
             },
