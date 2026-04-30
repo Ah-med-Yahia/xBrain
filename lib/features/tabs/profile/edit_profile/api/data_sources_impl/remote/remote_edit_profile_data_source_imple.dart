@@ -7,11 +7,11 @@ import 'package:explaino/features/tabs/profile/edit_profile/data/models/request/
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: RemoteEditProfileDataSource)
-abstract class RemoteEditProfileDataSourceImpl
+class RemoteEditProfileDataSourceImple
     implements RemoteEditProfileDataSource {
   final EditProfileApiClient _apiClient;
 
-  RemoteEditProfileDataSourceImpl(this._apiClient);
+  RemoteEditProfileDataSourceImple(this._apiClient);
 
   @override
   Future<BaseResponse<UserModel>> editProfile(EditProfileRequestModel request) {
