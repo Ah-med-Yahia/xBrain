@@ -19,11 +19,11 @@ class MainState extends Equatable {
   }) {
     return MainState(
       mainState: mainState ?? this.mainState,
-      selectedIndex: selectedIndex ?? this.selectedIndex, 
+      selectedIndex: selectedIndex ?? this.selectedIndex,
       isNavBarVisible: isNavBarVisible ?? this.isNavBarVisible,
     );
   }
 
   @override
-  List<Object?> get props => [mainState, selectedIndex, isNavBarVisible]; 
+  List<Object?> get props => [mainState, selectedIndex, isNavBarVisible];
 }
