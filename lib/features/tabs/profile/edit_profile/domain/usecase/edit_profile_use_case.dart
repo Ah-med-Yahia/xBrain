@@ -5,10 +5,11 @@ import 'package:explaino/features/tabs/profile/edit_profile/domain/repositories/
 import 'package:injectable/injectable.dart';
 
 @injectable
- class EditProfileUseCase {
+class EditProfileUseCase {
   final EditProfileRepo _editProfileRepo;
-  EditProfileUseCase({required EditProfileRepo editProfileRepo}):_editProfileRepo = editProfileRepo;
-  Future<BaseResponse<UserModel>> call(EditProfileRequestModel request){
+  EditProfileUseCase({required EditProfileRepo editProfileRepo})
+    : _editProfileRepo = editProfileRepo;
+  Future<BaseResponse<UserModel>> call(EditProfileRequestModel request) {
     return _editProfileRepo.editProfile(request);
   }
 }
