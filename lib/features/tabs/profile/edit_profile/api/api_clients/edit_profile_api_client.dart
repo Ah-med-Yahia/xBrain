@@ -14,6 +14,5 @@ abstract class EditProfileApiClient {
   factory EditProfileApiClient(Dio dio) => _EditProfileApiClient(dio);
 
   @PATCH(ApiConstants.updateProfile)
-  @MultiPart()
   Future<UserModel> updateProfile(@Body() EditProfileRequestModel request);
 }
