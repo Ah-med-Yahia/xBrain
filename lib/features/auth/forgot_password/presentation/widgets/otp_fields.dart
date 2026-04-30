@@ -69,35 +69,46 @@ class _OtpFieldsState extends State<OtpFields> {
         (index) => SizedBox(
           width: 48,
           height: 56,
-          child: TextField(
-            controller: _controllers[index],
-            focusNode: _focusNodes[index],
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
-            maxLength: 1,
-            cursorColor: AppColors.primary,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            onChanged: (value) => _onOtpChanged(value, index),
-            decoration: InputDecoration(
-              counterText: '',
-              filled: true,
-              fillColor: AppColors.lightBackground,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(
-                  color: AppColors.primary,
-                  width: 1.5,
+          child: KeyboardListener(
+            focusNode: FocusNode(),
+            onKeyEvent: (event) {
+              if (event is KeyDownEvent &&
+                  event.logicalKey == LogicalKeyboardKey.backspace &&
+                  _controllers[index].text.isEmpty &&
+                  index > 0) {
+                _focusNodes[index - 1].requestFocus();
+              }
+            },
+            child: TextField(
+              controller: _controllers[index],
+              focusNode: _focusNodes[index],
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              maxLength: 1,
+              cursorColor: AppColors.primary,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              onChanged: (value) => _onOtpChanged(value, index),
+              decoration: InputDecoration(
+                counterText: '',
+                filled: true,
+                fillColor: AppColors.lightBackground,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(
+                    color: AppColors.primary,
+                    width: 1.5,
+                  ),
                 ),
               ),
+              onTapOutside: (_) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            onTapOutside: (_) {
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
       ),
