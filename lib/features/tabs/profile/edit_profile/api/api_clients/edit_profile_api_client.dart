@@ -8,7 +8,7 @@ import 'package:retrofit/http.dart';
 part 'edit_profile_api_client.g.dart';
 
 @injectable
-@RestApi(baseUrl: ApiConstants.updateProfile)
+@RestApi(baseUrl: ApiConstants.baseUrl)
 abstract class EditProfileApiClient {
   @factoryMethod
   factory EditProfileApiClient(Dio dio) => _EditProfileApiClient(dio);

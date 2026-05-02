@@ -1,4 +1,6 @@
 import 'package:explaino/config/di/di.dart';
+import 'package:explaino/core/routing/app_routes_constant.dart';
+import 'package:explaino/core/shared/domain/entities/auth/user_entity/user_entity.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/main_profile_cubit.dart';
@@ -7,6 +9,7 @@ import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/m
 import 'package:explaino/features/tabs/profile/main_profile/presentation/widgets/main_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -30,9 +33,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _handleHideLoading();
         case ShowError():
           _handleError(sideEffect.message);
+        case NavigateToEditProfileScreen():
+          _handleNavigateToEditProfileScreen(sideEffect.user);
+        case NavigationToEditProfileImageScreen():
+          _handleNavigationToEditProfileImageScreen(sideEffect.imageUrl);
       }
     });
-    mainProfileCubit.onIntent(GetProfileDataIntent());
+    mainProfileCubit.doIntent(GetProfileDataIntent());
   }
 
   void _handleShowLoading() {
@@ -48,6 +55,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       message,
       backGroundColor: AppColors.error,
       textColor: AppColors.white,
+    );
+  }
+
+  void _handleNavigateToEditProfileScreen(UserEntity user) {
+    context.pushNamed(AppRoutesConstants.editProfileRoute, extra: user);
+  }
+
+  void _handleNavigationToEditProfileImageScreen(String? imageUrl) {
+    context.pushNamed(
+      AppRoutesConstants.editProfileImageRoute,
+      extra: imageUrl,
     );
   }
 

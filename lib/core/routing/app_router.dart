@@ -1,10 +1,13 @@
 import 'package:explaino/core/routing/app_routes_constant.dart';
+import 'package:explaino/core/shared/domain/entities/auth/user_entity/user_entity.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/screens/forgot_password_screen.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/screens/otp_verification_screen.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/screens/reset_password_screen.dart';
 import 'package:explaino/features/auth/login/presentation/screens/login_screen.dart';
 import 'package:explaino/features/auth/register/presentation/screens/register_screen.dart';
 import 'package:explaino/features/main/presentation/screens/main_screen.dart';
+import 'package:explaino/features/tabs/profile/edit_profile/presentation/screens/edit_profile_image_screen.dart';
+import 'package:explaino/features/tabs/profile/edit_profile/presentation/screens/edit_profile_screen.dart';
 import 'package:go_router/go_router.dart';
 
 abstract class AppRouter {
@@ -49,6 +52,18 @@ abstract class AppRouter {
         path: AppRoutesConstants.mainScreenRoute,
         name: AppRoutesConstants.mainScreenRoute,
         builder: (context, state) => const MainScreen(),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.editProfileImageRoute,
+        name: AppRoutesConstants.editProfileImageRoute,
+        builder: (context, state) =>
+            EditProfileImageScreen(imageUrl: state.extra as String),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.editProfileRoute,
+        name: AppRoutesConstants.editProfileRoute,
+        builder: (context, state) =>
+            EditProfileScreen(user: state.extra as UserEntity),
       ),
     ],
   );

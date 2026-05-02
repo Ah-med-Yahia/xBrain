@@ -17,12 +17,32 @@ class MainProfileCubit extends Cubit<ProfileState> {
       _sideEffectController.stream;
   MainProfileCubit(this._getUserUseCase) : super(const ProfileState());
 
-  void onIntent(MainProfileIntents intent) {
+  void doIntent(MainProfileIntents intent) {
     switch (intent) {
       case GetProfileDataIntent():
         _getProfileData();
         break;
+      case NavigateToEditProfileImageScreenIntent():
+        _handleNavigateToEditProfileImageScreenIntent(intent);
+        break;
+      case NavigateToEditProfileScreenIntent():
+        _handleNavigateToEditProfileScreenIntent(intent);
+        break;
     }
+  }
+
+  void _handleNavigateToEditProfileImageScreenIntent(
+    NavigateToEditProfileImageScreenIntent intent,
+  ) {
+    _sideEffectController.add(
+      NavigationToEditProfileImageScreen(intent.imageUrl),
+    );
+  }
+
+  void _handleNavigateToEditProfileScreenIntent(
+    NavigateToEditProfileScreenIntent intent,
+  ) {
+    _sideEffectController.add(NavigateToEditProfileScreen(intent.user));
   }
 
   Future<void> _getProfileData() async {
