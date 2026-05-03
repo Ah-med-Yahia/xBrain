@@ -17,6 +17,7 @@ class StorageKeys {
   static const String saveAuthTokens = 'saveAuthTokens';
   static const String getAuthTokens = 'getAuthTokens';
   static const String userModel = 'userModel';
+  static const String onBoardingViewed = 'onBoardingViewed';
   StorageKeys._();
 }
 

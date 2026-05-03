@@ -14,11 +14,85 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart' as _svg;
 import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
+class $AssetsIconsGen {
+  const $AssetsIconsGen();
+
+  /// File path: assets/icons/back_end_Icon.svg
+  SvgGenImage get backEndIcon =>
+      const SvgGenImage('assets/icons/back_end_Icon.svg');
+
+  /// File path: assets/icons/cyber_security_icon.svg
+  SvgGenImage get cyberSecurityIcon =>
+      const SvgGenImage('assets/icons/cyber_security_icon.svg');
+
+  /// File path: assets/icons/data_science_icon.svg
+  SvgGenImage get dataScienceIcon =>
+      const SvgGenImage('assets/icons/data_science_icon.svg');
+
+  /// File path: assets/icons/default_track_icon.svg
+  SvgGenImage get defaultTrackIcon =>
+      const SvgGenImage('assets/icons/default_track_icon.svg');
+
+  /// File path: assets/icons/dev_ops_Icon.svg
+  SvgGenImage get devOpsIcon =>
+      const SvgGenImage('assets/icons/dev_ops_Icon.svg');
+
+  /// File path: assets/icons/front_icon.svg
+  SvgGenImage get frontIcon => const SvgGenImage('assets/icons/front_icon.svg');
+
+  /// File path: assets/icons/full_stack_icon.svg
+  SvgGenImage get fullStackIcon =>
+      const SvgGenImage('assets/icons/full_stack_icon.svg');
+
+  /// File path: assets/icons/launcher_icon.png
+  AssetGenImage get launcherIcon =>
+      const AssetGenImage('assets/icons/launcher_icon.png');
+
+  /// File path: assets/icons/launcher_icon_padded.png
+  AssetGenImage get launcherIconPadded =>
+      const AssetGenImage('assets/icons/launcher_icon_padded.png');
+
+  /// File path: assets/icons/mobile_icon.svg
+  SvgGenImage get mobileIcon =>
+      const SvgGenImage('assets/icons/mobile_icon.svg');
+
+  /// File path: assets/icons/ui_ux_icon.svg
+  SvgGenImage get uiUxIcon => const SvgGenImage('assets/icons/ui_ux_icon.svg');
+
+  /// List of all assets
+  List<dynamic> get values => [
+    backEndIcon,
+    cyberSecurityIcon,
+    dataScienceIcon,
+    defaultTrackIcon,
+    devOpsIcon,
+    frontIcon,
+    fullStackIcon,
+    launcherIcon,
+    launcherIconPadded,
+    mobileIcon,
+    uiUxIcon,
+  ];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/fake.png
-  AssetGenImage get fake => const AssetGenImage('assets/images/fake.png');
+  /// File path: assets/images/app_logo.png
+  AssetGenImage get appLogo =>
+      const AssetGenImage('assets/images/app_logo.png');
+
+  /// File path: assets/images/chatbot_logo.svg
+  SvgGenImage get chatbotLogo =>
+      const SvgGenImage('assets/images/chatbot_logo.svg');
+
+  /// File path: assets/images/dark_branding.png
+  AssetGenImage get darkBranding =>
+      const AssetGenImage('assets/images/dark_branding.png');
+
+  /// File path: assets/images/dark_splash.png
+  AssetGenImage get darkSplash =>
+      const AssetGenImage('assets/images/dark_splash.png');
 
   /// File path: assets/images/forget_password_logo.svg
   SvgGenImage get forgetPasswordLogo =>
@@ -28,17 +102,41 @@ class $AssetsImagesGen {
   SvgGenImage get googleLogo =>
       const SvgGenImage('assets/images/google_logo.svg');
 
+  /// File path: assets/images/light_branding.png
+  AssetGenImage get lightBranding =>
+      const AssetGenImage('assets/images/light_branding.png');
+
+  /// File path: assets/images/light_splash.png
+  AssetGenImage get lightSplash =>
+      const AssetGenImage('assets/images/light_splash.png');
+
   /// File path: assets/images/login_logo.svg
   SvgGenImage get loginLogo =>
       const SvgGenImage('assets/images/login_logo.svg');
 
+  /// File path: assets/images/stars_logo.svg
+  SvgGenImage get starsLogo =>
+      const SvgGenImage('assets/images/stars_logo.svg');
+
   /// List of all assets
-  List<dynamic> get values => [fake, forgetPasswordLogo, googleLogo, loginLogo];
+  List<dynamic> get values => [
+    appLogo,
+    chatbotLogo,
+    darkBranding,
+    darkSplash,
+    forgetPasswordLogo,
+    googleLogo,
+    lightBranding,
+    lightSplash,
+    loginLogo,
+    starsLogo,
+  ];
 }
 
 class Assets {
   const Assets._();
 
+  static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 
