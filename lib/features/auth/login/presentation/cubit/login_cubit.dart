@@ -3,6 +3,7 @@ import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/core/validators/app_validators.dart';
 import 'package:explaino/features/auth/login/domain/entities/request/login_request_entity.dart';
 import 'package:explaino/features/auth/login/domain/usecase/login_use_case.dart';
+import 'package:explaino/features/auth/login/domain/usecase/save_is_logged_in_use_case.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_intents.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_side_effects.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_state.dart';
@@ -12,9 +13,11 @@ import 'package:injectable/injectable.dart';
 @injectable
 class LoginCubit extends Cubit<LoginState> {
   final LoginUseCase loginUseCase;
+  final SaveIsLoggedInUseCase saveIsLoggedInUseCase;
   final _sideEffectController = StreamController<LoginSideEffect>.broadcast();
   Stream<LoginSideEffect> get sideEffects => _sideEffectController.stream;
-  LoginCubit(this.loginUseCase) : super(const LoginState());
+  LoginCubit(this.loginUseCase, this.saveIsLoggedInUseCase)
+    : super(const LoginState());
 
   void doIntent(LoginIntent intent) {
     switch (intent) {
@@ -33,9 +36,18 @@ class LoginCubit extends Cubit<LoginState> {
     _sideEffectController.add(ShowLoading());
     final result = await loginUseCase(loginRequestModel);
     result.when(
-      success: (data) {
-        _sideEffectController.add(HideLoading());
-        _sideEffectController.add(NavigateToMainScreen());
+      success: (data) async {
+        final savedResult = await saveIsLoggedInUseCase();
+        return savedResult.when(
+          success: (data) {
+            _sideEffectController.add(HideLoading());
+            _sideEffectController.add(NavigateToMainScreen());
+          },
+          failure: (failure) {
+            _sideEffectController.add(HideLoading());
+            _sideEffectController.add(NavigateToMainScreen());
+          },
+        );
       },
       failure: (failure) {
         _sideEffectController.add(HideLoading());

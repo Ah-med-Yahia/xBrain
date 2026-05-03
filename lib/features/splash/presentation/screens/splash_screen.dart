@@ -1,4 +1,5 @@
 import 'package:explaino/config/di/di.dart';
+import 'package:explaino/config/services/app_logger.dart';
 import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/splash/presentation/cubit/splash_cubit.dart';
@@ -32,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigateToNextScreen(UserInitialStatus status) {
+    appLogger.i(status.toString());
     switch (status) {
       case UserInitialStatus.newUser:
       // context.go('/onboarding');
