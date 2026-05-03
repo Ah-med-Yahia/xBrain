@@ -32,9 +32,7 @@ class PhoneField extends StatelessWidget {
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       onChanged: (value) {
         context.read<RegisterCubit>().doIntent(
-          ValidateCreateAccountButtonIntent(
-            enabled: formKey.currentState!.validate(),
-          ),
+          ValidatePhoneIntent(phone: value),
         );
       },
     );

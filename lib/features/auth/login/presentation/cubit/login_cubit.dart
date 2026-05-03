@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/core/validators/app_validators.dart';
 import 'package:explaino/features/auth/login/domain/entities/request/login_request_entity.dart';
 import 'package:explaino/features/auth/login/domain/usecase/login_use_case.dart';
 import 'package:explaino/features/auth/login/presentation/cubit/login_intents.dart';
@@ -19,8 +20,10 @@ class LoginCubit extends Cubit<LoginState> {
     switch (intent) {
       case LoginSubmitIntent(loginRequestEntity: final loginRequestEntity):
         _login(loginRequestEntity);
-      case ValidateFieldsIntent(formsValid: final formsValid):
-        _validateFields(formsValid: formsValid);
+      case ValidateEmailIntent(email: final email):
+        _validateEmail(email);
+      case ValidatePasswordIntent(password: final password):
+        _validatePassword(password);
       case TogglePasswordVisibilityIntent():
         _togglePasswordVisibility();
     }
@@ -41,8 +44,25 @@ class LoginCubit extends Cubit<LoginState> {
     );
   }
 
-  void _validateFields({required bool formsValid}) {
-    emit(state.copyWith(fieldsValidation: formsValid));
+  void _validateEmail(String email) {
+    final bool validateEmail = AppValidators.validateEmail(email) == null;
+    emit(
+      state.copyWith(
+        validateEmail: validateEmail,
+        fieldsValidation: validateEmail && state.validatePassword,
+      ),
+    );
+  }
+
+  void _validatePassword(String password) {
+    final bool validatePassword =
+        AppValidators.validateLoginPassword(password) == null;
+    emit(
+      state.copyWith(
+        validatePassword: validatePassword,
+        fieldsValidation: state.validateEmail && validatePassword,
+      ),
+    );
   }
 
   void _togglePasswordVisibility() {

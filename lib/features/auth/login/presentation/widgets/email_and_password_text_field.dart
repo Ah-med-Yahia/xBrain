@@ -45,9 +45,7 @@ class _EmailAndPasswordTextFieldState extends State<EmailAndPasswordTextField> {
             onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
             onChanged: (value) {
               context.read<LoginCubit>().doIntent(
-                ValidateFieldsIntent(
-                  formsValid: widget.formKey.currentState!.validate(),
-                ),
+                ValidateEmailIntent(email: value),
               );
             },
           ),
@@ -89,9 +87,7 @@ class _EmailAndPasswordTextFieldState extends State<EmailAndPasswordTextField> {
                 validator: AppValidators.validateLoginPassword,
                 onChanged: (value) {
                   context.read<LoginCubit>().doIntent(
-                    ValidateFieldsIntent(
-                      formsValid: widget.formKey.currentState!.validate(),
-                    ),
+                    ValidatePasswordIntent(password: value),
                   );
                 },
               );

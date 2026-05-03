@@ -31,9 +31,38 @@ class SendOtpIntent extends RegisterIntent {
   SendOtpIntent(this.registerRequestEntity);
 }
 
-class ValidateCreateAccountButtonIntent extends RegisterIntent {
-  final bool enabled;
-  ValidateCreateAccountButtonIntent({required this.enabled});
+class ValidateFirstNameIntent extends RegisterIntent {
+  final String firstName;
+  ValidateFirstNameIntent({required this.firstName});
+}
+
+class ValidateLastNameIntent extends RegisterIntent {
+  final String lastName;
+  ValidateLastNameIntent({required this.lastName});
+}
+
+class ValidateUserNameIntent extends RegisterIntent {
+  final String userName;
+  ValidateUserNameIntent({required this.userName});
+}
+
+class ValidatePhoneIntent extends RegisterIntent {
+  final String phone;
+  ValidatePhoneIntent({required this.phone});
+}
+
+class ValidatePasswordIntent extends RegisterIntent {
+  final String password;
+  ValidatePasswordIntent({required this.password});
+}
+
+class ValidateConfirmPasswordIntent extends RegisterIntent {
+  final String confirmPassword;
+  final String password;
+  ValidateConfirmPasswordIntent({
+    required this.confirmPassword,
+    required this.password,
+  });
 }
 
 class TogglePasswordVisibilityIntent extends RegisterIntent {
