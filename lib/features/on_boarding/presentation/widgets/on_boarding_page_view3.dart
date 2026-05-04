@@ -13,13 +13,14 @@ class OnBoardingPageView3 extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const Spacer(flex: 1),
         Image.asset(
           Assets.images.onBoarding3.path,
           width: double.infinity,
           height: screenSize.height * .4,
           fit: BoxFit.cover,
         ),
-        const SizedBox(height: 14),
+        const Spacer(flex: 2),
         Image.asset(
           Assets.images.earnPoints.path,
           width: screenSize.width * 0.4,
@@ -32,6 +33,7 @@ class OnBoardingPageView3 extends StatelessWidget {
             color: AppColors.lightGrey,
           ),
         ),
+        const Spacer(flex: 2),
       ],
     );
   }

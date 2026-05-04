@@ -81,4 +81,5 @@ class AppTextConstants {
   static const String onBoardingText3 =
       'Your contributions matter. Earn points for\nevery helpful answer and climb the rank.';
   static const String back = 'Back';
+  static const String finish = 'Finish';
 }

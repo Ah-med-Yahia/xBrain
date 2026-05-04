@@ -30,7 +30,9 @@ class OnBoardingCubit extends Cubit<OnBoardingStates> {
   }
 
   void _navigateToLogin() async {
+    _sideEffectsController.add(ShowLoadingSideEffect());
     final result = await _saveViewedOnBoardingUseCase();
+    _sideEffectsController.add(HideLoadingSideEffect());
     result.when(
       success: (viewd) {
         _sideEffectsController.add(NavigateToLoginSideEffect());

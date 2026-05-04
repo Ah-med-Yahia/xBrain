@@ -5,4 +5,8 @@ class ShowErrorSideEffect extends OnBoardingSideEffects {
   ShowErrorSideEffect({required this.message});
 }
 
+class ShowLoadingSideEffect extends OnBoardingSideEffects {}
+
+class HideLoadingSideEffect extends OnBoardingSideEffects {}
+
 class NavigateToLoginSideEffect extends OnBoardingSideEffects {}

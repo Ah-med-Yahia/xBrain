@@ -29,6 +29,7 @@ dependencies:
   path_provider: ^2.1.5             # Path provider
   path: ^1.9.1                      # Path
   flutter_launcher_icons: ^0.14.4   # App launcher icons
+  dots_indicator: ^4.0.1            # Dots indicator
   # ===============================
   # App Setup / Splash
   # ===============================
