@@ -1,8 +1,12 @@
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/features/tabs/profile/edit_profile/presentation/cubit/edit_profile_cubit.dart';
+import 'package:explaino/features/tabs/profile/edit_profile/presentation/cubit/edit_profile_intents.dart';
+import 'package:explaino/features/tabs/profile/edit_profile/presentation/cubit/edit_profile_states.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BioField extends StatefulWidget {
+class BioField extends StatelessWidget {
   final TextEditingController controller;
   final int maxLength;
 
@@ -13,38 +17,9 @@ class BioField extends StatefulWidget {
   });
 
   @override
-  State<BioField> createState() => _BioFieldState();
-}
-
-class _BioFieldState extends State<BioField> {
-  late int _charCount;
-  late TextTheme textTheme;
-
-  @override
-  void initState() {
-    super.initState();
-    _charCount = widget.controller.text.length;
-    widget.controller.addListener(_onChanged);
-  }
-
-  void _onChanged() {
-    setState(() => _charCount = widget.controller.text.length);
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener(_onChanged);
-    super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    textTheme = Theme.of(context).textTheme;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -55,17 +30,28 @@ class _BioFieldState extends State<BioField> {
               AppTextConstants.bio,
               style: textTheme.titleMedium?.copyWith(color: AppColors.primary),
             ),
-            Text(
-              '$_charCount/${widget.maxLength}',
-              style: textTheme.labelMedium?.copyWith(color: Colors.grey),
+            BlocBuilder<EditProfileCubit, EditProfileState>(
+              buildWhen: (previous, current) =>
+                  previous.bioCharCount != current.bioCharCount,
+              builder: (context, state) {
+                return Text(
+                  '${state.bioCharCount}/$maxLength',
+                  style: textTheme.labelMedium?.copyWith(color: Colors.grey),
+                );
+              },
             ),
           ],
         ),
         const SizedBox(height: 5),
         TextFormField(
-          controller: widget.controller,
+          controller: controller,
           maxLines: 3,
-          maxLength: widget.maxLength,
+          maxLength: maxLength,
+          onChanged: (value) {
+            context.read<EditProfileCubit>().doIntent(
+              BioCharCountIntent(bioCharCount: value.length),
+            );
+          },
           textCapitalization: TextCapitalization.sentences,
           style: const TextStyle(fontSize: 17, color: Colors.black),
           decoration: const InputDecoration(

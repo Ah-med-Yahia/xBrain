@@ -58,15 +58,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _handleNavigateToEditProfileScreen(UserEntity user) {
-    context.pushNamed(AppRoutesConstants.editProfileRoute, extra: user);
+  void _handleNavigateToEditProfileScreen(UserEntity user) async {
+    final result = await context.pushNamed(
+      AppRoutesConstants.editProfileRoute,
+      extra: user,
+    );
+    if (result is bool && result) {
+      mainProfileCubit.doIntent(GetProfileDataIntent());
+    }
   }
 
-  void _handleNavigationToEditProfileImageScreen(String? imageUrl) {
-    context.pushNamed(
+  void _handleNavigationToEditProfileImageScreen(String? imageUrl) async {
+    final result = await context.pushNamed(
       AppRoutesConstants.editProfileImageRoute,
       extra: imageUrl,
     );
+    if (result is bool && result) {
+      mainProfileCubit.doIntent(GetProfileDataIntent());
+    }
   }
 
   @override

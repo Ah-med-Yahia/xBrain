@@ -13,3 +13,8 @@ class PickImageIntent extends EditProfileIntents {
   final File imageFile;
   PickImageIntent({required this.imageFile});
 }
+
+class BioCharCountIntent extends EditProfileIntents {
+  final int bioCharCount;
+  BioCharCountIntent({required this.bioCharCount});
+}

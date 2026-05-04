@@ -52,7 +52,7 @@ class HeaderSection extends StatelessWidget {
       padding: EdgeInsets.only(top: size.height * 0.06),
       child: Column(
         children: [
-          InkWell(
+          GestureDetector(
             onTap: () {
               context.read<MainProfileCubit>().doIntent(
                 NavigateToEditProfileImageScreenIntent(imageUrl: imageUrl),

@@ -7,9 +7,9 @@ import 'package:explaino/features/tabs/profile/edit_profile/data/models/request/
 import 'package:explaino/features/tabs/profile/edit_profile/presentation/cubit/edit_profile_cubit.dart';
 import 'package:explaino/features/tabs/profile/edit_profile/presentation/cubit/edit_profile_intents.dart';
 import 'package:explaino/features/tabs/profile/edit_profile/presentation/cubit/edit_profile_side_effects.dart';
-import 'package:explaino/features/tabs/profile/edit_profile/presentation/widgets/bio_field.dart';
-import 'package:explaino/features/tabs/profile/edit_profile/presentation/widgets/field_block.dart';
-import 'package:explaino/features/tabs/profile/edit_profile/presentation/widgets/section_card.dart';
+import 'package:explaino/features/tabs/profile/edit_profile/presentation/widgets/edit_profile_date/bio_field.dart';
+import 'package:explaino/features/tabs/profile/edit_profile/presentation/widgets/edit_profile_date/field_block.dart';
+import 'package:explaino/features/tabs/profile/edit_profile/presentation/widgets/edit_profile_date/section_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,13 +26,14 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-  late final EditProfileCubit _editProfileCubit;
+  late EditProfileCubit _editProfileCubit;
 
-  late final TextEditingController _firstNameController;
-  late final TextEditingController _lastNameController;
-  late final TextEditingController _bioController;
-  late final TextEditingController _phoneController;
-
+  late TextEditingController _firstNameController;
+  late TextEditingController _lastNameController;
+  late TextEditingController _bioController;
+  late TextEditingController _phoneController;
+  late Size size;
+  late TextTheme textTheme;
   static const int _bioMaxLength = 70;
 
   @override
@@ -56,6 +57,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           _handelError(message);
       }
     });
+    _editProfileCubit.doIntent(
+      BioCharCountIntent(bioCharCount: widget.user.bio?.length ?? 0),
+    );
   }
 
   void _handelLoading() {
@@ -77,7 +81,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   void _handlePopScreen() {
-    GoRouter.of(context).pop();
+    GoRouter.of(context).pop(true);
   }
 
   @override
@@ -89,15 +93,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    size = MediaQuery.of(context).size;
+    textTheme = Theme.of(context).textTheme;
+    super.didChangeDependencies();
+  }
+
   void _save() {
     if (!_formKey.currentState!.validate()) return;
+    final user = widget.user;
     _editProfileCubit.doIntent(
       EditProfileIntent(
         editProfileRequestModel: EditProfileRequestModel(
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-          bio: _bioController.text,
-          phoneNumber: _phoneController.text,
+          firstName: _firstNameController.text != user.firstName
+              ? _firstNameController.text
+              : null,
+          lastName: _lastNameController.text != user.lastName
+              ? _lastNameController.text
+              : null,
+          bio: _bioController.text != user.bio ? _bioController.text : null,
+          phoneNumber: _phoneController.text != user.phoneNumber
+              ? _phoneController.text
+              : null,
         ),
       ),
     );
@@ -119,31 +137,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               color: AppColors.primary,
               size: 20,
             ),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(context).pop(true),
           ),
-          title: const Text(
+          title: Text(
             AppTextConstants.editProfile,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-            ),
+            style: textTheme.titleLarge,
           ),
           centerTitle: true,
           actions: [
             TextButton(
               onPressed: _save,
-              child: const Text(
+              child: Text(
                 AppTextConstants.done,
-                style: TextStyle(
+                style: textTheme.titleLarge?.copyWith(
                   color: AppColors.primary,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
                 ),
               ),
             ),
           ],
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
         body: Form(
           key: _formKey,
@@ -186,10 +198,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 18),
+                  SizedBox(height: size.height * .02),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: size.height * .02),
               SectionCard(
                 children: [
                   Padding(
@@ -214,7 +226,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: size.height * .02),
               SectionCard(
                 children: [
                   Padding(

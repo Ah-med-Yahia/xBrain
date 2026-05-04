@@ -26,6 +26,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       case PickImageIntent(imageFile: final file):
         _pickImage(file);
         break;
+      case BioCharCountIntent(bioCharCount: final bioCharCount):
+        _bioCharCount(bioCharCount);
+        break;
     }
   }
 
@@ -46,5 +49,15 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   void _pickImage(File imageFile) {
     emit(state.copyWith(selectedImage: imageFile));
+  }
+
+  void _bioCharCount(int bioCharCount) {
+    emit(state.copyWith(bioCharCount: bioCharCount));
+  }
+
+  @override
+  Future<void> close() {
+    _sideEffectController.close();
+    return super.close();
   }
 }

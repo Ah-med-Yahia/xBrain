@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:dio/dio.dart';
-import 'package:explaino/core/helpers/to_multi_part_helper.dart';
 
 class EditProfileRequestModel {
   final String? firstName;
@@ -16,14 +14,4 @@ class EditProfileRequestModel {
     this.bio,
     this.image,
   });
-
-  Future<FormData> toFormData() async {
-    return FormData.fromMap({
-      if (firstName != null) 'first_name': firstName,
-      if (lastName != null) 'last_name': lastName,
-      if (phoneNumber != null) 'phone_number': phoneNumber,
-      if (bio != null) 'bio': bio,
-      if (image != null) 'profile_image': await toMultipartFile(image!),
-    });
-  }
 }

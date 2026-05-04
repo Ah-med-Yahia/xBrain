@@ -72,4 +72,10 @@ class MainProfileCubit extends Cubit<ProfileState> {
       },
     );
   }
+
+  @override
+  Future<void> close() {
+    _sideEffectController.close();
+    return super.close();
+  }
 }
