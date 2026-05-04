@@ -1,22 +1,13 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:json_annotation/json_annotation.dart';
-part 'edit_profile_request_model.g.dart';
+import 'package:explaino/core/helpers/to_multi_part_helper.dart';
 
-@JsonSerializable()
 class EditProfileRequestModel {
-  @JsonKey(name: 'first_name')
   final String? firstName;
-
-  @JsonKey(name: 'last_name')
   final String? lastName;
-
-  @JsonKey(name: 'phone_number')
   final String? phoneNumber;
-
   final String? bio;
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  final MultipartFile? image;
+  final File? image;
 
   EditProfileRequestModel({
     this.firstName,
@@ -26,8 +17,13 @@ class EditProfileRequestModel {
     this.image,
   });
 
-  factory EditProfileRequestModel.fromJson(Map<String, dynamic> json) =>
-      _$EditProfileRequestModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$EditProfileRequestModelToJson(this);
+  Future<FormData> toFormData() async {
+    return FormData.fromMap({
+      if (firstName != null) 'first_name': firstName,
+      if (lastName != null) 'last_name': lastName,
+      if (phoneNumber != null) 'phone_number': phoneNumber,
+      if (bio != null) 'bio': bio,
+      if (image != null) 'profile_image': await toMultipartFile(image!),
+    });
+  }
 }

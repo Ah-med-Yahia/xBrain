@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:explaino/core/constants/api_constants.dart';
 import 'package:explaino/core/shared/data/models/auth/user_model/user_model.dart';
-import 'package:explaino/features/tabs/profile/edit_profile/data/models/request/edit_profile_request_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/http.dart';
 
@@ -14,5 +13,5 @@ abstract class EditProfileApiClient {
   factory EditProfileApiClient(Dio dio) => _EditProfileApiClient(dio);
 
   @PATCH(ApiConstants.updateProfile)
-  Future<UserModel> updateProfile(@Body() EditProfileRequestModel request);
+  Future<UserModel> updateProfile(@Body() FormData formData);
 }

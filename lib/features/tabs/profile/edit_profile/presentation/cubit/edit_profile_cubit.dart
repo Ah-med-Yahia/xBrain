@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/features/tabs/profile/edit_profile/data/models/request/edit_profile_request_model.dart';
@@ -22,6 +23,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     switch (intent) {
       case EditProfileIntent(editProfileRequestModel: final request):
         _editProfile(request);
+      case PickImageIntent(imageFile: final file):
+        _pickImage(file);
         break;
     }
   }
@@ -39,5 +42,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         _sideEffectController.add(ShowError(failure.message));
       },
     );
+  }
+
+  void _pickImage(File imageFile) {
+    emit(state.copyWith(selectedImage: imageFile));
   }
 }

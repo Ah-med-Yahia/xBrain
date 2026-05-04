@@ -14,6 +14,8 @@ class RemoteEditProfileDataSourceImple implements RemoteEditProfileDataSource {
 
   @override
   Future<BaseResponse<UserModel>> editProfile(EditProfileRequestModel request) {
-    return safeApiCall(() => _apiClient.updateProfile(request));
+    return safeApiCall(
+      () async => _apiClient.updateProfile(await request.toFormData()),
+    );
   }
 }

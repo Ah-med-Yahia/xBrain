@@ -57,7 +57,7 @@ abstract class AppRouter {
         path: AppRoutesConstants.editProfileImageRoute,
         name: AppRoutesConstants.editProfileImageRoute,
         builder: (context, state) =>
-            EditProfileImageScreen(imageUrl: state.extra as String),
+            EditProfileImageScreen(imageUrl: state.extra as String? ?? ''),
       ),
       GoRoute(
         path: AppRoutesConstants.editProfileRoute,

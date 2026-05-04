@@ -108,9 +108,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return BlocProvider(
       create: (context) => _editProfileCubit,
       child: Scaffold(
-        backgroundColor: const Color(0xFFF2F3F7),
+        backgroundColor: AppColors.softLightGray,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF2F3F7),
+          backgroundColor: AppColors.softLightGray,
           elevation: 0,
           scrolledUnderElevation: 0,
           leading: IconButton(
