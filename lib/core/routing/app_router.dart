@@ -5,12 +5,24 @@ import 'package:explaino/features/auth/forgot_password/presentation/screens/rese
 import 'package:explaino/features/auth/login/presentation/screens/login_screen.dart';
 import 'package:explaino/features/auth/register/presentation/screens/register_screen.dart';
 import 'package:explaino/features/main/presentation/screens/main_screen.dart';
+import 'package:explaino/features/on_boarding/presentation/screens/on_boarding_screen.dart';
+import 'package:explaino/features/splash/presentation/screens/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 
 abstract class AppRouter {
   static GoRouter router = GoRouter(
-    initialLocation: AppRoutesConstants.loginRoute,
+    initialLocation: AppRoutesConstants.splashRoute,
     routes: [
+      GoRoute(
+        path: AppRoutesConstants.splashRoute,
+        name: AppRoutesConstants.splashRoute,
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.onBoardingRoute,
+        name: AppRoutesConstants.onBoardingRoute,
+        builder: (context, state) => const OnBoardingScreen(),
+      ),
       GoRoute(
         path: AppRoutesConstants.registerRoute,
         name: AppRoutesConstants.registerRoute,

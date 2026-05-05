@@ -72,9 +72,7 @@ class _PasswordAndConfirmFieldState extends State<PasswordAndConfirmField> {
               },
               onChanged: (value) {
                 context.read<RegisterCubit>().doIntent(
-                  ValidateCreateAccountButtonIntent(
-                    enabled: widget.formKey.currentState!.validate(),
-                  ),
+                  ValidatePasswordIntent(password: value),
                 );
               },
             );
@@ -119,8 +117,9 @@ class _PasswordAndConfirmFieldState extends State<PasswordAndConfirmField> {
               focusNode: nextFieldFocus,
               onChanged: (value) {
                 context.read<RegisterCubit>().doIntent(
-                  ValidateCreateAccountButtonIntent(
-                    enabled: widget.formKey.currentState!.validate(),
+                  ValidateConfirmPasswordIntent(
+                    confirmPassword: value,
+                    password: widget.passwordController.text,
                   ),
                 );
               },

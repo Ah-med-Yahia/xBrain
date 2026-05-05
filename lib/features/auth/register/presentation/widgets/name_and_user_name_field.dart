@@ -31,6 +31,11 @@ class NameAndUserNameField extends StatelessWidget {
                 labelText: AppTextConstants.firstName,
                 nameController: firstNameController,
                 formKey: formKey,
+                onChanged: (firstName) {
+                  context.read<RegisterCubit>().doIntent(
+                    ValidateFirstNameIntent(firstName: firstName),
+                  );
+                },
               ),
             ),
             const SizedBox(width: 14),
@@ -39,6 +44,11 @@ class NameAndUserNameField extends StatelessWidget {
                 labelText: AppTextConstants.lastName,
                 nameController: lastNameController,
                 formKey: formKey,
+                onChanged: (lastName) {
+                  context.read<RegisterCubit>().doIntent(
+                    ValidateLastNameIntent(lastName: lastName),
+                  );
+                },
               ),
             ),
           ],
@@ -58,9 +68,7 @@ class NameAndUserNameField extends StatelessWidget {
           onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
           onChanged: (value) {
             context.read<RegisterCubit>().doIntent(
-              ValidateCreateAccountButtonIntent(
-                enabled: formKey.currentState!.validate(),
-              ),
+              ValidateUserNameIntent(userName: value),
             );
           },
         ),

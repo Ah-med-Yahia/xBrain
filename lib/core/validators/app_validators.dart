@@ -13,10 +13,7 @@ extension StringValidation on String? {
   }
 
   String? get validateLoginPassword {
-    if (this == null ||
-        this!.isEmpty ||
-        this!.trim().isEmpty ||
-        this!.length < 8) {
+    if (this?.validatePassword != null) {
       return ValidationConstants.passwordRequired;
     }
     return null;
