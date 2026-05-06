@@ -9,6 +9,12 @@ class RegisterState {
   final String otpCode;
   final File? imageFile;
   final bool enabledNextButton;
+  final bool validFirstName;
+  final bool validLastName;
+  final bool validUserName;
+  final bool validPhone;
+  final bool validPassword;
+  final bool validConfirmPassword;
   final bool enabledCreateAccountButton;
   final bool enabledVerifyButton;
   final bool obscurePassword;
@@ -23,6 +29,12 @@ class RegisterState {
     this.otpCode = '',
     this.imageFile,
     this.enabledNextButton = false,
+    this.validFirstName = false,
+    this.validLastName = false,
+    this.validUserName = false,
+    this.validPhone = false,
+    this.validPassword = false,
+    this.validConfirmPassword = false,
     this.enabledCreateAccountButton = false,
     this.enabledVerifyButton = false,
     this.obscurePassword = true,
@@ -38,6 +50,12 @@ class RegisterState {
     String? otpCode,
     File? imageFile,
     bool? enabledNextButton,
+    bool? validFirstName,
+    bool? validLastName,
+    bool? validUserName,
+    bool? validPhone,
+    bool? validPassword,
+    bool? validConfirmPassword,
     bool? enabledCreateAccountButton,
     bool? enabledVerifyButton,
     bool? obscurePassword,
@@ -52,6 +70,12 @@ class RegisterState {
       otpCode: otpCode ?? this.otpCode,
       imageFile: imageFile ?? this.imageFile,
       enabledNextButton: enabledNextButton ?? this.enabledNextButton,
+      validFirstName: validFirstName ?? this.validFirstName,
+      validLastName: validLastName ?? this.validLastName,
+      validUserName: validUserName ?? this.validUserName,
+      validPhone: validPhone ?? this.validPhone,
+      validPassword: validPassword ?? this.validPassword,
+      validConfirmPassword: validConfirmPassword ?? this.validConfirmPassword,
       enabledCreateAccountButton:
           enabledCreateAccountButton ?? this.enabledCreateAccountButton,
       enabledVerifyButton: enabledVerifyButton ?? this.enabledVerifyButton,

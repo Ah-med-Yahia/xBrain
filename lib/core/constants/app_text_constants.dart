@@ -74,4 +74,13 @@ class AppTextConstants {
   static const String groups = 'Groups';
   static const String profile = 'Profile';
   static const String welcomeToXbrain = 'Welcome To xBrain';
+  static const String appName = 'xBrain';
+  static const String onBoardingText1 =
+      'Get instant answers to your complex\ntech and science questions from experts\nworldwide.';
+  static const String onBoardingText2 =
+      'Engage with a vibrant community.\nAnswer questions, join discussions, and\ngrow your knowledge base.';
+  static const String onBoardingText3 =
+      'Your contributions matter. Earn points for\nevery helpful answer and climb the rank.';
+  static const String back = 'Back';
+  static const String finish = 'Finish';
 }

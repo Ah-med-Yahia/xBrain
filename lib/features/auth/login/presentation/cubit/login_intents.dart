@@ -7,9 +7,14 @@ class LoginSubmitIntent extends LoginIntent {
   LoginSubmitIntent({required this.loginRequestEntity});
 }
 
-class ValidateFieldsIntent extends LoginIntent {
-  final bool formsValid;
-  ValidateFieldsIntent({required this.formsValid});
+class ValidateEmailIntent extends LoginIntent {
+  final String email;
+  ValidateEmailIntent({required this.email});
+}
+
+class ValidatePasswordIntent extends LoginIntent {
+  final String password;
+  ValidatePasswordIntent({required this.password});
 }
 
 class TogglePasswordVisibilityIntent extends LoginIntent {}

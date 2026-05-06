@@ -6,6 +6,7 @@ import 'package:explaino/config/base_state/base_state.dart';
 import 'package:explaino/core/shared/domain/entities/auth/otp/resend_otp_request_entity.dart';
 import 'package:explaino/core/shared/domain/entities/auth/otp/verify_otp_request_entity.dart';
 import 'package:explaino/core/shared/domain/use_cases/auth/resend_otp_use_case.dart';
+import 'package:explaino/core/validators/app_validators.dart';
 import 'package:explaino/features/auth/register/domain/entities/request/register_request_entity.dart';
 import 'package:explaino/features/auth/register/domain/entities/request/select_specialization_request_entity.dart';
 import 'package:explaino/features/auth/register/domain/usecases/get_specializations_use_case.dart';
@@ -57,8 +58,21 @@ class RegisterCubit extends Cubit<RegisterState> {
         _updateSetupProfile(setupProfileUIModel);
       case SendOtpIntent(registerRequestEntity: final registerRequestEntity):
         _sendOtp(registerRequestEntity);
-      case ValidateCreateAccountButtonIntent(enabled: final enabled):
-        _validateCreateAccountButton(enabled: enabled);
+      case ValidateFirstNameIntent(firstName: final firstName):
+        _validateFirstName(firstName);
+      case ValidateLastNameIntent(lastName: final lastName):
+        _validateLastName(lastName);
+      case ValidateUserNameIntent(userName: final userName):
+        _validateUserName(userName);
+      case ValidatePhoneIntent(phone: final phone):
+        _validatePhone(phone);
+      case ValidatePasswordIntent(password: final password):
+        _validatePassword(password);
+      case ValidateConfirmPasswordIntent(
+        confirmPassword: final confirmPassword,
+        password: final password,
+      ):
+        _validateConfirmPassword(confirmPassword, password);
       case TogglePasswordVisibilityIntent():
         _togglePasswordVisibility();
       case ToggleConfirmPasswordVisibilityIntent():
@@ -122,8 +136,103 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
   }
 
-  void _validateCreateAccountButton({required bool enabled}) {
-    emit(state.copyWith(enabledCreateAccountButton: enabled));
+  void _validateFirstName(String firstName) {
+    final bool firstNameValid =
+        AppValidators.validateRequired(firstName) == null;
+    emit(
+      state.copyWith(
+        validFirstName: firstNameValid,
+        enabledCreateAccountButton:
+            firstNameValid &&
+            state.validLastName &&
+            state.validUserName &&
+            state.validPhone &&
+            state.validPassword &&
+            state.validConfirmPassword,
+      ),
+    );
+  }
+
+  void _validateLastName(String lastName) {
+    final bool lastNameValid = AppValidators.validateRequired(lastName) == null;
+    emit(
+      state.copyWith(
+        validLastName: lastNameValid,
+        enabledCreateAccountButton:
+            state.validFirstName &&
+            lastNameValid &&
+            state.validUserName &&
+            state.validPhone &&
+            state.validPassword &&
+            state.validConfirmPassword,
+      ),
+    );
+  }
+
+  void _validateUserName(String userName) {
+    final bool userNameValid = AppValidators.validateUserName(userName) == null;
+    emit(
+      state.copyWith(
+        validUserName: userNameValid,
+        enabledCreateAccountButton:
+            state.validFirstName &&
+            state.validLastName &&
+            userNameValid &&
+            state.validPhone &&
+            state.validPassword &&
+            state.validConfirmPassword,
+      ),
+    );
+  }
+
+  void _validatePhone(String phone) {
+    final bool phoneValid = AppValidators.validatePhoneNumber(phone) == null;
+    emit(
+      state.copyWith(
+        validPhone: phoneValid,
+        enabledCreateAccountButton:
+            state.validFirstName &&
+            state.validLastName &&
+            state.validUserName &&
+            phoneValid &&
+            state.validPassword &&
+            state.validConfirmPassword,
+      ),
+    );
+  }
+
+  void _validatePassword(String password) {
+    final bool passwordValid = AppValidators.validatePassword(password) == null;
+    emit(
+      state.copyWith(
+        validPassword: passwordValid,
+        enabledCreateAccountButton:
+            state.validFirstName &&
+            state.validLastName &&
+            state.validUserName &&
+            state.validPhone &&
+            passwordValid &&
+            state.validConfirmPassword,
+      ),
+    );
+  }
+
+  void _validateConfirmPassword(String confirmPassword, String password) {
+    final bool confirmPasswordValid =
+        AppValidators.validateConfirmPassword(confirmPassword, password) ==
+        null;
+    emit(
+      state.copyWith(
+        validConfirmPassword: confirmPasswordValid,
+        enabledCreateAccountButton:
+            state.validFirstName &&
+            state.validLastName &&
+            state.validUserName &&
+            state.validPhone &&
+            state.validPassword &&
+            confirmPasswordValid,
+      ),
+    );
   }
 
   void _togglePasswordVisibility() {
