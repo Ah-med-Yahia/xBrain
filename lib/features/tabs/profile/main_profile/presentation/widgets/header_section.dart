@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/main_profile_cubit.dart';
+import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/main_profile_intents.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HeaderSection extends StatelessWidget {
@@ -49,30 +52,38 @@ class HeaderSection extends StatelessWidget {
       padding: EdgeInsets.only(top: size.height * 0.06),
       child: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 4),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.15),
-                  blurRadius: 16,
-                  spreadRadius: 2,
-                ),
-              ],
+          GestureDetector(
+            onTap: () {
+              context.read<MainProfileCubit>().doIntent(
+                NavigateToEditProfileImageScreenIntent(imageUrl: imageUrl),
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 4),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.15),
+                    blurRadius: 16,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: imageUrl != null && imageUrl!.isNotEmpty
+                  ? CachedNetworkImage(
+                      imageUrl: imageUrl!,
+                      imageBuilder: (context, imageProvider) => CircleAvatar(
+                        radius: size.width * 0.15,
+                        backgroundImage: imageProvider,
+                      ),
+                      placeholder: (context, url) =>
+                          _shimmerPlaceholder(context),
+                      errorWidget: (context, url, error) =>
+                          _fallbackAvatar(context),
+                    )
+                  : _fallbackAvatar(context),
             ),
-            child: imageUrl != null && imageUrl!.isNotEmpty
-                ? CachedNetworkImage(
-                    imageUrl: imageUrl!,
-                    imageBuilder: (context, imageProvider) => CircleAvatar(
-                      radius: size.width * 0.15,
-                      backgroundImage: imageProvider,
-                    ),
-                    placeholder: (context, url) => _shimmerPlaceholder(context),
-                    errorWidget: (context, url, error) =>
-                        _fallbackAvatar(context),
-                  )
-                : _fallbackAvatar(context),
           ),
           const SizedBox(height: 10),
           Text(

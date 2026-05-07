@@ -31,7 +31,7 @@ class MainBody extends StatelessWidget {
             child: CustomErrorWidget(
               error: baseState.errorMessage!,
               onTryAgain: () {
-                context.read<MainProfileCubit>().onIntent(
+                context.read<MainProfileCubit>().doIntent(
                   GetProfileDataIntent(),
                 );
               },
@@ -54,9 +54,9 @@ class MainBody extends StatelessWidget {
               imageUrl: user?.profilePicture,
             ),
             SizedBox(height: size.height * 0.04),
-            const ActionButtons(),
+            ActionButtons(user: user!),
             SizedBox(height: size.height * 0.02),
-            PointCard(points: user?.wallet.balance),
+            PointCard(points: user.wallet.balance),
             SizedBox(height: size.height * 0.015),
             const StatsRow(),
             SizedBox(height: size.height * 0.01),

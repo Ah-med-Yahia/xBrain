@@ -8,6 +8,9 @@ abstract class AppRoutesConstants {
   static const String resetPasswordRoute = '/reset-password';
   static const String otpVerificationRoute = '/otp-verification';
   static const String mainScreenRoute = '/main-screen';
+  static const String editProfileRoute = '/edit-profile';
+  static const String editProfileImageRoute = '/edit-profile-image';
   static const String emailKey = 'email';
   static const String resetTokenKey = 'resetToken';
+  static const String imageUrlKey = 'imageUrl';
 }
