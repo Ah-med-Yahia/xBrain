@@ -30,8 +30,30 @@ class ApiConstants {
   static const String verifyResetOtp = 'auth/verify-reset-otp/';
   //==================== Profile============================
   static const String updateProfile = 'users/me/';
+  static const String getCertificate = 'users/me/certificates/';
+  static const String addCertificate = 'users/me/certificates/';
+  static const String deleteCertificate = 'users/me/certificates/{id}/';
   //==================== Specializations============================
   static const String specializations = 'specializations/';
   static const String selectSpecializations = 'users/me/specializations/';
   static const String getProfile = 'users/me/';
+  //==========================================================
+  //==================== Questions ============================
+  //==========================================================
+  //==================== Get Questions ============================
+  static const String getQuestionList = 'questions/';
+  static const String getQuestionDetails = 'questions/{id}/';
+  //==================== Add Question ============================
+  static const String addQuestion = 'questions/';
+  //==================== Update Questions ============================
+  static const String resolveQuestion = 'questions/{id}/resolve/';
+  static const String unresolveQuestion = 'questions/{id}/unresolve/';
+  static const String updateQuestion = 'questions/{id}/';
+  //==================== Delete Question ============================
+  static const String deleteQuestion = 'questions/{id}/';
+  //==========================================================
+  //==================== Answers ============================
+  //==========================================================
+  //==================== Get Answers ============================
+  static const String getAllAnswers = 'questions/{question_id}/answers/';
 }
