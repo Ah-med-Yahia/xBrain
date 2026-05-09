@@ -70,6 +70,8 @@ class ApiConstants {
       'questions/{question_id}/answers/'; // when get All answers {_,AnswersOfQuestionResponsModel}
   static const String getReplies =
       'answers/{id}/replies/'; // when get all replies {_,AnswersOfQuestionResponsModel}
+  static const String getSingleAnswerOrReply =
+      'answers/{id}/'; // {_,AnswerModel}
   //==================== Update Answers ============================
   static const String updateAnswer =
       'answers/{id}/'; // {AddAnswerRequestModel,AnswerModel}
@@ -78,4 +80,38 @@ class ApiConstants {
   //============================================================
   //==================== Attachments =========================
   static const String deleteAttachment = 'attachments/{id}/'; // {_,}
+  //==========================================================
+  //==================== Posts =========================
+  //==================== Add Post ==========================
+  static const String addPost = 'posts/'; // {AddPostRequestModel,PostModel}
+  //==================== Get Posts ==========================
+  static const String getPosts = 'posts/'; // {_,GetPostsResponseModel}
+  static const String getSinglePost = 'posts/{id}/'; // {_,PostModel}
+  //==================== Update Post ==========================
+  static const String updatePost =
+      'posts/{id}/'; // {AddPostRequestModel,PostModel}
+  static const String likePost = 'posts/{id}/like/'; // {_,PostModel}
+  static const String unlikePost = 'posts/{id}/dislike/'; // {_,PostModel}
+  //==================== Delete Post ==========================
+  static const String deletePost = 'posts/{id}/'; // {_,_}
+  //==========================================================
+  //==================== Comments ============================
+  //==========================================================
+  //==================== Get Comments ==========================
+  static const String getComments =
+      'posts/{id}/comments/'; // {_,GetCommentsOfPostResponseModel}
+  static const String getRepliesOnComment =
+      'comments/{id}/replies/'; // {_,GetCommentsOfPostResponseModel }
+  static const String getSingleCommentOrReply =
+      'comments/{id}/'; // {_,CommentModel}
+  //==================== Add Comment ==========================
+  static const String addComment =
+      'posts/{id}/comments/'; // {String {content},CommentModel}
+  static const String addReplyOnComment =
+      'comments/{id}/replies/'; // {String {content},CommentModel}
+  //==================== Delete CommentOrReply ==========================
+  static const String deleteCommentOrReply = 'comments/{id}/'; // {_,_}
+  //==================== Update CommentOrReply ==========================
+  static const String updateCommentOrReply =
+      'comments/{id}/'; // {String {content},CommentModel}
 }
