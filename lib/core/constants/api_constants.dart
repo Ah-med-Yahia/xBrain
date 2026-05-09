@@ -41,19 +41,41 @@ class ApiConstants {
   //==================== Questions ============================
   //==========================================================
   //==================== Get Questions ============================
-  static const String getQuestionList = 'questions/';
-  static const String getQuestionDetails = 'questions/{id}/';
+  static const String getQuestionList =
+      'questions/'; // home tab  {_,GetListQuestionsResponseModel}
+  static const String getFirstTenAnswersOfQuestion =
+      'questions/{id}/'; // when tab on a question  {_,FirstTenAnswerOfQuestionResponsModel}
   //==================== Add Question ============================
-  static const String addQuestion = 'questions/';
+  static const String addQuestion =
+      'questions/'; // when add a question {AddQuestionRequestModel,AddQuestionResponseModel}
   //==================== Update Questions ============================
-  static const String resolveQuestion = 'questions/{id}/resolve/';
-  static const String unresolveQuestion = 'questions/{id}/unresolve/';
-  static const String updateQuestion = 'questions/{id}/';
+  static const String resolveQuestion =
+      'questions/{id}/resolve/'; // {_,FirstTenAnswerOfQuestionResponsModel}
+  static const String unresolveQuestion =
+      'questions/{id}/unresolve/'; // {_,FirstTenAnswerOfQuestionResponsModel}
+  static const String updateQuestion =
+      'questions/{id}/'; // {AddQuestionRequestModel,AddQuestionResponseModel}
   //==================== Delete Question ============================
-  static const String deleteQuestion = 'questions/{id}/';
+  static const String deleteQuestion = 'questions/{id}/'; // {_,}
   //==========================================================
   //==================== Answers ============================
   //==========================================================
+  //==================== Add Answer ==========================
+  static const String addAnswer =
+      'questions/{question_id}/answers/'; // {AddAnswerRequestModel,AnswerModel}
+  static const String addReply =
+      'answers/{id}/replies/'; // when add a reply {AddAnswerRequestModel,AnswerModel}
   //==================== Get Answers ============================
-  static const String getAllAnswers = 'questions/{question_id}/answers/';
+  static const String getAllAnswers =
+      'questions/{question_id}/answers/'; // when get All answers {_,AnswersOfQuestionResponsModel}
+  static const String getReplies =
+      'answers/{id}/replies/'; // when get all replies {_,AnswersOfQuestionResponsModel}
+  //==================== Update Answers ============================
+  static const String updateAnswer =
+      'answers/{id}/'; // {AddAnswerRequestModel,AnswerModel}
+  //==================== Delete Answers ============================
+  static const String deleteAnswer = 'answers/{id}/'; // {_,_}
+  //============================================================
+  //==================== Attachments =========================
+  static const String deleteAttachment = 'attachments/{id}/'; // {_,}
 }

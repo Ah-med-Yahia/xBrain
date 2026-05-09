@@ -1,10 +1,11 @@
-import 'package:explaino/core/shared/data/models/questions/request/get_list_questions_response_model/attachment_model.dart';
-import 'package:explaino/core/shared/data/models/questions/request/get_list_questions_response_model/author_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/first_ten_answers_of_question_response_model/reply_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/attachment_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/author_model.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'reply_model.g.dart';
+part 'answer_model.g.dart';
 
 @JsonSerializable()
-class ReplyModel {
+class AnswerModel {
   @JsonKey(name: 'id')
   final String id;
   @JsonKey(name: 'question')
@@ -14,9 +15,11 @@ class ReplyModel {
   @JsonKey(name: 'content')
   final String content;
   @JsonKey(name: 'parent_answer')
-  final String parentAnswer;
+  final String? parentAnswer;
   @JsonKey(name: 'replies_count')
   final int repliesCount;
+  @JsonKey(name: 'replies')
+  final List<ReplyModel>? replies;
   @JsonKey(name: 'attachments')
   final List<AttachmentModel> attachments;
   @JsonKey(name: 'created_at')
@@ -24,20 +27,21 @@ class ReplyModel {
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
 
-  ReplyModel({
+  AnswerModel({
     required this.id,
     required this.question,
     required this.author,
     required this.content,
     required this.parentAnswer,
     required this.repliesCount,
+    required this.replies,
     required this.attachments,
     required this.createdAt,
     required this.updatedAt,
   });
 
-  factory ReplyModel.fromJson(Map<String, dynamic> json) =>
-      _$ReplyModelFromJson(json);
+  factory AnswerModel.fromJson(Map<String, dynamic> json) =>
+      _$AnswerModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ReplyModelToJson(this);
+  Map<String, dynamic> toJson() => _$AnswerModelToJson(this);
 }

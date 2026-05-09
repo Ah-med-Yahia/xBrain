@@ -1,11 +1,10 @@
-import 'package:explaino/core/shared/data/models/questions/request/get_list_questions_response_model/attachment_model.dart';
-import 'package:explaino/core/shared/data/models/questions/request/get_list_questions_response_model/author_model.dart';
-import 'package:explaino/core/shared/data/models/questions/response/reply_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/attachment_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/author_model.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'answer_model.g.dart';
+part 'reply_model.g.dart';
 
 @JsonSerializable()
-class AnswerModel {
+class ReplyModel {
   @JsonKey(name: 'id')
   final String id;
   @JsonKey(name: 'question')
@@ -18,8 +17,6 @@ class AnswerModel {
   final String parentAnswer;
   @JsonKey(name: 'replies_count')
   final int repliesCount;
-  @JsonKey(name: 'replies')
-  final List<ReplyModel> replies;
   @JsonKey(name: 'attachments')
   final List<AttachmentModel> attachments;
   @JsonKey(name: 'created_at')
@@ -27,21 +24,20 @@ class AnswerModel {
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
 
-  AnswerModel({
+  ReplyModel({
     required this.id,
     required this.question,
     required this.author,
     required this.content,
     required this.parentAnswer,
     required this.repliesCount,
-    required this.replies,
     required this.attachments,
     required this.createdAt,
     required this.updatedAt,
   });
 
-  factory AnswerModel.fromJson(Map<String, dynamic> json) =>
-      _$AnswerModelFromJson(json);
+  factory ReplyModel.fromJson(Map<String, dynamic> json) =>
+      _$ReplyModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AnswerModelToJson(this);
+  Map<String, dynamic> toJson() => _$ReplyModelToJson(this);
 }

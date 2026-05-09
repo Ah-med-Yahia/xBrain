@@ -1,6 +1,6 @@
 import 'package:explaino/core/shared/data/models/auth/user_model/specialization_model/specialization_model.dart';
-import 'package:explaino/core/shared/data/models/questions/request/get_list_questions_response_model/attachment_model.dart';
-import 'package:explaino/core/shared/data/models/questions/request/get_list_questions_response_model/author_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/attachment_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/author_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'question_model.g.dart';

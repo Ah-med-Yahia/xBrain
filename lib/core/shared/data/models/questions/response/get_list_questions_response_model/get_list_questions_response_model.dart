@@ -1,4 +1,4 @@
-import 'package:explaino/core/shared/data/models/questions/request/get_list_questions_response_model/question_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/question_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'get_list_questions_response_model.g.dart';

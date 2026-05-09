@@ -1,13 +1,13 @@
 import 'package:explaino/core/shared/data/models/auth/user_model/specialization_model/specialization_model.dart';
-import 'package:explaino/core/shared/data/models/questions/request/get_list_questions_response_model/attachment_model.dart';
-import 'package:explaino/core/shared/data/models/questions/request/get_list_questions_response_model/author_model.dart';
-import 'package:explaino/core/shared/data/models/questions/response/answer_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/first_ten_answers_of_question_response_model/answer_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/attachment_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/author_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'add_question_response_model.g.dart';
+part 'first_ten_answers_of_question_response_model.g.dart';
 
 @JsonSerializable()
-class AddQuestionResponsModel {
+class FirstTenAnswerOfQuestionResponsModel {
   @JsonKey(name: 'id')
   final String id;
   @JsonKey(name: 'author')
@@ -19,7 +19,7 @@ class AddQuestionResponsModel {
   @JsonKey(name: 'is_resolved')
   final bool isResolved;
   @JsonKey(name: 'resolved_at')
-  final DateTime resolvedAt;
+  final DateTime? resolvedAt;
   @JsonKey(name: 'answers_count')
   final int answersCount;
   @JsonKey(name: 'answers')
@@ -31,7 +31,7 @@ class AddQuestionResponsModel {
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
 
-  AddQuestionResponsModel({
+  FirstTenAnswerOfQuestionResponsModel({
     required this.id,
     required this.author,
     required this.content,
@@ -45,8 +45,10 @@ class AddQuestionResponsModel {
     required this.updatedAt,
   });
 
-  factory AddQuestionResponsModel.fromJson(Map<String, dynamic> json) =>
-      _$AddQuestionResponsModelFromJson(json);
+  factory FirstTenAnswerOfQuestionResponsModel.fromJson(
+    Map<String, dynamic> json,
+  ) => _$FirstTenAnswerOfQuestionResponsModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AddQuestionResponsModelToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$FirstTenAnswerOfQuestionResponsModelToJson(this);
 }
