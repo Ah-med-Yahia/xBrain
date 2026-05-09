@@ -1,0 +1,54 @@
+import 'package:explaino/core/shared/data/models/auth/user_model/specialization_model/specialization_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/first_ten_answers_of_question_response_model/answer_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/attachment_model.dart';
+import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/author_model.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'first_ten_answers_of_question_response_model.g.dart';
+
+@JsonSerializable()
+class FirstTenAnswerOfQuestionResponsModel {
+  @JsonKey(name: 'id')
+  final String id;
+  @JsonKey(name: 'author')
+  final AuthorModel author;
+  @JsonKey(name: 'content')
+  final String content;
+  @JsonKey(name: 'specializations')
+  final List<SpecializationModel> specializations;
+  @JsonKey(name: 'is_resolved')
+  final bool isResolved;
+  @JsonKey(name: 'resolved_at')
+  final DateTime? resolvedAt;
+  @JsonKey(name: 'answers_count')
+  final int answersCount;
+  @JsonKey(name: 'answers')
+  final List<AnswerModel> answers;
+  @JsonKey(name: 'attachments')
+  final List<AttachmentModel> attachments;
+  @JsonKey(name: 'created_at')
+  final DateTime createdAt;
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
+
+  FirstTenAnswerOfQuestionResponsModel({
+    required this.id,
+    required this.author,
+    required this.content,
+    required this.specializations,
+    required this.isResolved,
+    required this.resolvedAt,
+    required this.answersCount,
+    required this.answers,
+    required this.attachments,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory FirstTenAnswerOfQuestionResponsModel.fromJson(
+    Map<String, dynamic> json,
+  ) => _$FirstTenAnswerOfQuestionResponsModelFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$FirstTenAnswerOfQuestionResponsModelToJson(this);
+}
