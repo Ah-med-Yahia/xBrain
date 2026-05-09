@@ -16,13 +16,9 @@ class SpecializationModel {
   @JsonKey(name: 'name')
   final String name;
   @JsonKey(name: 'description')
-  final String description;
+  final String? description;
 
-  SpecializationModel({
-    required this.id,
-    required this.name,
-    required this.description,
-  });
+  SpecializationModel({required this.id, required this.name, this.description});
 
   SpecializationModel copyWith({
     String? id,

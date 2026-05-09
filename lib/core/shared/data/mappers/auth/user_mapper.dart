@@ -30,6 +30,10 @@ extension WalletMapper on WalletModel {
 
 extension SpecializationMapper on SpecializationModel {
   SpecializationEntity toEntity() {
-    return SpecializationEntity(id: id, name: name, description: description);
+    return SpecializationEntity(
+      id: id,
+      name: name,
+      description: description ?? '',
+    );
   }
 }
