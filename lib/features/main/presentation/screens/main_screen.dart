@@ -1,11 +1,11 @@
 import 'package:explaino/config/di/di.dart';
+import 'package:explaino/core/constants/nav_bar_page_list_constants.dart';
 import 'package:explaino/core/gen/assets.gen.dart';
 import 'package:explaino/features/main/presentation/cubit/main_cubit.dart';
 import 'package:explaino/features/main/presentation/cubit/main_intents.dart';
 import 'package:explaino/features/main/presentation/cubit/main_state.dart';
 import 'package:explaino/features/main/presentation/widgets/custom_nav_bar.dart';
 import 'package:explaino/features/main/presentation/widgets/main_screen_appbar.dart';
-import 'package:explaino/features/tabs/profile/main_profile/presentation/screens/main_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,16 +24,7 @@ class _MainScreenState extends State<MainScreen>
   late Animation<Offset> _navBarSlideAnimation;
   late Animation<Offset> _fabSlideAnimation;
   late Animation<double> _fabScaleAnimation;
-
   late MainCubit _mainCubit;
-
-  static final List<Widget> _pages = [
-    Container(color: Colors.red, height: 2000),
-    Container(color: Colors.green, height: 2000),
-    Container(color: Colors.blue, height: 2000),
-    Container(color: Colors.yellow, height: 2000),
-    const ProfileScreen(),
-  ];
 
   @override
   void initState() {
@@ -119,7 +110,7 @@ class _MainScreenState extends State<MainScreen>
             buildWhen: (previous, current) =>
                 previous.selectedIndex != current.selectedIndex,
             builder: (context, state) {
-              return _pages[state.selectedIndex];
+              return navBarPages[state.selectedIndex];
             },
           ),
         ),
