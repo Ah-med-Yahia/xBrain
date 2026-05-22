@@ -24,6 +24,7 @@ class ErrorsConstant {
   //================== Local Exceptions ==================================
   static const String cacheError = 'Cache error occurred.';
   static const String fileIsTooLarge = 'File is too large.';
+  static const String unsupportedFileType = 'Unsupported file type.';
 
   //================== Unknown Error ==================================
   static const String defaultError = 'Something went wrong. Please try again.';
