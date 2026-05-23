@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:explaino/config/di/di.dart';
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/domain/entities/request/add_post_request_entity.dart';
@@ -9,6 +11,7 @@ import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/add_posts_questions_certificates_intents.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/add_posts_questions_certificates_side_effects.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_attachment_toolbar.dart';
+import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_certificate_form.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_content_editor.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_content_type_tab_bar.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_specialization_chips.dart';
@@ -28,16 +31,21 @@ class AddPostsQuestionsCertificatesScreen extends StatefulWidget {
 class _AddPostsQuestionsCertificatesScreenState
     extends State<AddPostsQuestionsCertificatesScreen> {
   static const List<String> _specializations = [
-    'Cyber Security',
-    'UI/UX',
-    'Flutter',
+    AppTextConstants.cyberSecurity,
+    AppTextConstants.uiUx,
+    AppTextConstants.flutter,
   ];
 
   late final AddPostsQuestionsCertificatesCubit _cubit;
   late final StreamSubscription<AddPostsQuestionsCertificatesSideEffects>
   _sideEffectsSubscription;
   final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _certificateNameController =
+      TextEditingController();
+  final TextEditingController _organizationNameController =
+      TextEditingController();
   final Set<String> _selectedSpecializations = {_specializations.first};
+  File? _selectedCertificateImage;
   AddContentType _selectedType = AddContentType.question;
 
   @override
@@ -51,6 +59,8 @@ class _AddPostsQuestionsCertificatesScreenState
   void dispose() {
     _sideEffectsSubscription.cancel();
     _contentController.dispose();
+    _certificateNameController.dispose();
+    _organizationNameController.dispose();
     _cubit.close();
     super.dispose();
   }
@@ -88,11 +98,10 @@ class _AddPostsQuestionsCertificatesScreenState
   }
 
   void _submit() {
-    final content = _contentController.text.trim();
-    if (content.isEmpty) return;
-
     switch (_selectedType) {
       case AddContentType.question:
+        final content = _contentController.text.trim();
+        if (content.isEmpty) return;
         _cubit.doIntent(
           AddQuestionIntent(
             request: AddQuestionRequestEntity(
@@ -103,6 +112,8 @@ class _AddPostsQuestionsCertificatesScreenState
           ),
         );
       case AddContentType.post:
+        final content = _contentController.text.trim();
+        if (content.isEmpty) return;
         _cubit.doIntent(
           AddPostIntent(
             request: AddPostRequestEntity(
@@ -113,14 +124,14 @@ class _AddPostsQuestionsCertificatesScreenState
         );
       case AddContentType.certificate:
         UIUtils.showMessage(
-          'Certificate submit is not available yet',
+          AppTextConstants.certificateSubmitNotAvailable,
           backGroundColor: AppColors.grey200,
           textColor: AppColors.white,
         );
     }
   }
 
-  void _close() {
+  void _goBack() {
     if (Navigator.of(context).canPop()) {
       Navigator.of(context).pop();
     }
@@ -130,28 +141,20 @@ class _AddPostsQuestionsCertificatesScreenState
   Widget build(BuildContext context) {
     final title = _selectedType.title;
     final isQuestion = _selectedType == AddContentType.question;
+    final isCertificate = _selectedType == AddContentType.certificate;
 
     return BlocProvider.value(
       value: _cubit,
       child: Scaffold(
-        backgroundColor: AppColors.white,
         appBar: AppBar(
-          backgroundColor: AppColors.white,
-          elevation: 0,
           scrolledUnderElevation: 0,
           leading: IconButton(
-            tooltip: 'Close',
-            onPressed: _close,
-            icon: const Icon(Icons.close_rounded, color: AppColors.black),
+            tooltip: AppTextConstants.back,
+            onPressed: _goBack,
+            icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 21),
           ),
           titleSpacing: 0,
-          title: Text(
-            title,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.black,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
+          title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
           actions: [
             Padding(
               padding: const EdgeInsetsDirectional.only(end: 12),
@@ -161,7 +164,7 @@ class _AddPostsQuestionsCertificatesScreenState
                   color: AppColors.primary,
                   size: 18,
                 ),
-                label: const Text('1,000'),
+                label: const Text(AppTextConstants.pointsBalance),
                 labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.w800,
@@ -173,24 +176,32 @@ class _AddPostsQuestionsCertificatesScreenState
             ),
           ],
         ),
-        body: SafeArea(
-          top: false,
-          child: Column(
-            children: [
-              const Divider(height: 1, color: AppColors.lightPeriwinkle),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: AddContentTypeTabBar(
-                  selectedType: _selectedType,
-                  onChanged: _changeContentType,
-                ),
+        body: Column(
+          children: [
+            const Divider(height: 1, color: AppColors.lightPeriwinkle),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: AddContentTypeTabBar(
+                selectedType: _selectedType,
+                onChanged: _changeContentType,
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 22, 20, 0),
-                  child: AddContentEditor(controller: _contentController),
-                ),
-              ),
+            ),
+            Expanded(
+              child: isCertificate
+                  ? AddCertificateForm(
+                      certificateNameController: _certificateNameController,
+                      organizationNameController: _organizationNameController,
+                      selectedImage: _selectedCertificateImage,
+                      onImagePicked: (image) {
+                        setState(() => _selectedCertificateImage = image);
+                      },
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                      child: AddContentEditor(controller: _contentController),
+                    ),
+            ),
+            if (!isCertificate) ...[
               if (isQuestion)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -209,9 +220,9 @@ class _AddPostsQuestionsCertificatesScreenState
                 ),
               ),
               if (isQuestion) const AddSpendNotice(),
-              AddSubmitButton(label: title, onPressed: _submit),
             ],
-          ),
+            AddSubmitButton(label: title, onPressed: _submit),
+          ],
         ),
       ),
     );

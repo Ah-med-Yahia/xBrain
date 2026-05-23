@@ -1,3 +1,4 @@
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class AddAttachmentToolbar extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          tooltip: 'Add image',
+          tooltip: AppTextConstants.addImage,
           onPressed: onAddImage,
           visualDensity: VisualDensity.compact,
           icon: const Icon(
@@ -26,7 +27,7 @@ class AddAttachmentToolbar extends StatelessWidget {
           ),
         ),
         IconButton(
-          tooltip: 'Add link',
+          tooltip: AppTextConstants.addLink,
           onPressed: onAddLink,
           visualDensity: VisualDensity.compact,
           icon: const Icon(

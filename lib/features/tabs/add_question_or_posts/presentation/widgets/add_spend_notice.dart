@@ -1,3 +1,4 @@
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -18,16 +19,16 @@ class AddSpendNotice extends StatelessWidget {
           Expanded(
             child: Text.rich(
               TextSpan(
-                text: 'You will spend ',
+                text: AppTextConstants.spendNoticePrefix,
                 children: [
                   TextSpan(
-                    text: '50 pts',
+                    text: AppTextConstants.spendNoticePoints,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const TextSpan(text: ' for asking that question'),
+                  const TextSpan(text: AppTextConstants.spendNoticeSuffix),
                 ],
               ),
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
