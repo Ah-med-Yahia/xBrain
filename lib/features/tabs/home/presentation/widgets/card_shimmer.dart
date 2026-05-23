@@ -1,3 +1,4 @@
+import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CardShimmer extends StatefulWidget {
@@ -37,11 +38,11 @@ class _ShimmerState extends State<CardShimmer>
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
+            color: AppColors.black.withValues(alpha: 0.06),
             blurRadius: 12,
             offset: const Offset(0, 3),
           ),
@@ -111,22 +112,8 @@ class _ShimmerState extends State<CardShimmer>
                 Row(
                   children: [
                     _ShimmerBox(
-                      width: 48,
-                      height: 20,
-                      borderRadius: 6,
-                      animation: _animation,
-                    ),
-                    const SizedBox(width: 16),
-                    _ShimmerBox(
-                      width: 48,
-                      height: 20,
-                      borderRadius: 6,
-                      animation: _animation,
-                    ),
-                    const SizedBox(width: 16),
-                    _ShimmerBox(
-                      width: 48,
-                      height: 20,
+                      width: 110,
+                      height: 34,
                       borderRadius: 6,
                       animation: _animation,
                     ),
@@ -172,11 +159,11 @@ class _ShimmerBox extends StatelessWidget {
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                       colors: const [
-                        Color(0xFFEEEEEE),
-                        Color(0xFFF5F5F5),
-                        Color(0xFFFFFFFF),
-                        Color(0xFFF5F5F5),
-                        Color(0xFFEEEEEE),
+                        AppColors.silver,
+                        AppColors.offWhite,
+                        AppColors.white,
+                        AppColors.offWhite,
+                        AppColors.silver,
                       ],
                       stops: const [0.0, 0.35, 0.5, 0.65, 1.0],
                       transform: _SlidingGradientTransform(animation.value),
