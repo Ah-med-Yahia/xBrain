@@ -108,7 +108,7 @@ class _MainScreenState extends State<MainScreen>
                 _onScroll(notification.direction);
                 return false;
               },
-              child: pages()[state.selectedIndex],
+              child: navBarPages[state.selectedIndex],
             );
           },
         ),
