@@ -1,3 +1,4 @@
+import 'package:explaino/core/constants/home_tap_bar_list.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/tabs/home/presentation/cubit/home_cubit.dart';
 import 'package:explaino/features/tabs/home/presentation/cubit/home_intents.dart';
@@ -7,8 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeTabBar extends StatelessWidget {
   const HomeTabBar({super.key});
-
-  static const _tabs = ['Questions', 'Posts'];
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,7 @@ class HomeTabBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _TabItem(
-              label: _tabs[0],
+              label: tabs[0],
               isSelected: state.questionTapActive,
               onTap: () {
                 context.read<HomeCubit>().doIntent(ToQuestionsTapIntent());
@@ -29,7 +28,7 @@ class HomeTabBar extends StatelessWidget {
               margin: const EdgeInsets.only(right: 10),
             ),
             _TabItem(
-              label: _tabs[1],
+              label: tabs[1],
               isSelected: state.postsTapActive,
               onTap: () {
                 context.read<HomeCubit>().doIntent(ToPostsTapIntent());

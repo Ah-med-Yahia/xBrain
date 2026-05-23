@@ -1,12 +1,11 @@
 import 'package:explaino/config/di/di.dart';
+import 'package:explaino/core/constants/nav_bar_page_list_constants.dart';
 import 'package:explaino/core/gen/assets.gen.dart';
 import 'package:explaino/features/main/presentation/cubit/main_cubit.dart';
 import 'package:explaino/features/main/presentation/cubit/main_intents.dart';
 import 'package:explaino/features/main/presentation/cubit/main_state.dart';
 import 'package:explaino/features/main/presentation/widgets/custom_nav_bar.dart';
 import 'package:explaino/features/main/presentation/widgets/main_screen_appbar.dart';
-import 'package:explaino/features/tabs/home/presentation/screens/home_screen.dart';
-import 'package:explaino/features/tabs/profile/main_profile/presentation/screens/main_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +19,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
-  // ✅ شيلنا _scrollController — مش محتاجينه
   late AnimationController _animationController;
   late Animation<Offset> _navBarSlideAnimation;
   late Animation<Offset> _fabSlideAnimation;
@@ -34,7 +32,7 @@ class _MainScreenState extends State<MainScreen>
 
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300), // ✅ أسرع شوية زي LinkedIn
+      duration: const Duration(milliseconds: 300),
     );
 
     _navBarSlideAnimation =
@@ -69,7 +67,6 @@ class _MainScreenState extends State<MainScreen>
     );
   }
 
-  // ✅ بيتعمل call من الـ NotificationListener في أي screen
   void _onScroll(ScrollDirection direction) {
     if (direction == ScrollDirection.reverse) {
       if (_mainCubit.state.isNavBarVisible) {
@@ -86,16 +83,6 @@ class _MainScreenState extends State<MainScreen>
         _animationController.reverse();
       }
     }
-  }
-
-  List<Widget> _pages() {
-    return [
-      const HomeScreen(), // ✅ مش بنبعت scrollController
-      Container(color: Colors.green, height: 2000),
-      Container(color: Colors.blue, height: 2000),
-      Container(color: Colors.yellow, height: 2000),
-      const ProfileScreen(),
-    ];
   }
 
   @override
@@ -116,13 +103,12 @@ class _MainScreenState extends State<MainScreen>
           buildWhen: (previous, current) =>
               previous.selectedIndex != current.selectedIndex,
           builder: (context, state) {
-            // ✅ NotificationListener يسمع على أي scroll في أي screen
             return NotificationListener<UserScrollNotification>(
               onNotification: (notification) {
                 _onScroll(notification.direction);
-                return false; // false عشان الـ notification يكمل للـ widgets التانية
+                return false;
               },
-              child: _pages()[state.selectedIndex],
+              child: pages()[state.selectedIndex],
             );
           },
         ),
