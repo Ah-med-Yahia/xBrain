@@ -1,6 +1,7 @@
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/nav_bar_page_list_constants.dart';
 import 'package:explaino/core/gen/assets.gen.dart';
+import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/features/main/presentation/cubit/main_cubit.dart';
 import 'package:explaino/features/main/presentation/cubit/main_intents.dart';
 import 'package:explaino/features/main/presentation/cubit/main_state.dart';
@@ -9,6 +10,7 @@ import 'package:explaino/features/main/presentation/widgets/main_screen_appbar.d
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -85,6 +87,15 @@ class _MainScreenState extends State<MainScreen>
     }
   }
 
+  void _onNavTabChanged(int index) {
+    const addTabIndex = 2;
+    if (index == addTabIndex) {
+      context.pushNamed(AppRoutesConstants.addPostsQuestionsCertificatesRoute);
+      return;
+    }
+    _mainCubit.doIntent(ChangeTabIndexIntent(index: index));
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -117,9 +128,8 @@ class _MainScreenState extends State<MainScreen>
             position: _navBarSlideAnimation,
             child: CustomNavBar(
               currentIndex: _mainCubit.state.selectedIndex,
-              onTabChanged: (index) {
-                _mainCubit.doIntent(ChangeTabIndexIntent(index: index));
-              },
+              canSelectItem: (index) => index != 2,
+              onTabChanged: _onNavTabChanged,
             ),
           ),
         ),

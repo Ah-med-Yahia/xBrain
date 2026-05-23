@@ -75,6 +75,32 @@ class AppTextConstants {
   static const String profile = 'Profile';
   static const String welcomeToXbrain = 'Welcome To xBrain';
   static const String appName = 'xBrain';
+  //====================add posts questions certificates============================
+  static const String question = 'Question';
+  static const String certificate = 'Certificate';
+  static const String newQuestion = 'New Question';
+  static const String newPost = 'New Post';
+  static const String newCertificate = 'New Certificate';
+  static const String addContentHint = 'What do you want to talk about?';
+  static const String cyberSecurity = 'Cyber Security';
+  static const String uiUx = 'UI/UX';
+  static const String flutter = 'Flutter';
+  static const String certificateSubmitNotAvailable =
+      'Certificate submit is not available yet';
+  static const String certificateName = 'Certificate Name';
+  static const String writeCertificateName = 'Write your Certificate Name....';
+  static const String organizationName = 'Organization Name';
+  static const String writeCertificateOrganizationName =
+      'Write Certificate Organization Name.....';
+  static const String certificateImage = 'Certificate Image';
+  static const String addCertificateImage = 'Add certificate image';
+  static const String changeCertificateImage = 'Change certificate image';
+  static const String addImage = 'Add image';
+  static const String addLink = 'Add link';
+  static const String pointsBalance = '1,000';
+  static const String spendNoticePrefix = 'You will spend ';
+  static const String spendNoticePoints = '50 pts';
+  static const String spendNoticeSuffix = ' for asking that question';
   static const String onBoardingText1 =
       'Get instant answers to your complex\ntech and science questions from experts\nworldwide.';
   static const String onBoardingText2 =
