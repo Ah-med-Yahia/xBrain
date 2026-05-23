@@ -12,4 +12,18 @@ class GetQuestionListEntity {
     required this.previous,
     required this.questions,
   });
+
+  GetQuestionListEntity copyWith({
+    int? count,
+    String? next,
+    String? previous,
+    List<QuestionModel>? questions,
+  }) {
+    return GetQuestionListEntity(
+      count: count ?? this.count,
+      next: next ?? this.next,
+      previous: previous ?? this.previous,
+      questions: questions ?? this.questions,
+    );
+  }
 }

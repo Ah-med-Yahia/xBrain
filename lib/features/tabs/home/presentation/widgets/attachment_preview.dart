@@ -43,8 +43,9 @@ class AttachmentPreview extends StatelessWidget {
     }
 
     if (pdfAttachment != null) return PdfAttachment(url: pdfAttachment.url);
-    if (videoAttachment != null)
+    if (videoAttachment != null) {
       return VideoAttachment(url: videoAttachment.url);
+    }
 
     return const SizedBox.shrink();
   }

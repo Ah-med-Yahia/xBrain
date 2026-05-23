@@ -13,8 +13,10 @@ abstract class HomeApiClient {
   factory HomeApiClient(Dio dio) = _HomeApiClient;
 
   @GET(ApiConstants.getQuestionList)
-  Future<GetListQuestionsResponseModel> getQuestionList();
+  Future<GetListQuestionsResponseModel> getQuestionList({
+    @Query('page') int page = 1,
+  });
 
   @GET(ApiConstants.getPosts)
-  Future<GetPostsResponsModel> getPostsList();
+  Future<GetPostsResponsModel> getPostsList({@Query('page') int page = 1});
 }

@@ -8,7 +8,8 @@ class GetPostListUseCase {
   final HomeRepo _homeRepo;
 
   GetPostListUseCase(this._homeRepo);
-  Future<BaseResponse<GetPostsResponseEntity>> call() {
-    return _homeRepo.getPostsList();
+
+  Future<BaseResponse<GetPostsResponseEntity>> call({int page = 1}) {
+    return _homeRepo.getPostsList(page: page);
   }
 }

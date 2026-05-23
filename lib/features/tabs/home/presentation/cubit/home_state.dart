@@ -6,14 +6,12 @@ import 'package:explaino/features/tabs/home/domain/entities/response/get_questio
 class HomeState extends Equatable {
   final BaseState<GetQuestionListEntity> questionsState;
   final BaseState<GetPostsResponseEntity> postsState;
-  final int currentPage;
   final bool questionTapActive;
   final bool postsTapActive;
 
   const HomeState({
     this.questionsState = const BaseState<GetQuestionListEntity>(),
     this.postsState = const BaseState<GetPostsResponseEntity>(),
-    this.currentPage = 1,
     this.questionTapActive = true,
     this.postsTapActive = false,
   });
@@ -28,7 +26,6 @@ class HomeState extends Equatable {
     return HomeState(
       questionsState: questionsState ?? this.questionsState,
       postsState: postsState ?? this.postsState,
-      currentPage: currentPage ?? this.currentPage,
       questionTapActive: questionTapActive ?? this.questionTapActive,
       postsTapActive: postsTapActive ?? this.postsTapActive,
     );
@@ -38,7 +35,6 @@ class HomeState extends Equatable {
   List<Object?> get props => [
     questionsState,
     postsState,
-    currentPage,
     questionTapActive,
     postsTapActive,
   ];

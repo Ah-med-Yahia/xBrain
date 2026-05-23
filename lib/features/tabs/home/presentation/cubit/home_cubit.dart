@@ -10,6 +10,13 @@ import 'package:injectable/injectable.dart';
 class HomeCubit extends Cubit<HomeState> {
   final GetQuestionListUseCase _getQuestionListUseCase;
   final GetPostListUseCase _getPostsListUseCase;
+
+  int _questionsPage = 1;
+  bool _hasMoreQuestions = true;
+
+  int _postsPage = 1;
+  bool _hasMorePosts = true;
+
   HomeCubit({
     required GetQuestionListUseCase getQuestionListUseCase,
     required GetPostListUseCase getPostsListUseCase,
@@ -35,20 +42,28 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> _handleGetQuestionList() async {
+    if (!_hasMoreQuestions) return;
+
     emit(
       state.copyWith(
         questionsState: state.questionsState.copyWith(isFetching: true),
       ),
     );
 
-    final result = await _getQuestionListUseCase();
+    final result = await _getQuestionListUseCase(page: _questionsPage);
 
     result.when(
       success: (data) {
+        _hasMoreQuestions = data.next != null;
+        _questionsPage++;
+        final updatedList = [
+          ...?state.questionsState.data?.questions,
+          ...data.questions,
+        ];
         emit(
           state.copyWith(
             questionsState: state.questionsState.copyWith(
-              data: data,
+              data: data.copyWith(questions: updatedList),
               isFetching: false,
             ),
           ),
@@ -68,20 +83,35 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> _handleGetPostsList() async {
+    if (!_hasMorePosts) return;
+
     emit(
       state.copyWith(postsState: state.postsState.copyWith(isFetching: true)),
     );
 
-    final result = await _getPostsListUseCase();
+    final result = await _getPostsListUseCase(page: _postsPage);
 
     result.when(
       success: (data) {
-        emit(state.copyWith(postsState: state.postsState.copyWith(data: data)));
+        _hasMorePosts = data.next != null;
+        _postsPage++;
+        final updatedList = [...?state.postsState.data?.posts, ...data.posts];
+        emit(
+          state.copyWith(
+            postsState: state.postsState.copyWith(
+              data: data.copyWith(posts: updatedList),
+              isFetching: false,
+            ),
+          ),
+        );
       },
       failure: (error) {
         emit(
           state.copyWith(
-            postsState: state.postsState.copyWith(errorMessage: error.message),
+            postsState: state.postsState.copyWith(
+              errorMessage: error.message,
+              isFetching: false,
+            ),
           ),
         );
       },

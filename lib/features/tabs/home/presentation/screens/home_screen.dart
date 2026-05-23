@@ -21,11 +21,34 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late final HomeCubit _homeCubit;
+  final ScrollController _questionsScrollController = ScrollController();
+  final ScrollController _postsScrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _homeCubit = getIt<HomeCubit>()..doIntent(GetQuestionListIntent());
+
+    _questionsScrollController.addListener(() {
+      if (_questionsScrollController.position.pixels ==
+          _questionsScrollController.position.maxScrollExtent) {
+        _homeCubit.doIntent(GetQuestionListIntent());
+      }
+    });
+
+    _postsScrollController.addListener(() {
+      if (_postsScrollController.position.pixels ==
+          _postsScrollController.position.maxScrollExtent) {
+        _homeCubit.doIntent(GetPostsListIntent());
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _questionsScrollController.dispose();
+    _postsScrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -62,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
     required List<T> items,
     required Widget Function(T item) itemBuilder,
     required VoidCallback onRetry,
+    required ScrollController scrollController,
   }) {
     if (state.isFetching && items.isEmpty) {
       return ListView.builder(
@@ -81,9 +105,18 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return ListView.builder(
+      controller: scrollController,
       padding: const EdgeInsets.only(top: 8, bottom: 80),
-      itemCount: items.length,
-      itemBuilder: (_, index) => itemBuilder(items[index]),
+      itemCount: items.length + (state.isFetching ? 1 : 0),
+      itemBuilder: (_, index) {
+        if (index == items.length) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        return itemBuilder(items[index]);
+      },
     );
   }
 
@@ -96,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onRetry: () =>
             context.read<HomeCubit>().doIntent(GetQuestionListIntent()),
         itemBuilder: (question) => QuestionCard(question: question),
+        scrollController: _questionsScrollController,
       ),
     );
   }
@@ -108,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
         items: state.postsState.data?.posts ?? [],
         onRetry: () => context.read<HomeCubit>().doIntent(GetPostsListIntent()),
         itemBuilder: (post) => PostCard(post: post),
+        scrollController: _postsScrollController,
       ),
     );
   }

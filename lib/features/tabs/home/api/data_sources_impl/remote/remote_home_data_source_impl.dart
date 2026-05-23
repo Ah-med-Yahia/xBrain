@@ -12,12 +12,16 @@ class RemoteHomeDataSourceImpl implements RemoteHomeDataSource {
   RemoteHomeDataSourceImpl(this._homeApiClient);
 
   @override
-  Future<BaseResponse<GetListQuestionsResponseModel>> getQuestionList() async {
-    return await safeApiCall(() => _homeApiClient.getQuestionList());
+  Future<BaseResponse<GetListQuestionsResponseModel>> getQuestionList({
+    int page = 1,
+  }) async {
+    return await safeApiCall(() => _homeApiClient.getQuestionList(page: page));
   }
 
   @override
-  Future<BaseResponse<GetPostsResponsModel>> getPostsList() async {
-    return await safeApiCall(() => _homeApiClient.getPostsList());
+  Future<BaseResponse<GetPostsResponsModel>> getPostsList({
+    int page = 1,
+  }) async {
+    return await safeApiCall(() => _homeApiClient.getPostsList(page: page));
   }
 }
