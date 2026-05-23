@@ -4,9 +4,18 @@ import 'package:flutter/material.dart';
 abstract class AppTheme {
   // Light Theme
   static ThemeData lightTheme = ThemeData(
-    // Base Theme Config
     useMaterial3: true,
     brightness: Brightness.light,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppColors.lightScaffold,
+      elevation: 0,
+      iconTheme: IconThemeData(color: AppColors.lightTextPrimary),
+      titleTextStyle: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w800,
+        color: AppColors.lightTextPrimary,
+      ),
+    ),
     scaffoldBackgroundColor: AppColors.lightScaffold,
 
     // Typography (TextTheme)
@@ -166,6 +175,16 @@ abstract class AppTheme {
     // Base Theme Config
     useMaterial3: true,
     brightness: Brightness.dark,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppColors.darkScaffold,
+      elevation: 0,
+      iconTheme: IconThemeData(color: AppColors.darkTextPrimary),
+      titleTextStyle: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w800,
+        color: AppColors.darkTextPrimary,
+      ),
+    ),
     scaffoldBackgroundColor: AppColors.darkScaffold,
 
     // Typography (TextTheme)
