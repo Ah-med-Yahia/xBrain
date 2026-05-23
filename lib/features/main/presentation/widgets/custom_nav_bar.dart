@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 
 class CustomNavBar extends StatefulWidget {
   final Function(int)? onTabChanged;
+  final bool Function(int index)? canSelectItem;
   final int currentIndex;
 
   const CustomNavBar({
     super.key,
     this.onTabChanged,
+    this.canSelectItem,
     required this.currentIndex,
   });
 
@@ -120,6 +122,10 @@ class _CustomNavBarState extends State<CustomNavBar>
 
   void _onItemTapped(int index) {
     if (_currentIndex != index) {
+      if (widget.canSelectItem?.call(index) == false) {
+        widget.onTabChanged?.call(index);
+        return;
+      }
       _indicatorController.reset();
       setState(() => _currentIndex = index);
       _indicatorController.forward();
