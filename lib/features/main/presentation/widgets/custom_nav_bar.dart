@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class CustomNavBar extends StatefulWidget {
   final Function(int)? onTabChanged;
   final int currentIndex;
+  final ScrollController? scrollController;
 
   const CustomNavBar({
     super.key,
     this.onTabChanged,
     required this.currentIndex,
+    this.scrollController,
   });
 
   @override
@@ -22,6 +24,8 @@ class _CustomNavBarState extends State<CustomNavBar>
   int _hoveredIndex = -1;
   bool _isLongPressing = false;
   double _dragDx = 0;
+  bool _isNavBarVisible = true;
+  double _lastScrollOffset = 0;
 
   Rect _navBarRect = Rect.zero;
   final GlobalKey _navBarKey = GlobalKey();
@@ -30,6 +34,10 @@ class _CustomNavBarState extends State<CustomNavBar>
   late Animation<double> _indicatorAnimation;
   late AnimationController _floatingScaleController;
   late Animation<double> _floatingScaleAnimation;
+
+  // ✅ animation controller للـ hide/show
+  late AnimationController _hideController;
+  late Animation<double> _hideAnimation;
 
   OverlayEntry? _overlayEntry;
 
@@ -97,11 +105,53 @@ class _CustomNavBarState extends State<CustomNavBar>
         curve: Curves.easeOutBack,
       ),
     );
+
+    // ✅ hide/show animation
+    _hideController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+      value: 1.0,
+    );
+    _hideAnimation = CurvedAnimation(
+      parent: _hideController,
+      curve: Curves.easeInOut,
+    );
+
+    // ✅ listen على الـ scroll
+    widget.scrollController?.addListener(_onScroll);
+  }
+
+  // ✅ نفس LinkedIn — يظهر فور ما تسكرول لفوق، يختفي لما تسكرول لتحت
+  void _onScroll() {
+    final sc = widget.scrollController;
+    if (sc == null || !sc.hasClients) return;
+
+    final currentOffset = sc.offset;
+    final diff = currentOffset - _lastScrollOffset;
+
+    if (diff > 5 && _isNavBarVisible) {
+      // سكرول لتحت → اخبي
+      setState(() => _isNavBarVisible = false);
+      _hideController.reverse();
+    } else if (diff < -5 && !_isNavBarVisible) {
+      // سكرول لفوق → ظهر فوراً
+      setState(() => _isNavBarVisible = true);
+      _hideController.forward();
+    }
+
+    _lastScrollOffset = currentOffset;
   }
 
   @override
   void didUpdateWidget(CustomNavBar oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    // ✅ لو اتغير الـ scrollController
+    if (oldWidget.scrollController != widget.scrollController) {
+      oldWidget.scrollController?.removeListener(_onScroll);
+      widget.scrollController?.addListener(_onScroll);
+    }
+
     if (oldWidget.currentIndex != widget.currentIndex &&
         widget.currentIndex != _currentIndex) {
       _indicatorController.reset();
@@ -112,9 +162,11 @@ class _CustomNavBarState extends State<CustomNavBar>
 
   @override
   void dispose() {
+    widget.scrollController?.removeListener(_onScroll);
     _removeFloatingContainer();
     _indicatorController.dispose();
     _floatingScaleController.dispose();
+    _hideController.dispose();
     super.dispose();
   }
 
@@ -238,31 +290,41 @@ class _CustomNavBarState extends State<CustomNavBar>
     final horizontalPadding = _horizontalPadding;
     final bottomPadding = _bottomPadding;
 
-    return Padding(
-      padding: EdgeInsets.only(
-        left: horizontalPadding,
-        right: horizontalPadding,
-        bottom: bottomPadding,
-      ),
-      child: Container(
-        key: _navBarKey,
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.95),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 20,
-              offset: const Offset(0, 4),
+    // ✅ FadeTransition + SlideTransition للـ hide/show
+    return FadeTransition(
+      opacity: _hideAnimation,
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0, 1.5), // ينزل لتحت
+          end: Offset.zero,
+        ).animate(_hideAnimation),
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: horizontalPadding,
+            right: horizontalPadding,
+            bottom: bottomPadding,
+          ),
+          child: Container(
+            key: _navBarKey,
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.95),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 20,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+              borderRadius: BorderRadius.circular(30),
             ),
-          ],
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(
-            _items.length,
-            (index) => Expanded(child: _buildNavItem(_items[index], index)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(
+                _items.length,
+                (index) => Expanded(child: _buildNavItem(_items[index], index)),
+              ),
+            ),
           ),
         ),
       ),

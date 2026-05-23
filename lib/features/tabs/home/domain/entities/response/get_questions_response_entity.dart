@@ -2,8 +2,8 @@ import 'package:explaino/core/shared/data/models/questions/response/get_list_que
 
 class GetQuestionListEntity {
   final int count;
-  final String next;
-  final String previous;
+  final String? next;
+  final String? previous;
   final List<QuestionModel> questions;
 
   GetQuestionListEntity({

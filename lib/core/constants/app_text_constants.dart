@@ -83,4 +83,7 @@ class AppTextConstants {
       'Your contributions matter. Earn points for\nevery helpful answer and climb the rank.';
   static const String back = 'Back';
   static const String finish = 'Finish';
+  //====================home============================
+  static const String answer = 'Answer';
+  static const String imageNotAvailable = 'Image not available';
 }

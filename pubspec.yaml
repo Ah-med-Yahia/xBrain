@@ -92,6 +92,7 @@ dependencies:
   pretty_dio_logger: ^1.4.0         # Network logs interceptor
   flutter_easyloading: ^3.0.5
   shimmer: ^3.0.0
+  syncfusion_flutter_pdfviewer: ^33.2.7
 
 
 dev_dependencies:

@@ -1,11 +1,12 @@
 import 'package:explaino/config/di/di.dart';
-import 'package:explaino/core/constants/nav_bar_page_list_constants.dart';
 import 'package:explaino/core/gen/assets.gen.dart';
 import 'package:explaino/features/main/presentation/cubit/main_cubit.dart';
 import 'package:explaino/features/main/presentation/cubit/main_intents.dart';
 import 'package:explaino/features/main/presentation/cubit/main_state.dart';
 import 'package:explaino/features/main/presentation/widgets/custom_nav_bar.dart';
 import 'package:explaino/features/main/presentation/widgets/main_screen_appbar.dart';
+import 'package:explaino/features/tabs/home/presentation/screens/home_screen.dart';
+import 'package:explaino/features/tabs/profile/main_profile/presentation/screens/main_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
-  final ScrollController _scrollController = ScrollController();
+  // ✅ شيلنا _scrollController — مش محتاجينه
   late AnimationController _animationController;
   late Animation<Offset> _navBarSlideAnimation;
   late Animation<Offset> _fabSlideAnimation;
@@ -30,11 +31,10 @@ class _MainScreenState extends State<MainScreen>
   void initState() {
     super.initState();
     _mainCubit = getIt<MainCubit>();
-    _scrollController.addListener(_onScroll);
 
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 300), // ✅ أسرع شوية زي LinkedIn
     );
 
     _navBarSlideAnimation =
@@ -69,17 +69,16 @@ class _MainScreenState extends State<MainScreen>
     );
   }
 
-  void _onScroll() {
-    if (_scrollController.position.userScrollDirection ==
-        ScrollDirection.reverse) {
+  // ✅ بيتعمل call من الـ NotificationListener في أي screen
+  void _onScroll(ScrollDirection direction) {
+    if (direction == ScrollDirection.reverse) {
       if (_mainCubit.state.isNavBarVisible) {
         _mainCubit.doIntent(
           ChangeNavBarVisibilityIntent(isNavBarVisible: false),
         );
         _animationController.forward();
       }
-    } else if (_scrollController.position.userScrollDirection ==
-        ScrollDirection.forward) {
+    } else if (direction == ScrollDirection.forward) {
       if (!_mainCubit.state.isNavBarVisible) {
         _mainCubit.doIntent(
           ChangeNavBarVisibilityIntent(isNavBarVisible: true),
@@ -89,9 +88,18 @@ class _MainScreenState extends State<MainScreen>
     }
   }
 
+  List<Widget> _pages() {
+    return [
+      const HomeScreen(), // ✅ مش بنبعت scrollController
+      Container(color: Colors.green, height: 2000),
+      Container(color: Colors.blue, height: 2000),
+      Container(color: Colors.yellow, height: 2000),
+      const ProfileScreen(),
+    ];
+  }
+
   @override
   void dispose() {
-    _scrollController.dispose();
     _animationController.dispose();
     super.dispose();
   }
@@ -104,15 +112,19 @@ class _MainScreenState extends State<MainScreen>
         backgroundColor: Colors.white,
         extendBody: true,
         appBar: const MainScreenAppbar(),
-        body: SingleChildScrollView(
-          controller: _scrollController,
-          child: BlocBuilder<MainCubit, MainState>(
-            buildWhen: (previous, current) =>
-                previous.selectedIndex != current.selectedIndex,
-            builder: (context, state) {
-              return navBarPages[state.selectedIndex];
-            },
-          ),
+        body: BlocBuilder<MainCubit, MainState>(
+          buildWhen: (previous, current) =>
+              previous.selectedIndex != current.selectedIndex,
+          builder: (context, state) {
+            // ✅ NotificationListener يسمع على أي scroll في أي screen
+            return NotificationListener<UserScrollNotification>(
+              onNotification: (notification) {
+                _onScroll(notification.direction);
+                return false; // false عشان الـ notification يكمل للـ widgets التانية
+              },
+              child: _pages()[state.selectedIndex],
+            );
+          },
         ),
         bottomNavigationBar: ClipRect(
           child: SlideTransition(
@@ -125,14 +137,11 @@ class _MainScreenState extends State<MainScreen>
             ),
           ),
         ),
-
         floatingActionButton: BlocBuilder<MainCubit, MainState>(
           buildWhen: (previous, current) =>
               previous.selectedIndex != current.selectedIndex,
           builder: (context, state) {
-            if (state.selectedIndex != 0) {
-              return const SizedBox.shrink();
-            }
+            if (state.selectedIndex != 0) return const SizedBox.shrink();
             return SlideTransition(
               position: _fabSlideAnimation,
               child: ScaleTransition(

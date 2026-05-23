@@ -8,7 +8,7 @@ class GetPostListUseCase {
   final HomeRepo _homeRepo;
 
   GetPostListUseCase(this._homeRepo);
-  Future<BaseResponse<GetPostsResponseEntity>> call() async {
-    return await _homeRepo.getPostsList();
+  Future<BaseResponse<GetPostsResponseEntity>> call() {
+    return _homeRepo.getPostsList();
   }
 }

@@ -20,7 +20,6 @@ class MainScreenAppbar extends StatelessWidget implements PreferredSizeWidget {
       builder: (context, state) {
         if (state.selectedIndex == 4) return const SizedBox.shrink();
         return AppBar(
-          leadingWidth: size.width * 0.175,
           leading: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: size.width * 0.02,
@@ -28,10 +27,6 @@ class MainScreenAppbar extends StatelessWidget implements PreferredSizeWidget {
             ),
             child: Container(
               padding: EdgeInsets.all(size.width * 0.01),
-              decoration: BoxDecoration(
-                color: AppColors.lightPeriwinkle,
-                borderRadius: BorderRadius.circular(size.width * 0.03),
-              ),
               child: Assets.images.appLogo.image(
                 width: size.width * 0.06,
                 height: size.width * 0.06,

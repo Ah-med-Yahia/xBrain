@@ -8,9 +8,9 @@ class GetListQuestionsResponseModel {
   @JsonKey(name: 'count')
   final int count;
   @JsonKey(name: 'next')
-  final String next;
+  final String? next;
   @JsonKey(name: 'previous')
-  final String previous;
+  final String? previous;
   @JsonKey(name: 'results')
   final List<QuestionModel> questions;
 
