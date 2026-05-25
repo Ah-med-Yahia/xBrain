@@ -34,7 +34,8 @@ class QuestionCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             UserHeader(
-              username: question.author.username,
+              fullname:
+                  '${question.author.firstName} ${question.author.lastName}',
               profileImageUrl: question.author.profileImageUrl,
               role: 'Software Engineer',
               createdAt: question.createdAt,

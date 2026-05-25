@@ -4,14 +4,14 @@ import 'package:explaino/features/tabs/home/presentation/widgets/user_avatar.dar
 import 'package:flutter/material.dart';
 
 class UserHeader extends StatelessWidget {
-  final String username;
+  final String fullname;
   final String profileImageUrl;
   final String role;
   final DateTime createdAt;
 
   const UserHeader({
     super.key,
-    required this.username,
+    required this.fullname,
     required this.profileImageUrl,
     required this.role,
     required this.createdAt,
@@ -23,14 +23,14 @@ class UserHeader extends StatelessWidget {
 
     return Row(
       children: [
-        UserAvatar(username: username, profileImageUrl: profileImageUrl),
+        UserAvatar(username: fullname, profileImageUrl: profileImageUrl),
         const SizedBox(width: 10),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                username,
+                fullname,
                 style: textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: AppColors.lightTextPrimary,

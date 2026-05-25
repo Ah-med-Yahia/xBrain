@@ -114,7 +114,7 @@ class _ShimmerState extends State<CardShimmer>
                     _ShimmerBox(
                       width: 110,
                       height: 34,
-                      borderRadius: 6,
+                      borderRadius: 50,
                       animation: _animation,
                     ),
                   ],

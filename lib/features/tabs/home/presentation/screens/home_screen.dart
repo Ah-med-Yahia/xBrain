@@ -30,15 +30,15 @@ class _HomeScreenState extends State<HomeScreen> {
     _homeCubit = getIt<HomeCubit>()..doIntent(GetQuestionListIntent());
 
     _questionsScrollController.addListener(() {
-      if (_questionsScrollController.position.pixels ==
-          _questionsScrollController.position.maxScrollExtent) {
+      if (_questionsScrollController.position.pixels >=
+          _questionsScrollController.position.maxScrollExtent - 200) {
         _homeCubit.doIntent(GetQuestionListIntent());
       }
     });
 
     _postsScrollController.addListener(() {
-      if (_postsScrollController.position.pixels ==
-          _postsScrollController.position.maxScrollExtent) {
+      if (_postsScrollController.position.pixels >=
+          _postsScrollController.position.maxScrollExtent - 200) {
         _homeCubit.doIntent(GetPostsListIntent());
       }
     });
@@ -57,66 +57,16 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (_) => _homeCubit,
       child: ColoredBox(
         color: AppColors.kLight,
-        child: NestedScrollView(
-          headerSliverBuilder: (_, _) => [
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(top: 12, bottom: 10),
-                child: HomeTabBar(),
-              ),
-            ),
-          ],
-          body: BlocBuilder<HomeCubit, HomeState>(
-            buildWhen: (prev, next) =>
-                prev.questionTapActive != next.questionTapActive,
-            builder: (context, state) {
-              return state.questionTapActive
-                  ? _buildQuestionsList()
-                  : _buildPostsList();
-            },
-          ),
+        child: BlocBuilder<HomeCubit, HomeState>(
+          buildWhen: (prev, next) =>
+              prev.questionTapActive != next.questionTapActive,
+          builder: (context, state) {
+            return state.questionTapActive
+                ? _buildQuestionsList()
+                : _buildPostsList();
+          },
         ),
       ),
-    );
-  }
-
-  Widget _buildListContent<T>({
-    required BaseState<dynamic> state,
-    required List<T> items,
-    required Widget Function(T item) itemBuilder,
-    required VoidCallback onRetry,
-    required ScrollController scrollController,
-  }) {
-    if (state.isFetching && items.isEmpty) {
-      return ListView.builder(
-        padding: const EdgeInsets.only(top: 8, bottom: 80),
-        itemCount: 6,
-        itemBuilder: (_, _) => const CardShimmer(),
-      );
-    }
-
-    if (state.errorMessage != null) {
-      return Center(
-        child: CustomErrorWidget(
-          error: state.errorMessage!,
-          onTryAgain: onRetry,
-        ),
-      );
-    }
-
-    return ListView.builder(
-      controller: scrollController,
-      padding: const EdgeInsets.only(top: 8, bottom: 80),
-      itemCount: items.length + (state.isFetching ? 1 : 0),
-      itemBuilder: (_, index) {
-        if (index == items.length) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-        return itemBuilder(items[index]);
-      },
     );
   }
 
@@ -128,6 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
         items: state.questionsState.data?.questions ?? [],
         onRetry: () =>
             context.read<HomeCubit>().doIntent(GetQuestionListIntent()),
+        onRefresh: () async {
+          context.read<HomeCubit>().doIntent(RefreshQuestionsIntent());
+          await Future.doWhile(() async {
+            await Future.delayed(const Duration(milliseconds: 100));
+            return _homeCubit.state.questionsState.isFetching;
+          });
+        },
         itemBuilder: (question) => QuestionCard(question: question),
         scrollController: _questionsScrollController,
       ),
@@ -141,8 +98,92 @@ class _HomeScreenState extends State<HomeScreen> {
         state: state.postsState,
         items: state.postsState.data?.posts ?? [],
         onRetry: () => context.read<HomeCubit>().doIntent(GetPostsListIntent()),
+        onRefresh: () async {
+          context.read<HomeCubit>().doIntent(RefreshPostsIntent());
+          await Future.doWhile(() async {
+            await Future.delayed(const Duration(milliseconds: 100));
+            return _homeCubit.state.postsState.isFetching;
+          });
+        },
         itemBuilder: (post) => PostCard(post: post),
         scrollController: _postsScrollController,
+      ),
+    );
+  }
+
+  Widget _buildListContent<T>({
+    required BaseState<dynamic> state,
+    required List<T> items,
+    required Widget Function(T item) itemBuilder,
+    required VoidCallback onRetry,
+    required VoidCallback onRefresh,
+    required ScrollController scrollController,
+  }) {
+    if (items.isEmpty && state.errorMessage == null) {
+      return ListView.builder(
+        padding: const EdgeInsets.only(top: 8, bottom: 80),
+        itemCount: 7,
+        itemBuilder: (_, index) {
+          if (index == 0) return _buildTabBar();
+          return const CardShimmer();
+        },
+      );
+    }
+
+    if (state.errorMessage != null) {
+      return Column(
+        children: [
+          _buildTabBar(),
+          Expanded(
+            child: Center(
+              child: CustomErrorWidget(
+                error: state.errorMessage!,
+                onTryAgain: onRetry,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    return RefreshIndicator(
+      color: AppColors.primary,
+      elevation: 0,
+      backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+      onRefresh: () async => onRefresh(),
+      child: ListView.builder(
+        controller: scrollController,
+        padding: const EdgeInsets.only(bottom: 80),
+        itemCount: items.length + 1 + (state.isFetching ? 1 : 0),
+        itemBuilder: (_, index) {
+          if (index == 0) return _buildTabBar();
+          final itemIndex = index - 1;
+          if (itemIndex == items.length) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+          return itemBuilder(items[itemIndex]);
+        },
+      ),
+    );
+  }
+
+  Widget _buildTabBar() {
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (prev, next) =>
+          prev.questionTapActive != next.questionTapActive,
+      builder: (context, state) => Padding(
+        padding: const EdgeInsets.only(top: 12, bottom: 10),
+        child: HomeTabBar(
+          selectedIndex: state.questionTapActive ? 0 : 1,
+          onTabChanged: (int value) {
+            context.read<HomeCubit>().doIntent(
+              TabChangedIntent(isQuestion: value == 0),
+            );
+          },
+        ),
       ),
     );
   }

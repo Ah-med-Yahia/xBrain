@@ -37,7 +37,6 @@ class _CustomNavBarState extends State<CustomNavBar>
   late AnimationController _floatingScaleController;
   late Animation<double> _floatingScaleAnimation;
 
-  // ✅ animation controller للـ hide/show
   late AnimationController _hideController;
   late Animation<double> _hideAnimation;
 
@@ -108,7 +107,6 @@ class _CustomNavBarState extends State<CustomNavBar>
       ),
     );
 
-    // ✅ hide/show animation
     _hideController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
@@ -119,11 +117,9 @@ class _CustomNavBarState extends State<CustomNavBar>
       curve: Curves.easeInOut,
     );
 
-    // ✅ listen على الـ scroll
     widget.scrollController?.addListener(_onScroll);
   }
 
-  // ✅ نفس LinkedIn — يظهر فور ما تسكرول لفوق، يختفي لما تسكرول لتحت
   void _onScroll() {
     final sc = widget.scrollController;
     if (sc == null || !sc.hasClients) return;
@@ -132,11 +128,9 @@ class _CustomNavBarState extends State<CustomNavBar>
     final diff = currentOffset - _lastScrollOffset;
 
     if (diff > 5 && _isNavBarVisible) {
-      // سكرول لتحت → اخبي
       setState(() => _isNavBarVisible = false);
       _hideController.reverse();
     } else if (diff < -5 && !_isNavBarVisible) {
-      // سكرول لفوق → ظهر فوراً
       setState(() => _isNavBarVisible = true);
       _hideController.forward();
     }
@@ -148,7 +142,6 @@ class _CustomNavBarState extends State<CustomNavBar>
   void didUpdateWidget(CustomNavBar oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // ✅ لو اتغير الـ scrollController
     if (oldWidget.scrollController != widget.scrollController) {
       oldWidget.scrollController?.removeListener(_onScroll);
       widget.scrollController?.addListener(_onScroll);
@@ -296,12 +289,11 @@ class _CustomNavBarState extends State<CustomNavBar>
     final horizontalPadding = _horizontalPadding;
     final bottomPadding = _bottomPadding;
 
-    // ✅ FadeTransition + SlideTransition للـ hide/show
     return FadeTransition(
       opacity: _hideAnimation,
       child: SlideTransition(
         position: Tween<Offset>(
-          begin: const Offset(0, 1.5), // ينزل لتحت
+          begin: const Offset(0, 1.5),
           end: Offset.zero,
         ).animate(_hideAnimation),
         child: Padding(

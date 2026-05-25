@@ -4,6 +4,11 @@ class GetQuestionListIntent extends HomeIntents {}
 
 class GetPostsListIntent extends HomeIntents {}
 
-class ToQuestionsTapIntent extends HomeIntents {}
+class TabChangedIntent extends HomeIntents {
+  final bool isQuestion;
+  TabChangedIntent({required this.isQuestion});
+}
 
-class ToPostsTapIntent extends HomeIntents {}
+class RefreshQuestionsIntent extends HomeIntents {}
+
+class RefreshPostsIntent extends HomeIntents {}

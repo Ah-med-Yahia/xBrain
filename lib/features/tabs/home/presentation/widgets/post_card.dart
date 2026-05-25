@@ -34,7 +34,7 @@ class PostCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             UserHeader(
-              username: post.author.username,
+              fullname: '${post.author.firstName} ${post.author.lastName}',
               profileImageUrl: post.author.profileImageUrl,
               role: 'Software Engineer',
               createdAt: post.createdAt,

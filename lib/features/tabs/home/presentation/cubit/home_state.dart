@@ -7,13 +7,11 @@ class HomeState extends Equatable {
   final BaseState<GetQuestionListEntity> questionsState;
   final BaseState<GetPostsResponseEntity> postsState;
   final bool questionTapActive;
-  final bool postsTapActive;
 
   const HomeState({
     this.questionsState = const BaseState<GetQuestionListEntity>(),
     this.postsState = const BaseState<GetPostsResponseEntity>(),
     this.questionTapActive = true,
-    this.postsTapActive = false,
   });
 
   HomeState copyWith({
@@ -27,15 +25,9 @@ class HomeState extends Equatable {
       questionsState: questionsState ?? this.questionsState,
       postsState: postsState ?? this.postsState,
       questionTapActive: questionTapActive ?? this.questionTapActive,
-      postsTapActive: postsTapActive ?? this.postsTapActive,
     );
   }
 
   @override
-  List<Object?> get props => [
-    questionsState,
-    postsState,
-    questionTapActive,
-    postsTapActive,
-  ];
+  List<Object?> get props => [questionsState, postsState, questionTapActive];
 }

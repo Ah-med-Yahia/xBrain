@@ -32,21 +32,31 @@ class HomeCubit extends Cubit<HomeState> {
       case GetPostsListIntent():
         _handleGetPostsList();
         break;
-      case ToQuestionsTapIntent():
-        _handleToQuestionsTap();
+      case TabChangedIntent():
+        _handleTabChanged(intent.isQuestion);
         break;
-      case ToPostsTapIntent():
-        _handleToPostsTap();
+      case RefreshQuestionsIntent():
+        _handleRefreshQuestions();
+        break;
+      case RefreshPostsIntent():
+        _handleRefreshPosts();
         break;
     }
   }
 
   Future<void> _handleGetQuestionList() async {
-    if (!_hasMoreQuestions) return;
+    if (!_hasMoreQuestions || state.questionsState.isFetching) {
+      return;
+    }
+
+    final currentQuestions = state.questionsState.data?.questions ?? [];
 
     emit(
       state.copyWith(
-        questionsState: state.questionsState.copyWith(isFetching: true),
+        questionsState: state.questionsState.copyWith(
+          isFetching: true,
+          errorMessage: null,
+        ),
       ),
     );
 
@@ -56,10 +66,9 @@ class HomeCubit extends Cubit<HomeState> {
       success: (data) {
         _hasMoreQuestions = data.next != null;
         _questionsPage++;
-        final updatedList = [
-          ...?state.questionsState.data?.questions,
-          ...data.questions,
-        ];
+
+        final updatedList = [...currentQuestions, ...data.questions];
+
         emit(
           state.copyWith(
             questionsState: state.questionsState.copyWith(
@@ -83,10 +92,17 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> _handleGetPostsList() async {
-    if (!_hasMorePosts) return;
+    if (!_hasMorePosts || state.postsState.isFetching) return;
+
+    final currentPosts = state.postsState.data?.posts ?? [];
 
     emit(
-      state.copyWith(postsState: state.postsState.copyWith(isFetching: true)),
+      state.copyWith(
+        postsState: state.postsState.copyWith(
+          isFetching: true,
+          errorMessage: null,
+        ),
+      ),
     );
 
     final result = await _getPostsListUseCase(page: _postsPage);
@@ -95,7 +111,9 @@ class HomeCubit extends Cubit<HomeState> {
       success: (data) {
         _hasMorePosts = data.next != null;
         _postsPage++;
-        final updatedList = [...?state.postsState.data?.posts, ...data.posts];
+
+        final updatedList = [...currentPosts, ...data.posts];
+
         emit(
           state.copyWith(
             postsState: state.postsState.copyWith(
@@ -118,12 +136,94 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  void _handleToQuestionsTap() {
-    emit(state.copyWith(questionTapActive: true, postsTapActive: false));
+  void _handleTabChanged(bool isQuestion) {
+    emit(state.copyWith(questionTapActive: isQuestion));
+    if (!isQuestion) {
+      doIntent(GetPostsListIntent());
+    }
   }
 
-  void _handleToPostsTap() {
-    emit(state.copyWith(postsTapActive: true, questionTapActive: false));
-    _handleGetPostsList();
+  Future<void> _handleRefreshQuestions() async {
+    _questionsPage = 1;
+    _hasMoreQuestions = true;
+
+    emit(
+      state.copyWith(
+        questionsState: state.questionsState.copyWith(
+          isFetching: true,
+          errorMessage: null,
+        ),
+      ),
+    );
+
+    final result = await _getQuestionListUseCase(page: _questionsPage);
+
+    result.when(
+      success: (data) {
+        _questionsPage++;
+        _hasMoreQuestions = data.next != null;
+
+        emit(
+          state.copyWith(
+            questionsState: state.questionsState.copyWith(
+              data: data,
+              isFetching: false,
+            ),
+          ),
+        );
+      },
+      failure: (error) {
+        emit(
+          state.copyWith(
+            questionsState: state.questionsState.copyWith(
+              errorMessage: error.message,
+              isFetching: false,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _handleRefreshPosts() async {
+    _postsPage = 1;
+    _hasMorePosts = true;
+
+    emit(
+      state.copyWith(
+        postsState: state.postsState.copyWith(
+          isFetching: true,
+          errorMessage: null,
+        ),
+      ),
+    );
+
+    final result = await _getPostsListUseCase(page: _postsPage);
+
+    result.when(
+      success: (data) {
+        _postsPage++;
+        _hasMorePosts = data.next != null;
+
+        emit(
+          state.copyWith(
+            postsState: state.postsState.copyWith(
+              data: data,
+              isFetching: false,
+            ),
+          ),
+        );
+      },
+      failure: (error) {
+        emit(
+          state.copyWith(
+            postsState: state.postsState.copyWith(
+              errorMessage: error.message,
+              isFetching: false,
+            ),
+          ),
+        );
+      },
+    );
   }
 }
