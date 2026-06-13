@@ -1,5 +1,6 @@
 import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/shared/domain/entities/auth/user_entity/user_entity.dart';
+import 'package:explaino/features/add_answer/presentation/screens/add_answer_screen.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/screens/forgot_password_screen.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/screens/otp_verification_screen.dart';
 import 'package:explaino/features/auth/forgot_password/presentation/screens/reset_password_screen.dart';
@@ -83,6 +84,12 @@ abstract class AppRouter {
         name: AppRoutesConstants.editProfileRoute,
         builder: (context, state) =>
             EditProfileScreen(user: state.extra as UserEntity),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.addAnswerRoute,
+        name: AppRoutesConstants.addAnswerRoute,
+        builder: (context, state) =>
+            AddAnswerScreen(questionId: state.extra as String),
       ),
     ],
   );

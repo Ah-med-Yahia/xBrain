@@ -15,4 +15,5 @@ abstract class AppRoutesConstants {
   static const String emailKey = 'email';
   static const String resetTokenKey = 'resetToken';
   static const String imageUrlKey = 'imageUrl';
+  static const String addAnswerRoute = '/add-answer';
 }
