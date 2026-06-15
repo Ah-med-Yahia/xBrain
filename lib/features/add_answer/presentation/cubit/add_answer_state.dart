@@ -7,25 +7,34 @@ class AddAnswerState extends Equatable {
   final BaseState<AnswersOfQuestionResponseEntity> getAnswersState;
   final BaseState<AnswerEntity> addAnswerState;
   final BaseState<AnswersOfQuestionResponseEntity> getReplayState;
+  final bool repliesExpanded;
 
   const AddAnswerState({
     this.getAnswersState = const BaseState<AnswersOfQuestionResponseEntity>(),
     this.addAnswerState = const BaseState<AnswerEntity>(),
     this.getReplayState = const BaseState<AnswersOfQuestionResponseEntity>(),
+    this.repliesExpanded = false,
   });
 
   AddAnswerState copyWith({
     BaseState<AnswersOfQuestionResponseEntity>? getAnswersState,
     BaseState<AnswerEntity>? addAnswerState,
     BaseState<AnswersOfQuestionResponseEntity>? getReplayState,
+    bool? repliesExpanded,
   }) {
     return AddAnswerState(
       getAnswersState: getAnswersState ?? this.getAnswersState,
       addAnswerState: addAnswerState ?? this.addAnswerState,
       getReplayState: getReplayState ?? this.getReplayState,
+      repliesExpanded: repliesExpanded ?? this.repliesExpanded,
     );
   }
 
   @override
-  List<Object?> get props => [getAnswersState, addAnswerState, getReplayState];
+  List<Object?> get props => [
+    getAnswersState,
+    addAnswerState,
+    getReplayState,
+    repliesExpanded,
+  ];
 }

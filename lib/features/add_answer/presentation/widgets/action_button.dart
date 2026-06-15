@@ -16,6 +16,7 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
     return GestureDetector(
       onTap: onTap,
       child: Row(
@@ -25,8 +26,7 @@ class ActionButton extends StatelessWidget {
             const SizedBox(width: 4),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 13,
+              style: textTheme.bodySmall?.copyWith(
                 color: color,
                 fontWeight: FontWeight.w500,
               ),

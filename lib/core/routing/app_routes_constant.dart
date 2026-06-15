@@ -16,4 +16,6 @@ abstract class AppRoutesConstants {
   static const String resetTokenKey = 'resetToken';
   static const String imageUrlKey = 'imageUrl';
   static const String addAnswerRoute = '/add-answer';
+  static const String questionIdKey = 'questionId';
+  static const String hasQuestionKey = 'hasQuestion';
 }

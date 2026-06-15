@@ -3,7 +3,7 @@ import 'package:explaino/core/helpers/text_direction_helper.dart';
 import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/question_model.dart';
 import 'package:explaino/core/theme/app_colors.dart';
-import 'package:explaino/features/tabs/home/presentation/widgets/attachment_preview.dart';
+import 'package:explaino/core/shared/presentation/widgets/attachment_preview.dart';
 import 'package:explaino/features/tabs/home/presentation/widgets/user_header.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -59,7 +59,7 @@ class QuestionCard extends StatelessWidget {
             ],
             const SizedBox(height: 12),
             Align(
-              alignment: Alignment.centerRight,
+              alignment: Alignment.centerLeft,
               child: SizedBox(
                 width: 110,
                 height: 34,
@@ -67,7 +67,11 @@ class QuestionCard extends StatelessWidget {
                   onPressed: () {
                     GoRouter.of(context).push(
                       AppRoutesConstants.addAnswerRoute,
-                      extra: question.id,
+                      extra: {
+                        AppRoutesConstants.questionIdKey: question.id,
+                        AppRoutesConstants.hasQuestionKey:
+                            question.answersCount > 0,
+                      },
                     );
                   },
                   style: ElevatedButton.styleFrom(

@@ -28,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _homeCubit = getIt<HomeCubit>()..doIntent(GetQuestionListIntent());
-
     _questionsScrollController.addListener(() {
       if (_questionsScrollController.position.pixels >=
           _questionsScrollController.position.maxScrollExtent - 200) {

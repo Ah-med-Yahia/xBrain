@@ -112,4 +112,20 @@ class AppTextConstants {
   //====================home============================
   static const String answer = 'Answer';
   static const String imageNotAvailable = 'Image not available';
+  //====================Answers============================
+  static const String uploadFile = 'Upload File';
+  static const String chooseAPdfFile = 'Choose a PDF file';
+  static const String chooseAnyFile = 'Choose any file';
+  static const String pdf = 'PDF';
+  static const String anyFile = 'Any File';
+  static const String reply = 'Reply';
+  static const String viewReplies = 'View Replies';
+  static const String replies = 'Replies';
+  static const String hideReplies = 'Hide Replies';
+  static const String view = 'View';
+  static const String addAnAnswer = 'Add an answer...';
+  static const String noAnswersYet = 'No answers yet';
+  static const String answers = 'Answers';
+  static const String beTheFirstToAnswerThisQuestion =
+      'Be the first to answer this question';
 }

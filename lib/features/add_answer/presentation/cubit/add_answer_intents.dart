@@ -23,3 +23,8 @@ class GetReplayIntent extends AddAnswerIntents {
   final String answerId;
   GetReplayIntent({required this.answerId});
 }
+
+class ToggleRepliesIntent extends AddAnswerIntents {
+  final bool expand;
+  ToggleRepliesIntent({required this.expand});
+}

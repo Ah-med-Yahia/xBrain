@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:explaino/core/shared/data/models/questions/response/get_list_questions_response_model/attachment_model.dart';
 import 'package:explaino/core/theme/app_colors.dart';
-import 'package:explaino/features/tabs/home/presentation/widgets/pdf_attachment.dart';
-import 'package:explaino/features/tabs/home/presentation/widgets/video_attachment.dart';
+import 'package:explaino/core/shared/presentation/widgets/pdf_attachment.dart';
+import 'package:explaino/core/shared/presentation/widgets/video_attachment.dart';
 import 'package:flutter/material.dart';
 
 class AttachmentPreview extends StatelessWidget {

@@ -13,7 +13,7 @@ class Avatar extends StatelessWidget {
       baseColor: AppColors.shimmerBaseColor,
       highlightColor: AppColors.shimmerHighlightColor,
       child: const CircleAvatar(
-        radius: 23,
+        radius: 20,
         backgroundColor: AppColors.shimmerBaseColor,
       ),
     );
@@ -25,7 +25,7 @@ class Avatar extends StatelessWidget {
     final initial = username[0].toUpperCase();
 
     final fallback = CircleAvatar(
-      radius: 23,
+      radius: 20,
       backgroundColor: AppColors.primary.withValues(alpha: 0.15),
       child: Text(
         initial,
@@ -42,7 +42,7 @@ class Avatar extends StatelessWidget {
           ? CachedNetworkImage(
               imageUrl: profileImageUrl!,
               imageBuilder: (context, imageProvider) =>
-                  CircleAvatar(radius: 23, backgroundImage: imageProvider),
+                  CircleAvatar(radius: 20, backgroundImage: imageProvider),
               placeholder: (context, url) => _shimmerPlaceholder(context),
               errorWidget: (context, url, error) => fallback,
             )

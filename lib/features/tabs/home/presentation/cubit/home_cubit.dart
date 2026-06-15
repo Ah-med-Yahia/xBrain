@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/features/tabs/home/domain/usecase/get_post_list.dart';
 import 'package:explaino/features/tabs/home/domain/usecase/get_question_list.dart';
@@ -10,10 +12,8 @@ import 'package:injectable/injectable.dart';
 class HomeCubit extends Cubit<HomeState> {
   final GetQuestionListUseCase _getQuestionListUseCase;
   final GetPostListUseCase _getPostsListUseCase;
-
   int _questionsPage = 1;
   bool _hasMoreQuestions = true;
-
   int _postsPage = 1;
   bool _hasMorePosts = true;
 

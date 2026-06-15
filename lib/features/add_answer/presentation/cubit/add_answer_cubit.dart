@@ -37,6 +37,9 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
       case GetReplayIntent(answerId: final answerId):
         _getReplay(answerId);
         break;
+      case ToggleRepliesIntent(expand: final expand):
+        _handleToggleReplies(expand);
+        break;
     }
   }
 
@@ -148,5 +151,9 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
         );
       },
     );
+  }
+
+  void _handleToggleReplies(bool expand) {
+    emit(state.copyWith(repliesExpanded: expand));
   }
 }

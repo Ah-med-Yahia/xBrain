@@ -88,8 +88,16 @@ abstract class AppRouter {
       GoRoute(
         path: AppRoutesConstants.addAnswerRoute,
         name: AppRoutesConstants.addAnswerRoute,
-        builder: (context, state) =>
-            AddAnswerScreen(questionId: state.extra as String),
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+          final questionId = data[AppRoutesConstants.questionIdKey] as String;
+          final hasQuestion = data[AppRoutesConstants.hasQuestionKey] as bool;
+
+          return AddAnswerScreen(
+            questionId: questionId,
+            hasQuestion: hasQuestion,
+          );
+        },
       ),
     ],
   );

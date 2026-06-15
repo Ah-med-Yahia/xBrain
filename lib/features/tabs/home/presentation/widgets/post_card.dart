@@ -2,7 +2,7 @@ import 'package:explaino/core/helpers/text_direction_helper.dart';
 import 'package:explaino/core/shared/data/models/posts/response/get_posts_response_model/post_model.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/tabs/home/presentation/widgets/action_button.dart';
-import 'package:explaino/features/tabs/home/presentation/widgets/attachment_preview.dart';
+import 'package:explaino/core/shared/presentation/widgets/attachment_preview.dart';
 import 'package:explaino/features/tabs/home/presentation/widgets/user_header.dart';
 import 'package:flutter/material.dart';
 

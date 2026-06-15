@@ -21,9 +21,10 @@ class MainScreenAppbar extends StatelessWidget implements PreferredSizeWidget {
         if (state.selectedIndex == 4) return const SizedBox.shrink();
         return AppBar(
           leading: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.02,
-              vertical: size.height * 0.008,
+            padding: EdgeInsets.only(
+              left: size.width * 0.03,
+              top: size.height * 0.008,
+              bottom: size.height * 0.008,
             ),
             child: Container(
               padding: EdgeInsets.all(size.width * 0.01),
@@ -90,6 +91,7 @@ class MainScreenAppbar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           backgroundColor: Colors.white,
+          leadingWidth: size.width * 0.14,
           titleSpacing: 0,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
