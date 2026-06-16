@@ -64,15 +64,6 @@ class _AnswerShimmerItem extends StatelessWidget {
                 const SizedBox(height: 4),
                 box(220, 14),
                 const SizedBox(height: 8),
-                Container(
-                  width: 180,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                const SizedBox(height: 8),
                 Row(
                   children: [
                     Container(

@@ -1,12 +1,13 @@
+import 'dart:io';
+
 import 'package:explaino/features/add_answer/domain/entities/request/add_answer_request_entity.dart';
 
 sealed class AddAnswerIntents {}
 
 class GetAnswersIntent extends AddAnswerIntents {
   final String questionId;
-  final int page;
 
-  GetAnswersIntent({required this.questionId, required this.page});
+  GetAnswersIntent({required this.questionId});
 }
 
 class AddAnswerIntent extends AddAnswerIntents {
@@ -25,6 +26,33 @@ class GetReplayIntent extends AddAnswerIntents {
 }
 
 class ToggleRepliesIntent extends AddAnswerIntents {
+  final String answerId;
   final bool expand;
-  ToggleRepliesIntent({required this.expand});
+  ToggleRepliesIntent({required this.answerId, required this.expand});
+}
+
+class SelectFileIntent extends AddAnswerIntents {
+  final File? file;
+  final File? imageFile;
+  SelectFileIntent({this.file, this.imageFile});
+}
+
+class RemoveImageIntent extends AddAnswerIntents {}
+
+class RemoveFileIntent extends AddAnswerIntents {}
+
+class UpdateFileValidationIntent extends AddAnswerIntents {
+  final String content;
+  final File? file;
+  final File? imageFile;
+  UpdateFileValidationIntent({
+    required this.content,
+    this.file,
+    this.imageFile,
+  });
+}
+
+class UpdateFocusStatusIntent extends AddAnswerIntents {
+  final bool isFocused;
+  UpdateFocusStatusIntent({required this.isFocused});
 }

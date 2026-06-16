@@ -12,4 +12,18 @@ class AnswersOfQuestionResponseEntity {
     required this.previous,
     required this.answers,
   });
+
+  AnswersOfQuestionResponseEntity copyWith({
+    int? count,
+    String? next,
+    String? previous,
+    List<AnswerModel>? answers,
+  }) {
+    return AnswersOfQuestionResponseEntity(
+      count: count ?? this.count,
+      next: next ?? this.next,
+      previous: previous ?? this.previous,
+      answers: answers ?? this.answers,
+    );
+  }
 }

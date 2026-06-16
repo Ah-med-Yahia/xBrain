@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:explaino/config/base_state/base_state.dart';
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
@@ -19,6 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AddAnswerScreen extends StatefulWidget {
   final String questionId;
   final bool hasQuestion;
+
   const AddAnswerScreen({
     super.key,
     required this.questionId,
@@ -31,43 +30,26 @@ class AddAnswerScreen extends StatefulWidget {
 
 class _AddAnswerScreenState extends State<AddAnswerScreen> {
   late AddAnswerCubit _addAnswerCubit;
-
   final TextEditingController _commentController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final ScrollController _scrollController = ScrollController();
-  int _currentPage = 1;
-  static const int _pageSize = 10;
-  File? _selectedImageFile;
-  File? _selectedFile;
 
   @override
   void initState() {
     super.initState();
     _addAnswerCubit = getIt<AddAnswerCubit>();
     if (widget.hasQuestion) {
-      _addAnswerCubit.doIntent(
-        GetAnswersIntent(questionId: widget.questionId, page: 1),
-      );
+      _addAnswerCubit.doIntent(GetAnswersIntent(questionId: widget.questionId));
     }
     _scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
-    final state = _addAnswerCubit.state;
     final isAtBottom =
         _scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200;
-
-    final hasMore =
-        (state.getAnswersState.data?.answers.length ?? 0) >=
-        _currentPage * _pageSize;
-    final isAlreadyLoading = state.getAnswersState.isFetching;
-
-    if (isAtBottom && hasMore && !isAlreadyLoading) {
-      _currentPage++;
-      _addAnswerCubit.doIntent(
-        GetAnswersIntent(questionId: widget.questionId, page: _currentPage),
-      );
+    if (isAtBottom) {
+      _addAnswerCubit.doIntent(GetAnswersIntent(questionId: widget.questionId));
     }
   }
 
@@ -79,92 +61,106 @@ class _AddAnswerScreenState extends State<AddAnswerScreen> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        title: const Text(
-          AppTextConstants.answers,
-          style: TextStyle(
-            color: AppColors.jetBlack,
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(0.5),
-          child: Container(color: AppColors.shimmerBaseColor, height: 0.5),
+  void _onSend(AddAnswerState state) {
+    _addAnswerCubit.doIntent(
+      AddAnswerIntent(
+        questionId: widget.questionId,
+        addAnswerRequestEntity: AddAnswerRequestEntity(
+          content: _commentController.text,
+          attachments: [
+            if (state.selectedImageFile != null) state.selectedImageFile!,
+            if (state.selectedFile != null) state.selectedFile!,
+          ].nullIfEmpty,
         ),
       ),
-      body: BlocProvider(
-        create: (context) => _addAnswerCubit,
-        child: Column(
+    );
+    _commentController.clear();
+    _focusNode.unfocus();
+    _addAnswerCubit.doIntent(RemoveImageIntent());
+    _addAnswerCubit.doIntent(RemoveFileIntent());
+    _addAnswerCubit.doIntent(GetAnswersIntent(questionId: widget.questionId));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => _addAnswerCubit,
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        appBar: AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: AppColors.white,
+          elevation: 0,
+          title: const Text(
+            AppTextConstants.answers,
+            style: TextStyle(
+              color: AppColors.jetBlack,
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(0.5),
+            child: Container(color: AppColors.shimmerBaseColor, height: 0.5),
+          ),
+        ),
+        body: Column(
           children: [
             Expanded(child: _buildAnswersList()),
-            CommentInputBar(
-              controller: _commentController,
-              focusNode: _focusNode,
-              selectedImage: _selectedImageFile,
-              selectedFile: _selectedFile,
-              onRemoveImage: () => setState(() => _selectedImageFile = null),
-              onRemoveFile: () => setState(() => _selectedFile = null),
-              onSend: () {
-                _addAnswerCubit.doIntent(
-                  AddAnswerIntent(
-                    questionId: widget.questionId,
-                    addAnswerRequestEntity: AddAnswerRequestEntity(
-                      content: _commentController.text,
-                      attachments:
-                          _selectedImageFile != null || _selectedFile != null
-                          ? [
-                              if (_selectedImageFile != null)
-                                _selectedImageFile!,
-                              if (_selectedFile != null) _selectedFile!,
-                            ]
-                          : null,
-                    ),
-                  ),
-                );
-                _commentController.clear();
-                setState(() {
-                  _selectedImageFile = null;
-                  _selectedFile = null;
-                });
-                _focusNode.unfocus();
-              },
-              onImagePick: () {
-                showImagePickerDialog(context).then((file) {
-                  setState(() => _selectedImageFile = file);
-                });
-              },
-              onFilePick: () {
-                showFilePickerDialog(context).then((file) {
-                  setState(() => _selectedFile = file);
-                });
-              },
-            ),
+            _buildCommentInputBar(),
           ],
         ),
       ),
     );
   }
 
+  Widget _buildCommentInputBar() {
+    return BlocBuilder<AddAnswerCubit, AddAnswerState>(
+      buildWhen: (prev, next) =>
+          prev.selectedImageFile != next.selectedImageFile ||
+          prev.selectedFile != next.selectedFile,
+      builder: (context, state) {
+        return CommentInputBar(
+          controller: _commentController,
+          focusNode: _focusNode,
+          selectedImage: state.selectedImageFile,
+          selectedFile: state.selectedFile,
+          onRemoveImage: () => _addAnswerCubit.doIntent(RemoveImageIntent()),
+          onRemoveFile: () => _addAnswerCubit.doIntent(RemoveFileIntent()),
+          onSend: () => _onSend(state),
+          onImagePick: () {
+            showImagePickerDialog(context).then((file) {
+              if (file != null) {
+                _addAnswerCubit.doIntent(SelectFileIntent(imageFile: file));
+              }
+            });
+          },
+          onFilePick: () {
+            showFilePickerDialog(context).then((file) {
+              if (file != null) {
+                _addAnswerCubit.doIntent(SelectFileIntent(file: file));
+              }
+            });
+          },
+        );
+      },
+    );
+  }
+
   Widget _buildAnswersList() {
     return BlocBuilder<AddAnswerCubit, AddAnswerState>(
       buildWhen: (prev, next) => prev.getAnswersState != next.getAnswersState,
-      builder: (context, state) => _buildListContent(
-        state: state.getAnswersState,
-        items: state.getAnswersState.data?.answers ?? [],
-        onRetry: () => context.read<AddAnswerCubit>().doIntent(
-          GetAnswersIntent(questionId: widget.questionId, page: 1),
-        ),
-        itemBuilder: (answer) => AnswerCard(answer: answer),
-        scrollController: _scrollController,
-      ),
+      builder: (context, state) {
+        return _buildListContent(
+          state: state.getAnswersState,
+          items: state.getAnswersState.data?.answers ?? [],
+          onRetry: () => context.read<AddAnswerCubit>().doIntent(
+            GetAnswersIntent(questionId: widget.questionId),
+          ),
+          itemBuilder: (answer) => AnswerCard(answer: answer),
+          scrollController: _scrollController,
+        );
+      },
     );
   }
 
@@ -229,4 +225,8 @@ class _AddAnswerScreenState extends State<AddAnswerScreen> {
       },
     );
   }
+}
+
+extension _ListExt<T> on List<T> {
+  List<T>? get nullIfEmpty => isEmpty ? null : this;
 }

@@ -90,7 +90,7 @@ class ReplyCard extends StatelessWidget {
                             color: AppColors.grey,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 16),
                         Text(
                           AppTextConstants.reply,
                           style: textTheme.labelLarge?.copyWith(

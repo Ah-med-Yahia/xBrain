@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/config/base_state/base_state.dart';
+import 'package:explaino/core/shared/data/models/questions/response/first_ten_answers_of_question_response_model/answer_model.dart';
 import 'package:explaino/features/add_answer/domain/entities/request/add_answer_request_entity.dart';
 import 'package:explaino/features/add_answer/domain/usecase/add_answer_use_case.dart';
 import 'package:explaino/features/add_answer/domain/usecase/get_all_answer_use_case.dart';
@@ -13,6 +17,9 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
   final GetAllAnswersUseCase _getAnswersUseCase;
   final AddAnswerUseCase _addAnswerUseCase;
   final GetRepliesUseCase _getRepliesUseCase;
+  int page = 1;
+  bool hasMore = true;
+  bool _isLoadingAnswers = false;
 
   AddAnswerCubit({
     required GetAllAnswersUseCase getAnswersUseCase,
@@ -25,8 +32,8 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
 
   void doIntent(AddAnswerIntents intent) {
     switch (intent) {
-      case GetAnswersIntent(questionId: final questionId, page: final page):
-        _getAnswers(questionId, page);
+      case GetAnswersIntent(questionId: final questionId):
+        _getAnswers(questionId);
         break;
       case AddAnswerIntent(
         questionId: final questionId,
@@ -35,15 +42,47 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
         _addAnswer(questionId, addAnswerRequestEntity);
         break;
       case GetReplayIntent(answerId: final answerId):
-        _getReplay(answerId);
+        _getReplies(answerId);
         break;
-      case ToggleRepliesIntent(expand: final expand):
-        _handleToggleReplies(expand);
+      case ToggleRepliesIntent(expand: final expand, answerId: final answerId):
+        _handleToggleReplies(expand, answerId);
+        break;
+      case SelectFileIntent(file: final file, imageFile: final imageFile):
+        _handleSelectFile(file, imageFile);
+        break;
+      case RemoveImageIntent():
+        _handleRemoveImage();
+        break;
+      case RemoveFileIntent():
+        _handleRemoveFile();
+        break;
+      case UpdateFileValidationIntent(
+        content: final content,
+        file: final file,
+        imageFile: final imageFile,
+      ):
+        _handleUpdateFileValidation(content, file, imageFile);
+        break;
+      case UpdateFocusStatusIntent(isFocused: final isFocused):
+        _handleUpdateFocusStatus(isFocused);
         break;
     }
   }
 
-  Future<void> _getAnswers(String questionId, int page) async {
+  void _resetPagination() {
+    page = 1;
+    hasMore = true;
+  }
+
+  Future<void> _getAnswers(String questionId) async {
+    if (!hasMore || _isLoadingAnswers) return;
+
+    _isLoadingAnswers = true;
+
+    final currentAnswers = page > 1
+        ? (state.getAnswersState.data?.answers ?? [])
+        : <AnswerModel>[];
+
     emit(
       state.copyWith(
         getAnswersState: state.getAnswersState.copyWith(
@@ -52,16 +91,22 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
         ),
       ),
     );
+
     final result = await _getAnswersUseCase(questionId, page);
 
     result.when(
       success: (data) {
+        hasMore = data.next != null;
+        page++;
+
+        final updatedList = [...currentAnswers, ...data.answers];
+
         emit(
           state.copyWith(
             getAnswersState: state.getAnswersState.copyWith(
               isFetching: false,
               errorMessage: null,
-              data: data,
+              data: data.copyWith(answers: updatedList),
             ),
           ),
         );
@@ -77,6 +122,8 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
         );
       },
     );
+
+    _isLoadingAnswers = false;
   }
 
   Future<void> _addAnswer(
@@ -91,9 +138,11 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
         ),
       ),
     );
+
     final result = await _addAnswerUseCase(addAnswerRequestEntity, questionId);
+
     result.when(
-      success: (data) {
+      success: (data) async {
         emit(
           state.copyWith(
             addAnswerState: state.addAnswerState.copyWith(
@@ -101,9 +150,12 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
               errorMessage: null,
               data: data,
             ),
+            getAnswersState: state.getAnswersState.copyWith(data: null),
           ),
         );
-        _getAnswers(questionId, 1);
+
+        _resetPagination();
+        await _getAnswers(questionId);
       },
       failure: (error) {
         emit(
@@ -118,42 +170,87 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
     );
   }
 
-  Future<void> _getReplay(String answerId) async {
+  Future<void> _getReplies(String answerId) async {
+    final current = state.repliesStates[answerId] ?? const BaseState();
+
     emit(
       state.copyWith(
-        getReplayState: state.getReplayState.copyWith(
-          isFetching: true,
-          errorMessage: null,
-        ),
+        repliesStates: {
+          ...state.repliesStates,
+          answerId: current.copyWith(isFetching: true, errorMessage: null),
+        },
       ),
     );
+
     final result = await _getRepliesUseCase(answerId);
+
     result.when(
       success: (data) {
         emit(
           state.copyWith(
-            getReplayState: state.getReplayState.copyWith(
-              isFetching: false,
-              errorMessage: null,
-              data: data,
-            ),
+            repliesStates: {
+              ...state.repliesStates,
+              answerId: current.copyWith(
+                isFetching: false,
+                errorMessage: null,
+                data: data,
+              ),
+            },
           ),
         );
       },
       failure: (error) {
         emit(
           state.copyWith(
-            getReplayState: state.getReplayState.copyWith(
-              isFetching: false,
-              errorMessage: error.message,
-            ),
+            repliesStates: {
+              ...state.repliesStates,
+              answerId: current.copyWith(
+                isFetching: false,
+                errorMessage: error.message,
+              ),
+            },
           ),
         );
       },
     );
   }
 
-  void _handleToggleReplies(bool expand) {
-    emit(state.copyWith(repliesExpanded: expand));
+  void _handleToggleReplies(bool expand, String answerId) {
+    final updatedExpanded = Map<String, bool>.from(state.repliesExpanded);
+
+    updatedExpanded[answerId] = expand;
+
+    emit(state.copyWith(repliesExpanded: updatedExpanded));
+
+    final existing = state.repliesStates[answerId]?.data;
+
+    if (expand && existing == null) {
+      _getReplies(answerId);
+    }
+  }
+
+  void _handleSelectFile(File? file, File? imageFile) {
+    emit(state.copyWith(selectedFile: file, selectedImageFile: imageFile));
+  }
+
+  void _handleRemoveImage() {
+    emit(state.copyWith(selectedImageFile: null));
+  }
+
+  void _handleRemoveFile() {
+    emit(state.copyWith(selectedFile: null));
+  }
+
+  void _handleUpdateFileValidation(
+    String content,
+    File? file,
+    File? imageFile,
+  ) {
+    final isValid = content.isNotEmpty || file != null || imageFile != null;
+    emit(state.copyWith(filedValidation: isValid));
+  }
+
+  void _handleUpdateFocusStatus(bool isFocused) {
+    emit(state.copyWith(isFocused: isFocused));
   }
 }
