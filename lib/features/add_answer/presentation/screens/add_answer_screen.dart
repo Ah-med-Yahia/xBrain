@@ -38,9 +38,7 @@ class _AddAnswerScreenState extends State<AddAnswerScreen> {
   void initState() {
     super.initState();
     _addAnswerCubit = getIt<AddAnswerCubit>();
-    if (widget.hasQuestion) {
-      _addAnswerCubit.doIntent(GetAnswersIntent(questionId: widget.questionId));
-    }
+    _addAnswerCubit.doIntent(GetAnswersIntent(questionId: widget.questionId));
     _scrollController.addListener(_onScroll);
   }
 
@@ -131,7 +129,9 @@ class _AddAnswerScreenState extends State<AddAnswerScreen> {
           onImagePick: () {
             showImagePickerDialog(context).then((file) {
               if (file != null) {
-                _addAnswerCubit.doIntent(SelectFileIntent(imageFile: file));
+                _addAnswerCubit.doIntent(
+                  SelectImageFileIntent(imageFile: file),
+                );
               }
             });
           },

@@ -33,8 +33,13 @@ class ToggleRepliesIntent extends AddAnswerIntents {
 
 class SelectFileIntent extends AddAnswerIntents {
   final File? file;
+
+  SelectFileIntent({this.file});
+}
+
+class SelectImageFileIntent extends AddAnswerIntents {
   final File? imageFile;
-  SelectFileIntent({this.file, this.imageFile});
+  SelectImageFileIntent({this.imageFile});
 }
 
 class RemoveImageIntent extends AddAnswerIntents {}

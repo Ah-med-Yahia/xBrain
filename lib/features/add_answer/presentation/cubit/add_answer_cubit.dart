@@ -47,8 +47,11 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
       case ToggleRepliesIntent(expand: final expand, answerId: final answerId):
         _handleToggleReplies(expand, answerId);
         break;
-      case SelectFileIntent(file: final file, imageFile: final imageFile):
-        _handleSelectFile(file, imageFile);
+      case SelectFileIntent(file: final file):
+        _handleSelectFile(file);
+        break;
+      case SelectImageFileIntent(imageFile: final imageFile):
+        _handleSelectImageFile(imageFile);
         break;
       case RemoveImageIntent():
         _handleRemoveImage();
@@ -229,8 +232,12 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
     }
   }
 
-  void _handleSelectFile(File? file, File? imageFile) {
-    emit(state.copyWith(selectedFile: file, selectedImageFile: imageFile));
+  void _handleSelectFile(File? file) {
+    emit(state.copyWith(selectedFile: file));
+  }
+
+  void _handleSelectImageFile(File? imageFile) {
+    emit(state.copyWith(selectedImageFile: imageFile));
   }
 
   void _handleRemoveImage() {
@@ -246,7 +253,9 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
     File? file,
     File? imageFile,
   ) {
-    final isValid = content.isNotEmpty || file != null || imageFile != null;
+    final isValid =
+        content.trim().isNotEmpty || file != null || imageFile != null;
+
     emit(state.copyWith(filedValidation: isValid));
   }
 

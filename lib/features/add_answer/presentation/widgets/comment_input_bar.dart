@@ -108,7 +108,6 @@ class _CommentInputBarState extends State<CommentInputBar> {
                   controller: widget.controller,
                   focusNode: widget.focusNode,
                   maxLines: null,
-
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: _onTextChanged,
                   style: textTheme.bodyMedium?.copyWith(
