@@ -1,11 +1,11 @@
 import 'dart:io';
+
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
-Future<File?> showImagePickerDialog(BuildContext context) async {
-  final ImagePicker picker = ImagePicker();
+Future<File?> showFilePickerDialog(BuildContext context) async {
   File? selectedFile;
 
   await showGeneralDialog(
@@ -22,7 +22,7 @@ Future<File?> showImagePickerDialog(BuildContext context) async {
     pageBuilder: (context, animation, secondaryAnimation) => AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
-        AppTextConstants.uploadPhoto,
+        AppTextConstants.uploadFile,
         style: Theme.of(
           context,
         ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -34,46 +34,23 @@ Future<File?> showImagePickerDialog(BuildContext context) async {
           ListTile(
             leading: const CircleAvatar(
               backgroundColor: AppColors.white,
-              child: Icon(Icons.photo_library, color: AppColors.primary),
+              child: Icon(Icons.picture_as_pdf, color: AppColors.primary),
             ),
             title: Text(
-              AppTextConstants.gallery,
+              AppTextConstants.pdf,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             subtitle: Text(
-              AppTextConstants.chooseFromYourPhotos,
+              AppTextConstants.chooseAPdfFile,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             onTap: () async {
-              final XFile? image = await picker.pickImage(
-                source: ImageSource.gallery,
+              final result = await FilePicker.pickFiles(
+                type: FileType.custom,
+                allowedExtensions: ['pdf'],
               );
-              if (image != null) {
-                selectedFile = File(image.path);
-              }
-              if (context.mounted) Navigator.pop(context);
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const CircleAvatar(
-              backgroundColor: AppColors.white,
-              child: Icon(Icons.camera_alt, color: AppColors.primary),
-            ),
-            title: Text(
-              AppTextConstants.camera,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            subtitle: Text(
-              AppTextConstants.takeNewPhoto,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            onTap: () async {
-              final XFile? image = await picker.pickImage(
-                source: ImageSource.camera,
-              );
-              if (image != null) {
-                selectedFile = File(image.path);
+              if (result != null && result.files.single.path != null) {
+                selectedFile = File(result.files.single.path!);
               }
               if (context.mounted) Navigator.pop(context);
             },

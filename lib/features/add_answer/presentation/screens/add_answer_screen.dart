@@ -1,6 +1,7 @@
 import 'package:explaino/config/base_state/base_state.dart';
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/helpers/file_picker_helper.dart';
 import 'package:explaino/core/helpers/image_picker_helper.dart';
 import 'package:explaino/core/shared/presentation/widgets/custom_error_widget.dart';
 import 'package:explaino/core/theme/app_colors.dart';
