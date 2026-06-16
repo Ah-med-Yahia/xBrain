@@ -8,7 +8,8 @@ class GetQuestionListUseCase {
   final HomeRepo _homeRepo;
 
   GetQuestionListUseCase(this._homeRepo);
-  Future<BaseResponse<GetQuestionListEntity>> call() async {
-    return await _homeRepo.getQuestionList();
+
+  Future<BaseResponse<GetQuestionListEntity>> call({int page = 1}) {
+    return _homeRepo.getQuestionList(page: page);
   }
 }

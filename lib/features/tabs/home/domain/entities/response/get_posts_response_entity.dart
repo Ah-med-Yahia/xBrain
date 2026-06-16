@@ -12,4 +12,18 @@ class GetPostsResponseEntity {
     required this.previous,
     required this.posts,
   });
+
+  GetPostsResponseEntity copyWith({
+    int? count,
+    String? next,
+    String? previous,
+    List<ShortPostModel>? posts,
+  }) {
+    return GetPostsResponseEntity(
+      count: count ?? this.count,
+      next: next ?? this.next,
+      previous: previous ?? this.previous,
+      posts: posts ?? this.posts,
+    );
+  }
 }

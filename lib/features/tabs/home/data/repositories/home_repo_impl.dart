@@ -13,28 +13,24 @@ class HomeRepoImpl implements HomeRepo {
   HomeRepoImpl(this._remoteHomeDataSource);
 
   @override
-  Future<BaseResponse<GetQuestionListEntity>> getQuestionList() async {
-    final result = await _remoteHomeDataSource.getQuestionList();
+  Future<BaseResponse<GetQuestionListEntity>> getQuestionList({
+    int page = 1,
+  }) async {
+    final result = await _remoteHomeDataSource.getQuestionList(page: page);
     return result.when(
-      success: (data) {
-        return BaseResponse.success(data.toEntity());
-      },
-      failure: (error) {
-        return BaseResponse.failure(error);
-      },
+      success: (data) => BaseResponse.success(data.toEntity()),
+      failure: (error) => BaseResponse.failure(error),
     );
   }
 
   @override
-  Future<BaseResponse<GetPostsResponseEntity>> getPostsList() async {
-    final result = await _remoteHomeDataSource.getPostsList();
+  Future<BaseResponse<GetPostsResponseEntity>> getPostsList({
+    int page = 1,
+  }) async {
+    final result = await _remoteHomeDataSource.getPostsList(page: page);
     return result.when(
-      success: (data) {
-        return BaseResponse.success(data.toEntity());
-      },
-      failure: (error) {
-        return BaseResponse.failure(error);
-      },
+      success: (data) => BaseResponse.success(data.toEntity()),
+      failure: (error) => BaseResponse.failure(error),
     );
   }
 }

@@ -10,11 +10,13 @@ part 'home_api_client.g.dart';
 @RestApi(baseUrl: ApiConstants.baseUrl)
 abstract class HomeApiClient {
   @factoryMethod
-  factory HomeApiClient(Dio dio, {String baseUrl}) = _HomeApiClient;
+  factory HomeApiClient(Dio dio) = _HomeApiClient;
 
   @GET(ApiConstants.getQuestionList)
-  Future<GetListQuestionsResponseModel> getQuestionList();
+  Future<GetListQuestionsResponseModel> getQuestionList({
+    @Query('page') int page = 1,
+  });
 
   @GET(ApiConstants.getPosts)
-  Future<GetPostsResponsModel> getPostsList();
+  Future<GetPostsResponsModel> getPostsList({@Query('page') int page = 1});
 }

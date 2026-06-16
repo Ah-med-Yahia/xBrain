@@ -87,4 +87,12 @@ class AppColors {
   static const Color grey = Color(0xFF8794A7);
   static const Color grey200 = Color(0xFF3F4752);
   static const Color softLightGray = Color(0xFFF2F3F7);
+  static const Color kLight = Color(0xFFF0F2F5);
+  static const Color grey500 = Color(0xFF9E9E9E);
+  static const Color silver = Color(0xFFEEEEEE);
+  static const Color darkCharcoal = Color(0xFF191919);
+  static const Color dimGray = Color(0xFF666666);
+  static const Color jetBlack = Color(0xFF1A1A1A);
+  static const Color spanishGray = Color(0xFF888888);
+  static const Color silverGray = Color(0xFF999999);
 }

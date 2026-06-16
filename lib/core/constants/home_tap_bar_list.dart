@@ -1,0 +1,1 @@
+const tabs = ['Questions', 'Posts'];
