@@ -18,4 +18,5 @@ abstract class AppRoutesConstants {
   static const String addAnswerRoute = '/add-answer';
   static const String questionIdKey = 'questionId';
   static const String hasQuestionKey = 'hasQuestion';
+  static const String scheduleMeetingRoute = '/schedule-meeting';
 }

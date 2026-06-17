@@ -114,4 +114,7 @@ class ApiConstants {
   //==================== Update CommentOrReply ==========================
   static const String updateCommentOrReply =
       'comments/{id}/'; // {String {content},CommentModel}
+  //==========================================================
+  //==================== Schedule Meetings ==========================
+  static const String scheduleMeeting = 'answers/{id}/request-meeting/';
 }
