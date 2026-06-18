@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:explaino/config/base_state/base_state.dart';
-import 'package:explaino/features/schedule_meeting/domain/entities/request/schedule_meeting_response_entity.dart';
+import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
 
 class ScheduleMeetingState extends Equatable {
   final BaseState<ScheduleMeetingResponseEntity> scheduleMeetingState;

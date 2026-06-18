@@ -42,7 +42,23 @@ class ScheduleMeetingCubit extends Cubit<ScheduleMeetingState> {
       case MessageChangedIntent(message: final message):
         _onMessageChanged(message);
         break;
+      case ReorderSlotsIntent(
+        oldIndex: final oldIndex,
+        newIndex: final newIndex,
+      ):
+        _onReorderSlots(oldIndex, newIndex);
+        break;
     }
+  }
+
+  void _onReorderSlots(int oldIndex, int newIndex) {
+    final updated = List<DateTime>.from(state.slots);
+
+    if (newIndex > oldIndex) newIndex--;
+
+    final item = updated.removeAt(oldIndex);
+    updated.insert(newIndex, item);
+    emit(state.copyWith(slots: updated));
   }
 
   void _onMessageChanged(String message) {

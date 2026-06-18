@@ -30,3 +30,10 @@ class MessageChangedIntent extends ScheduleMettingIntents {
   final String message;
   MessageChangedIntent({required this.message});
 }
+
+class ReorderSlotsIntent extends ScheduleMettingIntents {
+  final int oldIndex;
+  final int newIndex;
+
+  ReorderSlotsIntent({required this.oldIndex, required this.newIndex});
+}

@@ -103,8 +103,13 @@ abstract class AppRouter {
       GoRoute(
         path: AppRoutesConstants.scheduleMeetingRoute,
         name: AppRoutesConstants.scheduleMeetingRoute,
-        builder: (context, state) =>
-            ScheduleMeetingScreen(id: state.extra as String),
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+          final id = data[AppRoutesConstants.idKey] as String;
+          final authorName = data[AppRoutesConstants.authorNameKey] as String;
+
+          return ScheduleMeetingScreen(id: id, authorName: authorName);
+        },
       ),
     ],
   );

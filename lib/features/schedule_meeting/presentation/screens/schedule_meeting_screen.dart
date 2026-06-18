@@ -1,6 +1,7 @@
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/constants/schedule_meeting_constants.dart';
+import 'package:explaino/core/helpers/date_picker_helper.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/features/schedule_meeting/domain/entities/request/schedule_meeting_request_entity.dart';
@@ -20,7 +21,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ScheduleMeetingScreen extends StatefulWidget {
   final String id;
-  const ScheduleMeetingScreen({super.key, required this.id});
+  final String authorName;
+  const ScheduleMeetingScreen({
+    super.key,
+    required this.id,
+    required this.authorName,
+  });
 
   @override
   State<ScheduleMeetingScreen> createState() => _ScheduleMeetingScreenState();
@@ -50,68 +56,6 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
     });
   }
 
-  Future<void> _pickSlot(List<DateTime> currentSlots) async {
-    final now = DateTime.now();
-    final firstDate = now.add(const Duration(hours: 1));
-    final lastDate = now.add(const Duration(days: 30));
-
-    final date = await showDatePicker(
-      context: context,
-      initialDate: firstDate,
-      firstDate: firstDate,
-      lastDate: lastDate,
-      builder: (context, child) => _primaryDatePickerTheme(context, child),
-    );
-    if (date == null || !mounted) return;
-
-    final time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.fromDateTime(firstDate),
-    );
-    if (time == null || !mounted) return;
-
-    final slot = DateTime.utc(
-      date.year,
-      date.month,
-      date.day,
-      time.hour,
-      time.minute,
-    );
-
-    if (currentSlots.any((s) => s.isAtSameMomentAs(slot))) return;
-
-    _scheduleMeetingCubit.doIntent(AddSlotIntent(slot: slot));
-  }
-
-  Widget _primaryDatePickerTheme(BuildContext context, Widget? child) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        colorScheme: Theme.of(context).colorScheme.copyWith(
-          primary: AppColors.primary,
-          onPrimary: Colors.white,
-        ),
-      ),
-      child: child!,
-    );
-  }
-
-  void _removeSlot(int index) {
-    _scheduleMeetingCubit.doIntent(RemoveSlotIntent(index: index));
-  }
-
-  void _submit(List<DateTime> currentSlots, int duration) {
-    _scheduleMeetingCubit.doIntent(
-      ScheduleMettingIntent(
-        id: widget.id,
-        scheduleMeetingRequestEntity: ScheduleMeetingRequestEntity(
-          durationMinutes: duration,
-          proposedSlots: currentSlots,
-          message: _messageCtrl.text.trim(),
-        ),
-      ),
-    );
-  }
-
   void _handelLoading() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       UIUtils.showEasyLoading();
@@ -138,11 +82,44 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
     );
   }
 
+  void _removeSlot(int index) {
+    _scheduleMeetingCubit.doIntent(RemoveSlotIntent(index: index));
+  }
+
+  void _submit(List<DateTime> currentSlots, int duration) {
+    _scheduleMeetingCubit.doIntent(
+      ScheduleMettingIntent(
+        id: widget.id,
+        scheduleMeetingRequestEntity: ScheduleMeetingRequestEntity(
+          durationMinutes: duration,
+          proposedSlots: currentSlots,
+          message: _messageCtrl.text.trim(),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickSlot() async {
+    final slot = await DatePickerHelper.pickDateTime(context);
+
+    if (slot == null) return;
+
+    if (_scheduleMeetingCubit.state.slots.any(
+      (s) => s.isAtSameMomentAs(slot),
+    )) {
+      return;
+    }
+
+    _scheduleMeetingCubit.doIntent(AddSlotIntent(slot: slot));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppTextConstants.scheduleAMeeting),
+        title: Text(
+          '${AppTextConstants.scheduleAMeeting} ${widget.authorName}',
+        ),
         centerTitle: false,
         foregroundColor: AppColors.primary,
         scrolledUnderElevation: 0,
@@ -184,10 +161,21 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
                       if (slots.isEmpty)
                         const EmptySlotsHint()
                       else
-                        SlotList(slots: slots, onRemove: _removeSlot),
+                        SlotList(
+                          slots: slots,
+                          onRemove: _removeSlot,
+                          onReorder: (oldIndex, newIndex) {
+                            _scheduleMeetingCubit.doIntent(
+                              ReorderSlotsIntent(
+                                oldIndex: oldIndex,
+                                newIndex: newIndex,
+                              ),
+                            );
+                          },
+                        ),
                       const SizedBox(height: 8),
                       if (slots.length < ScheduleMeetingConstants.maxSlots)
-                        AddSlotButton(onTap: () => _pickSlot(slots)),
+                        AddSlotButton(onTap: _pickSlot),
                     ],
                   );
                 },
@@ -203,9 +191,7 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
               SubmitButton(
                 onPressed: () {
                   final slots = _scheduleMeetingCubit.state.slots;
-
                   final duration = _scheduleMeetingCubit.state.durationMinutes;
-
                   _submit(slots, duration);
                 },
               ),

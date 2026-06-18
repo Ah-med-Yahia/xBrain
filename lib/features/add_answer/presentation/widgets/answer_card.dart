@@ -105,7 +105,11 @@ class AnswerCard extends StatelessWidget {
                               onTap: () {
                                 GoRouter.of(context).push(
                                   AppRoutesConstants.scheduleMeetingRoute,
-                                  extra: answer.id,
+                                  extra: {
+                                    AppRoutesConstants.idKey: answer.id,
+                                    AppRoutesConstants.authorNameKey:
+                                        '${answer.author.firstName} ${answer.author.lastName}',
+                                  },
                                 );
                               },
                               child: SizedBox(

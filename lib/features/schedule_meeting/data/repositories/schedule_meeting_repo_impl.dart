@@ -3,7 +3,7 @@ import 'package:explaino/features/schedule_meeting/data/data_sources/remote/remo
 import 'package:explaino/features/schedule_meeting/data/mappers/schedule_meeting_request_mapper.dart';
 import 'package:explaino/features/schedule_meeting/data/mappers/schedule_metting_response_mapper.dart';
 import 'package:explaino/features/schedule_meeting/domain/entities/request/schedule_meeting_request_entity.dart';
-import 'package:explaino/features/schedule_meeting/domain/entities/request/schedule_meeting_response_entity.dart';
+import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
 import 'package:explaino/features/schedule_meeting/domain/repositories/schedule_meeting_repo.dart';
 import 'package:injectable/injectable.dart';
 

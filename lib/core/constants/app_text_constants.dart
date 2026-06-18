@@ -135,7 +135,7 @@ class AppTextConstants {
   static const String chars1000 = ' / 1000';
   static const String noSlotsAddedYet = 'No slots added yet';
   static const String minutes = 'min';
-  static const String scheduleAMeeting = 'Schedule a meeting';
+  static const String scheduleAMeeting = 'Meeting With';
   static const String duration = 'Duration';
   static const String proposedTimeSlots = 'Proposed time slots';
   static const String message = 'Message';
