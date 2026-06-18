@@ -3,7 +3,7 @@ import 'package:explaino/core/constants/api_constants.dart';
 import 'package:explaino/core/shared/data/models/questions/response/answers_of_question_response_model/answers_of_question_response_model.dart';
 import 'package:explaino/core/shared/data/models/questions/response/first_ten_answers_of_question_response_model/answer_model.dart';
 import 'package:injectable/injectable.dart';
-import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 part 'add_answer_api_cilnt.g.dart';
 
 @injectable
