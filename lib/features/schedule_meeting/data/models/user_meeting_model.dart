@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'user_model.g.dart';
+part 'user_meeting_model.g.dart';
 
 @JsonSerializable()
-class UserModel {
+class UserMeetingModel {
   final String id;
 
   @JsonKey(name: 'username')
@@ -17,7 +17,7 @@ class UserModel {
   @JsonKey(name: 'profile_image_url')
   final String? profileImageUrl;
 
-  const UserModel({
+  const UserMeetingModel({
     required this.id,
     required this.username,
     required this.firstName,
@@ -25,8 +25,8 @@ class UserModel {
     this.profileImageUrl,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
+  factory UserMeetingModel.fromJson(Map<String, dynamic> json) =>
+      _$UserMeetingModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserModelToJson(this);
+  Map<String, dynamic> toJson() => _$UserMeetingModelToJson(this);
 }

@@ -1,5 +1,5 @@
 import 'package:explaino/features/schedule_meeting/data/models/meeting_status.dart';
-import 'package:explaino/features/schedule_meeting/data/models/user_model.dart';
+import 'package:explaino/features/schedule_meeting/data/models/user_meeting_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'schedule_meeting_response_model.g.dart';
@@ -8,9 +8,9 @@ part 'schedule_meeting_response_model.g.dart';
 class ScheduleMeetingResponseModel {
   final String id;
 
-  final UserModel asker;
+  final UserMeetingModel asker;
 
-  final UserModel answerer;
+  final UserMeetingModel answerer;
 
   @JsonKey(name: 'answer_id')
   final String answerId;
