@@ -101,11 +101,12 @@ class AnswerCard extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            GestureDetector(
+                            InkWell(
                               onTap: () {
-                                GoRouter.of(
-                                  context,
-                                ).push(AppRoutesConstants.scheduleMeetingRoute);
+                                GoRouter.of(context).push(
+                                  AppRoutesConstants.scheduleMeetingRoute,
+                                  extra: answer.id,
+                                );
                               },
                               child: SizedBox(
                                 width: 24,

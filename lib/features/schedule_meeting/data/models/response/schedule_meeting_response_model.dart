@@ -1,13 +1,15 @@
-import 'package:explaino/core/shared/data/models/auth/user_model/user_model.dart';
 import 'package:explaino/features/schedule_meeting/data/models/meeting_status.dart';
+import 'package:explaino/features/schedule_meeting/data/models/user_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'schedule_meeting_response_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ScheduleMeetingResponseModel {
   final String id;
 
   final UserModel asker;
+
   final UserModel answerer;
 
   @JsonKey(name: 'answer_id')

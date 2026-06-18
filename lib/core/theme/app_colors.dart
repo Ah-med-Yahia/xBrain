@@ -95,4 +95,5 @@ class AppColors {
   static const Color jetBlack = Color(0xFF1A1A1A);
   static const Color spanishGray = Color(0xFF888888);
   static const Color silverGray = Color(0xFF999999);
+  static const Color grayishPurple = Color(0xFF79747E);
 }

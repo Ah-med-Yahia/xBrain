@@ -6,10 +6,32 @@ class ApiException extends AppException {
   ApiException(super.message, {super.code});
 
   factory ApiException.fromJson({
-    required Map<String, dynamic> json,
+    required dynamic json,
     required int? statusCode,
   }) {
-    return ApiException(getAllErrorMessage(json), code: statusCode);
+    return ApiException(_parseError(json), code: statusCode);
+  }
+
+  static String _parseError(dynamic data) {
+    if (data == null) {
+      return ErrorsConstant.defaultError;
+    }
+
+    if (data is List) {
+      return data.isNotEmpty
+          ? data.map((e) => e.toString()).join('\n')
+          : ErrorsConstant.defaultError;
+    }
+
+    if (data is Map<String, dynamic>) {
+      return getAllErrorMessage(data);
+    }
+
+    if (data is String) {
+      return data;
+    }
+
+    return data.toString();
   }
 
   static String getAllErrorMessage(Map<String, dynamic> errors) {

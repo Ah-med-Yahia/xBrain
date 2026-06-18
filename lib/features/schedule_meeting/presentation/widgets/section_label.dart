@@ -1,3 +1,4 @@
+import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SectionLabel extends StatelessWidget {
@@ -8,23 +9,22 @@ class SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Row(
       children: [
         Text(
-          label.toUpperCase(),
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          label,
+          style: textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             letterSpacing: 0.8,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            color: AppColors.textHint,
           ),
         ),
+        const SizedBox(width: 4),
         if (note != null) ...[
-          const SizedBox(width: 6),
           Text(
             '($note)',
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: Theme.of(context).colorScheme.outline,
-            ),
+            style: textTheme.bodyMedium?.copyWith(color: AppColors.textHint),
           ),
         ],
       ],

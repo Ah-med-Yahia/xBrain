@@ -128,4 +128,18 @@ class AppTextConstants {
   static const String answers = 'Answers';
   static const String beTheFirstToAnswerThisQuestion =
       'Be the first to answer this question';
+  //====================Schedule Meeting============================
+  static const String requestMeeting = 'Request Meeting';
+  static const String wouldLoveAQuickWalkthroughOfYourAnswer =
+      'Would love a quick walkthrough of your answer.';
+  static const String chars1000 = ' / 1000';
+  static const String noSlotsAddedYet = 'No slots added yet';
+  static const String minutes = 'min';
+  static const String scheduleAMeeting = 'Schedule a meeting';
+  static const String duration = 'Duration';
+  static const String proposedTimeSlots = 'Proposed time slots';
+  static const String message = 'Message';
+  static const String optional = 'optional';
+  static const String meetingScheduledSuccessfully =
+      'Meeting scheduled successfully with Status :';
 }

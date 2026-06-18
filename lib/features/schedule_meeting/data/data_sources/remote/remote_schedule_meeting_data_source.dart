@@ -4,6 +4,7 @@ import 'package:explaino/features/schedule_meeting/data/models/response/schedule
 
 abstract class RemoteScheduleMeetingDataSource {
   Future<BaseResponse<ScheduleMeetingResponseModel>> scheduleMeeting(
+    String id,
     ScheduleMeetingRequestModel request,
   );
 }

@@ -11,8 +11,9 @@ class ScheduleMeetingUseCase {
   ScheduleMeetingUseCase({required this.scheduleMeetingRepo});
 
   Future<BaseResponse<ScheduleMeetingResponseEntity>> call(
+    String id,
     ScheduleMeetingRequestEntity request,
   ) async {
-    return await scheduleMeetingRepo.scheduleMeeting(request);
+    return await scheduleMeetingRepo.scheduleMeeting(id, request);
   }
 }

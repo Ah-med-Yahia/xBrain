@@ -1,4 +1,3 @@
-import 'package:explaino/core/shared/data/mappers/auth/user_mapper.dart';
 import 'package:explaino/features/schedule_meeting/data/models/response/schedule_meeting_response_model.dart';
 import 'package:explaino/features/schedule_meeting/domain/entities/request/schedule_meeting_response_entity.dart';
 
@@ -6,8 +5,8 @@ extension ScheduleMeetingResponseModelMapper on ScheduleMeetingResponseModel {
   ScheduleMeetingResponseEntity toEntity() {
     return ScheduleMeetingResponseEntity(
       id: id,
-      asker: asker.toEntity(),
-      answerer: answerer.toEntity(),
+      asker: asker,
+      answerer: answerer,
       answerId: answerId,
       questionId: questionId,
       questionPreview: questionPreview,

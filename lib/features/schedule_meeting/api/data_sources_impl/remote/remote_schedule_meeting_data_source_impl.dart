@@ -15,10 +15,11 @@ class RemoteScheduleMeetingDataSourceImpl
 
   @override
   Future<BaseResponse<ScheduleMeetingResponseModel>> scheduleMeeting(
+    String id,
     ScheduleMeetingRequestModel request,
   ) async {
     return await safeApiCall<ScheduleMeetingResponseModel>(
-      () => _apiClient.scheduleMeeting(request),
+      () => _apiClient.scheduleMeeting(id, request),
     );
   }
 }

@@ -14,6 +14,7 @@ abstract class ScheduleMeetingApiClient {
 
   @POST(ApiConstants.scheduleMeeting)
   Future<ScheduleMeetingResponseModel> scheduleMeeting(
+    @Path('id') String id,
     @Body() ScheduleMeetingRequestModel body,
   );
 }

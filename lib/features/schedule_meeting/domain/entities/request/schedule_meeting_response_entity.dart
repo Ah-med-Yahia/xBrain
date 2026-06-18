@@ -1,11 +1,11 @@
-import 'package:explaino/core/shared/domain/entities/auth/user_entity/user_entity.dart';
 import 'package:explaino/features/schedule_meeting/data/models/meeting_status.dart';
+import 'package:explaino/features/schedule_meeting/data/models/user_model.dart';
 
 class ScheduleMeetingResponseEntity {
   final String id;
 
-  final UserEntity asker;
-  final UserEntity answerer;
+  final UserModel asker;
+  final UserModel answerer;
 
   final String answerId;
   final String questionId;

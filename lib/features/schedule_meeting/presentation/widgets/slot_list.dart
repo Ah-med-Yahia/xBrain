@@ -1,3 +1,4 @@
+import 'package:explaino/core/helpers/date_time_helper.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -7,43 +8,9 @@ class SlotList extends StatelessWidget {
   final List<DateTime> slots;
   final void Function(int) onRemove;
 
-  static const List<String> _weekdays = [
-    '',
-    'MONDAY',
-    'TUESDAY',
-    'WEDNESDAY',
-    'THURSDAY',
-    'FRIDAY',
-    'SATURDAY',
-    'SUNDAY',
-  ];
-  static const List<String> _months = [
-    '',
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-
-  String _formatDate(DateTime dt) => '${_months[dt.month]} ${dt.day}';
-  String _formatDay(DateTime dt) => _weekdays[dt.weekday];
-  String _formatTime(DateTime dt) {
-    final h = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
-    final m = dt.minute.toString().padLeft(2, '0');
-    final period = dt.hour < 12 ? 'AM' : 'PM';
-    return '$h:$m $period';
-  }
-
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Column(
       children: List.generate(slots.length, (i) {
         final slot = slots[i];
@@ -76,18 +43,16 @@ class SlotList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      _formatDate(slot),
-                      style: const TextStyle(
-                        fontSize: 14,
+                      slot.shortDate,
+                      style: textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF1A1A1A),
+                        color: AppColors.jetBlack,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      _formatDay(slot),
-                      style: TextStyle(
-                        fontSize: 11,
+                      slot.shortDayName,
+                      style: textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.w500,
                         color: AppColors.primary.withValues(alpha: 0.6),
                         letterSpacing: 0.3,
@@ -96,7 +61,6 @@ class SlotList extends StatelessWidget {
                   ],
                 ),
               ),
-              // Time badge — tinted to match
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 14,
@@ -107,16 +71,14 @@ class SlotList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
-                  _formatTime(slot),
-                  style: const TextStyle(
-                    fontSize: 12,
+                  slot.time12Hour,
+                  style: textTheme.bodySmall?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.primary,
                   ),
                 ),
               ),
               const SizedBox(width: 8),
-              // Remove button — tinted to match
               GestureDetector(
                 onTap: () => onRemove(i),
                 child: Container(

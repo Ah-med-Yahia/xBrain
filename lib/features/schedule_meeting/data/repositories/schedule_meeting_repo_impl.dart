@@ -15,9 +15,11 @@ class ScheduleMeetingRepoImpl implements ScheduleMeetingRepo {
 
   @override
   Future<BaseResponse<ScheduleMeetingResponseEntity>> scheduleMeeting(
+    String id,
     ScheduleMeetingRequestEntity request,
   ) async {
     final response = await remoteScheduleMeetingDataSource.scheduleMeeting(
+      id,
       request.toModel(),
     );
     return response.when(

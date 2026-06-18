@@ -1,4 +1,13 @@
+import 'package:explaino/config/di/di.dart';
+import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/constants/schedule_meeting_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/core/utils/ui_utils.dart';
+import 'package:explaino/features/schedule_meeting/domain/entities/request/schedule_meeting_request_entity.dart';
+import 'package:explaino/features/schedule_meeting/presentation/cubit/schedule_metting_cubit.dart';
+import 'package:explaino/features/schedule_meeting/presentation/cubit/schedule_metting_intents.dart';
+import 'package:explaino/features/schedule_meeting/presentation/cubit/schedule_metting_side_effects.dart';
+import 'package:explaino/features/schedule_meeting/presentation/cubit/schedule_metting_state.dart';
 import 'package:explaino/features/schedule_meeting/presentation/widgets/add_slot_button.dart';
 import 'package:explaino/features/schedule_meeting/presentation/widgets/duration_selector.dart';
 import 'package:explaino/features/schedule_meeting/presentation/widgets/empty_slot_hint.dart';
@@ -7,24 +16,41 @@ import 'package:explaino/features/schedule_meeting/presentation/widgets/section_
 import 'package:explaino/features/schedule_meeting/presentation/widgets/slot_list.dart';
 import 'package:explaino/features/schedule_meeting/presentation/widgets/submit_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ScheduleMeetingScreen extends StatefulWidget {
-  const ScheduleMeetingScreen({super.key});
+  final String id;
+  const ScheduleMeetingScreen({super.key, required this.id});
 
   @override
   State<ScheduleMeetingScreen> createState() => _ScheduleMeetingScreenState();
 }
 
 class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
-  int _selectedDuration = 30;
-  final List<DateTime> _slots = [];
   final TextEditingController _messageCtrl = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late ScheduleMeetingCubit _scheduleMeetingCubit;
 
-  static const List<int> _durations = [15, 30, 45, 60];
-  static const int _maxSlots = 5;
+  @override
+  void initState() {
+    super.initState();
+    _scheduleMeetingCubit = getIt<ScheduleMeetingCubit>();
+    _scheduleMeetingCubit.sideEffects.listen((effect) {
+      if (!mounted) return;
+      switch (effect) {
+        case ShowError():
+          _handelError(effect.message);
+        case ShowLoading():
+          _handelLoading();
+        case HideLoading():
+          _handelHideLoading();
+        case ShowSuccessMessage():
+          _handelSuccess(effect.message);
+      }
+    });
+  }
 
-  Future<void> _pickSlot() async {
+  Future<void> _pickSlot(List<DateTime> currentSlots) async {
     final now = DateTime.now();
     final firstDate = now.add(const Duration(hours: 1));
     final lastDate = now.add(const Duration(days: 30));
@@ -52,12 +78,9 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
       time.minute,
     );
 
-    if (_slots.any((s) => s.isAtSameMomentAs(slot))) return;
+    if (currentSlots.any((s) => s.isAtSameMomentAs(slot))) return;
 
-    setState(() {
-      _slots.add(slot);
-      _slots.sort();
-    });
+    _scheduleMeetingCubit.doIntent(AddSlotIntent(slot: slot));
   }
 
   Widget _primaryDatePickerTheme(BuildContext context, Widget? child) {
@@ -72,71 +95,122 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
     );
   }
 
-  void _removeSlot(int index) => setState(() => _slots.removeAt(index));
-
-  void _submit() {
-    if (!_formKey.currentState!.validate()) return;
-    if (_slots.isEmpty) {
-      _showError('Add at least one proposed time slot.');
-      return;
-    }
-
-    final payload = {
-      'duration_minutes': _selectedDuration,
-      'proposed_slots': _slots.map((s) => s.toIso8601String()).toList(),
-      if (_messageCtrl.text.trim().isNotEmpty)
-        'message': _messageCtrl.text.trim(),
-    };
-
-    debugPrint('Payload: $payload');
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Meeting request sent!')));
+  void _removeSlot(int index) {
+    _scheduleMeetingCubit.doIntent(RemoveSlotIntent(index: index));
   }
 
-  void _showError(String msg) =>
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  void _submit(List<DateTime> currentSlots, int duration) {
+    _scheduleMeetingCubit.doIntent(
+      ScheduleMettingIntent(
+        id: widget.id,
+        scheduleMeetingRequestEntity: ScheduleMeetingRequestEntity(
+          durationMinutes: duration,
+          proposedSlots: currentSlots,
+          message: _messageCtrl.text.trim(),
+        ),
+      ),
+    );
+  }
+
+  void _handelLoading() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      UIUtils.showEasyLoading();
+    });
+  }
+
+  void _handelError(String message) {
+    UIUtils.showMessage(
+      message,
+      backGroundColor: AppColors.error,
+      textColor: AppColors.white,
+    );
+  }
+
+  void _handelHideLoading() {
+    UIUtils.hideEasyLoading();
+  }
+
+  void _handelSuccess(String message) {
+    UIUtils.showMessage(
+      message,
+      backGroundColor: AppColors.green,
+      textColor: AppColors.white,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Schedule a meeting'),
+        title: const Text(AppTextConstants.scheduleAMeeting),
         centerTitle: false,
-
         foregroundColor: AppColors.primary,
+        scrolledUnderElevation: 0,
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-          children: [
-            const SectionLabel(label: 'Duration'),
-            const SizedBox(height: 8),
-            DurationSelector(
-              durations: _durations,
-              selected: _selectedDuration,
-              onChanged: (val) => setState(() => _selectedDuration = val),
-            ),
-            const SizedBox(height: 28),
-            SectionLabel(
-              label: 'Proposed time slots',
-              note: '${_slots.length}–$_maxSlots · UTC',
-            ),
-            const SizedBox(height: 8),
-            if (_slots.isEmpty)
-              const EmptySlotsHint()
-            else
-              SlotList(slots: _slots, onRemove: _removeSlot),
-            const SizedBox(height: 8),
-            if (_slots.length < _maxSlots) AddSlotButton(onTap: _pickSlot),
-            const SizedBox(height: 28),
-            const SectionLabel(label: 'Message', note: 'optional'),
-            const SizedBox(height: 8),
-            MessageField(controller: _messageCtrl),
-            const SizedBox(height: 32),
-            SubmitButton(onPressed: _submit),
-          ],
+      body: BlocProvider(
+        create: (_) => _scheduleMeetingCubit,
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+            children: [
+              const SectionLabel(label: AppTextConstants.duration),
+              const SizedBox(height: 8),
+              BlocBuilder<ScheduleMeetingCubit, ScheduleMeetingState>(
+                buildWhen: (prev, curr) =>
+                    prev.durationMinutes != curr.durationMinutes,
+                builder: (context, state) {
+                  return DurationSelector(
+                    durations: ScheduleMeetingConstants.durations,
+                    selected: state.durationMinutes,
+                    onChanged: (val) => _scheduleMeetingCubit.doIntent(
+                      SelectDurationIntent(duration: val),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 28),
+              const SectionLabel(
+                label: AppTextConstants.proposedTimeSlots,
+                note: '${ScheduleMeetingConstants.maxSlots}',
+              ),
+              const SizedBox(height: 8),
+              BlocBuilder<ScheduleMeetingCubit, ScheduleMeetingState>(
+                buildWhen: (prev, curr) => prev.slots != curr.slots,
+                builder: (context, state) {
+                  final slots = state.slots;
+                  return Column(
+                    children: [
+                      if (slots.isEmpty)
+                        const EmptySlotsHint()
+                      else
+                        SlotList(slots: slots, onRemove: _removeSlot),
+                      const SizedBox(height: 8),
+                      if (slots.length < ScheduleMeetingConstants.maxSlots)
+                        AddSlotButton(onTap: () => _pickSlot(slots)),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 28),
+              const SectionLabel(
+                label: AppTextConstants.message,
+                note: AppTextConstants.optional,
+              ),
+              const SizedBox(height: 8),
+              MessageField(controller: _messageCtrl),
+              const SizedBox(height: 32),
+              SubmitButton(
+                onPressed: () {
+                  final slots = _scheduleMeetingCubit.state.slots;
+
+                  final duration = _scheduleMeetingCubit.state.durationMinutes;
+
+                  _submit(slots, duration);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -14,7 +14,7 @@ class ScheduleMeetingRequestModel {
   final int durationMinutes;
 
   @JsonKey(name: 'proposed_slots')
-  final List<String> proposedSlots;
+  final List<DateTime> proposedSlots;
 
   @JsonKey(name: 'message')
   final String? message;
@@ -27,7 +27,7 @@ class ScheduleMeetingRequestModel {
 
   ScheduleMeetingRequestModel copyWith({
     int? durationMinutes,
-    List<String>? proposedSlots,
+    List<DateTime>? proposedSlots,
     String? message,
   }) {
     return ScheduleMeetingRequestModel(

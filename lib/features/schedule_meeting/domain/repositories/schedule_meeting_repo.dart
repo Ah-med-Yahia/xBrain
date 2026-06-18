@@ -4,6 +4,7 @@ import 'package:explaino/features/schedule_meeting/domain/entities/request/sched
 
 abstract class ScheduleMeetingRepo {
   Future<BaseResponse<ScheduleMeetingResponseEntity>> scheduleMeeting(
+    String id,
     ScheduleMeetingRequestEntity request,
   );
 }

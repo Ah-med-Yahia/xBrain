@@ -103,7 +103,8 @@ abstract class AppRouter {
       GoRoute(
         path: AppRoutesConstants.scheduleMeetingRoute,
         name: AppRoutesConstants.scheduleMeetingRoute,
-        builder: (context, state) => const ScheduleMeetingScreen(),
+        builder: (context, state) =>
+            ScheduleMeetingScreen(id: state.extra as String),
       ),
     ],
   );

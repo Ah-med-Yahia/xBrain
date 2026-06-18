@@ -1,6 +1,6 @@
 class ScheduleMeetingRequestEntity {
   final int durationMinutes;
-  final List<String> proposedSlots;
+  final List<DateTime> proposedSlots;
   final String? message;
 
   ScheduleMeetingRequestEntity({
