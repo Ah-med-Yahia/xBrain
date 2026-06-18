@@ -1,4 +1,5 @@
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/core/validators/app_validators.dart';
 import 'package:flutter/material.dart';
 
 class CertificateTextField extends StatelessWidget {
@@ -26,8 +27,9 @@ class CertificateTextField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        TextField(
+        TextFormField(
           controller: controller,
+          validator: (value) => AppValidators.validateRequired(value),
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(

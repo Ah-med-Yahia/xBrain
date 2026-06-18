@@ -1,22 +1,19 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
-import 'package:explaino/features/tabs/add_question_or_posts/domain/entities/request/add_post_request_entity.dart';
-import 'package:explaino/features/tabs/add_question_or_posts/domain/entities/request/add_question_request_entity.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/add_posts_questions_certificates_cubit.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/add_posts_questions_certificates_intents.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/add_posts_questions_certificates_side_effects.dart';
+import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/add_posts_questions_certificates_state.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_attachment_toolbar.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_certificate_form.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_content_editor.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_content_type_tab_bar.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_specialization_chips.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_spend_notice.dart';
-import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_submit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,37 +27,27 @@ class AddPostsQuestionsCertificatesScreen extends StatefulWidget {
 
 class _AddPostsQuestionsCertificatesScreenState
     extends State<AddPostsQuestionsCertificatesScreen> {
-  static const List<String> _specializations = [
-    AppTextConstants.cyberSecurity,
-    AppTextConstants.uiUx,
-    AppTextConstants.flutter,
-  ];
-
   late final AddPostsQuestionsCertificatesCubit _cubit;
   late final StreamSubscription<AddPostsQuestionsCertificatesSideEffects>
   _sideEffectsSubscription;
-  final TextEditingController _contentController = TextEditingController();
-  final TextEditingController _certificateNameController =
+  final TextEditingController contentController = TextEditingController();
+  final TextEditingController certificateNameController =
       TextEditingController();
-  final TextEditingController _organizationNameController =
+  final TextEditingController organizationNameController =
       TextEditingController();
-  final Set<String> _selectedSpecializations = {_specializations.first};
-  File? _selectedCertificateImage;
-  AddContentType _selectedType = AddContentType.question;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     _cubit = getIt<AddPostsQuestionsCertificatesCubit>();
+    _cubit.doIntent(GetSpecializationsIntent());
     _sideEffectsSubscription = _cubit.sideEffects.listen(_handleSideEffect);
   }
 
   @override
   void dispose() {
     _sideEffectsSubscription.cancel();
-    _contentController.dispose();
-    _certificateNameController.dispose();
-    _organizationNameController.dispose();
     _cubit.close();
     super.dispose();
   }
@@ -83,52 +70,7 @@ class _AddPostsQuestionsCertificatesScreenState
   }
 
   void _changeContentType(AddContentType type) {
-    setState(() => _selectedType = type);
-  }
-
-  void _toggleSpecialization(String specialization) {
-    setState(() {
-      if (_selectedSpecializations.contains(specialization)) {
-        if (_selectedSpecializations.length == 1) return;
-        _selectedSpecializations.remove(specialization);
-      } else {
-        _selectedSpecializations.add(specialization);
-      }
-    });
-  }
-
-  void _submit() {
-    switch (_selectedType) {
-      case AddContentType.question:
-        final content = _contentController.text.trim();
-        if (content.isEmpty) return;
-        _cubit.doIntent(
-          AddQuestionIntent(
-            request: AddQuestionRequestEntity(
-              content: content,
-              isResolved: false,
-              specializations: _selectedSpecializations.toList(),
-            ),
-          ),
-        );
-      case AddContentType.post:
-        final content = _contentController.text.trim();
-        if (content.isEmpty) return;
-        _cubit.doIntent(
-          AddPostIntent(
-            request: AddPostRequestEntity(
-              content: content,
-              specializations: _selectedSpecializations.toList(),
-            ),
-          ),
-        );
-      case AddContentType.certificate:
-        UIUtils.showMessage(
-          AppTextConstants.certificateSubmitNotAvailable,
-          backGroundColor: AppColors.grey200,
-          textColor: AppColors.white,
-        );
-    }
+    _cubit.doIntent(ChangeContentTypeIntent(contentType: type));
   }
 
   void _goBack() {
@@ -139,10 +81,6 @@ class _AddPostsQuestionsCertificatesScreenState
 
   @override
   Widget build(BuildContext context) {
-    final title = _selectedType.title;
-    final isQuestion = _selectedType == AddContentType.question;
-    final isCertificate = _selectedType == AddContentType.certificate;
-
     return BlocProvider.value(
       value: _cubit,
       child: Scaffold(
@@ -154,7 +92,21 @@ class _AddPostsQuestionsCertificatesScreenState
             icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 21),
           ),
           titleSpacing: 0,
-          title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
+          title:
+              BlocBuilder<
+                AddPostsQuestionsCertificatesCubit,
+                AddPostsQuestionsCertificatesState
+              >(
+                buildWhen: (previous, current) =>
+                    previous.contentType != current.contentType,
+                builder: (context, state) {
+                  return Text(
+                    state.contentType.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  );
+                },
+              ),
           actions: [
             Padding(
               padding: const EdgeInsetsDirectional.only(end: 12),
@@ -176,54 +128,95 @@ class _AddPostsQuestionsCertificatesScreenState
             ),
           ],
         ),
-        body: Column(
-          children: [
-            const Divider(height: 1, color: AppColors.lightPeriwinkle),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: AddContentTypeTabBar(
-                selectedType: _selectedType,
-                onChanged: _changeContentType,
-              ),
-            ),
-            Expanded(
-              child: isCertificate
-                  ? AddCertificateForm(
-                      certificateNameController: _certificateNameController,
-                      organizationNameController: _organizationNameController,
-                      selectedImage: _selectedCertificateImage,
-                      onImagePicked: (image) {
-                        setState(() => _selectedCertificateImage = image);
-                      },
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                      child: AddContentEditor(controller: _contentController),
-                    ),
-            ),
-            if (!isCertificate) ...[
-              if (isQuestion)
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: AddSpecializationChips(
-                    specializations: _specializations,
-                    selectedSpecializations: _selectedSpecializations,
-                    onToggle: _toggleSpecialization,
+        body:
+            BlocBuilder<
+              AddPostsQuestionsCertificatesCubit,
+              AddPostsQuestionsCertificatesState
+            >(
+              buildWhen: (previous, current) =>
+                  previous.contentType != current.contentType,
+              builder: (context, state) {
+                final isCertificate =
+                    state.contentType == AddContentType.certificate;
+                final isQuestion = state.contentType == AddContentType.question;
+                return Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      const Divider(
+                        height: 1,
+                        color: AppColors.lightPeriwinkle,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: AddContentTypeTabBar(
+                          selectedType: state.contentType,
+                          onChanged: _changeContentType,
+                        ),
+                      ),
+                      Expanded(
+                        child: isCertificate
+                            ? AddCertificateForm(
+                                certificateNameController:
+                                    certificateNameController,
+                                organizationNameController:
+                                    organizationNameController,
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                  16,
+                                  8,
+                                  16,
+                                  0,
+                                ),
+                                child: AddContentEditor(
+                                  controller: contentController,
+                                ),
+                              ),
+                      ),
+                      if (!isCertificate) ...[
+                        if (isQuestion)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                            child:
+                                BlocBuilder<
+                                  AddPostsQuestionsCertificatesCubit,
+                                  AddPostsQuestionsCertificatesState
+                                >(
+                                  buildWhen: (previous, current) =>
+                                      previous
+                                              .selectedSpecializations
+                                              ?.length !=
+                                          current
+                                              .selectedSpecializations
+                                              ?.length ||
+                                      previous.specializations.length !=
+                                          current.specializations.length,
+                                  builder: (context, state) {
+                                    return AddSpecializationChips(
+                                      specializations: state.specializations,
+                                      selectedSpecializations:
+                                          state.selectedSpecializations ?? [],
+                                    );
+                                  },
+                                ),
+                          ),
+                        const Divider(
+                          height: 1,
+                          color: AppColors.lightPeriwinkle,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          child: AddAttachmentToolbar(),
+                        ),
+                        if (isQuestion) const AddSpendNotice(),
+                      ],
+                      // const AddSubmitButton(),
+                    ],
                   ),
-                ),
-              const Divider(height: 1, color: AppColors.lightPeriwinkle),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: AddAttachmentToolbar(
-                  onAddImage: () {},
-                  onAddLink: () {},
-                ),
-              ),
-              if (isQuestion) const AddSpendNotice(),
-            ],
-            AddSubmitButton(label: title, onPressed: _submit),
-          ],
-        ),
+                );
+              },
+            ),
       ),
     );
   }
