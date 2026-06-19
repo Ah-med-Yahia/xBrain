@@ -7,9 +7,11 @@ class AddSubmitButton extends StatelessWidget {
     super.key,
     required this.label,
     required this.onPressed,
+    required this.buttonEnabled,
   });
   final String label;
   final VoidCallback onPressed;
+  final bool buttonEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,9 @@ class AddSubmitButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
+            backgroundColor: buttonEnabled
+                ? AppColors.primary
+                : AppColors.lightGrey,
             foregroundColor: AppColors.white,
             elevation: 0,
             shape: RoundedRectangleBorder(

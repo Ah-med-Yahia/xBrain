@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/core/extensions/extensions.dart';
 import 'package:explaino/features/auth/register/domain/usecases/get_specializations_use_case.dart';
 import 'package:explaino/features/auth/register/presentation/ui_models/specialization_model_ui.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/domain/entities/request/add_certificate_request_entity.dart';
@@ -42,18 +43,28 @@ class AddPostsQuestionsCertificatesCubit
         _getSpecializations();
       case ChangeContentTypeIntent(contentType: final contentType):
         _changeContentType(contentType);
-      case AddQuestionIntent(request: final request):
-        _addQuestion(request);
-      case AddPostIntent(request: final request):
-        _addPost(request);
-      case AddCertificateIntent(request: final request):
-        _addCertificate(request);
-      case PickCertificateImageIntent(image: final image):
-        _pickCertificateImage(image);
+      case AddContentTextIntent(content: final content):
+        _addContentText(content);
       case ToggleSpecializationIntent(specialization: final specialization):
         _toggleSpecialization(specialization);
       case AddAttachmentIntent(file: final file):
         _addAttachment(file);
+      case AddQuestionIntent(request: final request):
+        _addQuestion(request);
+      case AddPostIntent(request: final request):
+        _addPost(request);
+      case PickCertificateImageIntent(image: final image):
+        _pickCertificateImage(image);
+      case AddCertificateNameIntent(name: final name):
+        _addCertificateName(name);
+      case AddCertificateOrganizationIntent(organization: final organization):
+        _addCertificateOrganization(organization);
+      case AddCertificateIssueDateIntent(issueDate: final issueDate):
+        _addCertificateIssueDate(issueDate);
+      case AddCertificateIntent(request: final request):
+        _addCertificate(request);
+      case CheckButtonEnabledIntent():
+        _checkButtonEnabled();
     }
   }
 
@@ -74,6 +85,41 @@ class AddPostsQuestionsCertificatesCubit
 
   void _changeContentType(AddContentType contentType) {
     emit(state.copyWith(contentType: contentType));
+  }
+
+  //======================== Questions - Posts ========================
+
+  void _addContentText(String content) {
+    emit(state.copyWith(content: content));
+  }
+
+  void _toggleSpecialization(SpecializationModelUI specialization) {
+    if (state.selectedSpecializations?.contains(specialization) ?? false) {
+      emit(
+        state.copyWith(
+          selectedSpecializations: state.selectedSpecializations
+              ?.where((e) => e.id != specialization.id)
+              .toList(),
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          selectedSpecializations: [
+            ...state.selectedSpecializations ?? [],
+            specialization,
+          ],
+        ),
+      );
+    }
+  }
+
+  void _addAttachment(File file) {
+    emit(
+      state.copyWith(
+        selectedAttachments: [...state.selectedAttachments ?? [], file],
+      ),
+    );
   }
 
   void _addQuestion(AddQuestionRequestEntity request) async {
@@ -106,6 +152,24 @@ class AddPostsQuestionsCertificatesCubit
     );
   }
 
+  //======================== Certificates ========================
+
+  void _pickCertificateImage(File image) async {
+    emit(state.copyWith(certificateImage: image));
+  }
+
+  void _addCertificateName(String name) {
+    emit(state.copyWith(certificateName: name));
+  }
+
+  void _addCertificateOrganization(String organization) {
+    emit(state.copyWith(certificateOrganization: organization));
+  }
+
+  void _addCertificateIssueDate(String issueDate) {
+    emit(state.copyWith(certificateIssueDate: issueDate));
+  }
+
   void _addCertificate(AddCertificateRequestEntity request) async {
     _sideEffectController.add(ShowLoading());
     final result = await _addCertificateUseCase(request);
@@ -121,37 +185,22 @@ class AddPostsQuestionsCertificatesCubit
     );
   }
 
-  void _pickCertificateImage(File image) async {
-    emit(state.copyWith(certificateImage: image));
-  }
+  //======================== Button ========================
 
-  void _toggleSpecialization(SpecializationModelUI specialization) {
-    if (state.selectedSpecializations?.contains(specialization) ?? false) {
-      emit(
-        state.copyWith(
-          selectedSpecializations: state.selectedSpecializations
-              ?.where((e) => e.id != specialization.id)
-              .toList(),
-        ),
-      );
-    } else {
-      emit(
-        state.copyWith(
-          selectedSpecializations: [
-            ...state.selectedSpecializations ?? [],
-            specialization,
-          ],
-        ),
-      );
+  void _checkButtonEnabled() {
+    if (state.contentType == AddContentType.certificate) {
+      final isNotButtonEnabled =
+          state.certificateImage == null ||
+          state.certificateName.isNullOrEmpty() ||
+          state.certificateOrganization.isNullOrEmpty() ||
+          state.certificateIssueDate.isNullOrEmpty();
+      emit(state.copyWith(butonEnabled: !isNotButtonEnabled));
+      return;
     }
-  }
-
-  void _addAttachment(File file) {
-    emit(
-      state.copyWith(
-        selectedAttachments: [...state.selectedAttachments ?? [], file],
-      ),
-    );
+    final isNotButtonEnabled =
+        state.content.isNullOrEmpty() ||
+        state.selectedSpecializations.isNullOrEmpty();
+    emit(state.copyWith(butonEnabled: !isNotButtonEnabled));
   }
 
   @override

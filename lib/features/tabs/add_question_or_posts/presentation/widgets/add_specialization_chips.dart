@@ -38,6 +38,9 @@ class AddSpecializationChips extends StatelessWidget {
               context.read<AddPostsQuestionsCertificatesCubit>().doIntent(
                 ToggleSpecializationIntent(specialization: specialization),
               );
+              context.read<AddPostsQuestionsCertificatesCubit>().doIntent(
+                CheckButtonEnabledIntent(),
+              );
             },
             label: Text(specialization.name.capitalize()),
             labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(

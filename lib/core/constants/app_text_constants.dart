@@ -95,6 +95,8 @@ class AppTextConstants {
   static const String certificateImage = 'Certificate Image';
   static const String addCertificateImage = 'Add certificate image';
   static const String changeCertificateImage = 'Change certificate image';
+  static const String issueDate = 'Issue Date';
+  static const String selectIssueDate = 'Select issue date (YYYY-MM-DD)';
   static const String addImage = 'Add image';
   static const String addLink = 'Add link';
   static const String pointsBalance = '1,000';

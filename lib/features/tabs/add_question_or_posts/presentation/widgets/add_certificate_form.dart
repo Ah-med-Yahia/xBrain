@@ -25,6 +25,42 @@ class AddCertificateForm extends StatelessWidget {
     context.read<AddPostsQuestionsCertificatesCubit>().doIntent(
       PickCertificateImageIntent(image: image),
     );
+    context.read<AddPostsQuestionsCertificatesCubit>().doIntent(
+      CheckButtonEnabledIntent(),
+    );
+  }
+
+  Future<void> _pickDate(BuildContext context) async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: DateTime(1900),
+      lastDate: now,
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: AppColors.primary,
+              onPrimary: AppColors.white,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(foregroundColor: AppColors.primary),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked == null || !context.mounted) return;
+    final formatted =
+        '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}';
+    context.read<AddPostsQuestionsCertificatesCubit>().doIntent(
+      AddCertificateIssueDateIntent(issueDate: formatted),
+    );
+    context.read<AddPostsQuestionsCertificatesCubit>().doIntent(
+      CheckButtonEnabledIntent(),
+    );
   }
 
   @override
@@ -36,12 +72,81 @@ class AddCertificateForm extends StatelessWidget {
           label: AppTextConstants.certificateName,
           hint: AppTextConstants.writeCertificateName,
           controller: certificateNameController,
+          onChanged: (value) {
+            context.read<AddPostsQuestionsCertificatesCubit>().doIntent(
+              AddCertificateNameIntent(name: value),
+            );
+            context.read<AddPostsQuestionsCertificatesCubit>().doIntent(
+              CheckButtonEnabledIntent(),
+            );
+          },
         ),
         const SizedBox(height: 22),
         CertificateTextField(
           label: AppTextConstants.organizationName,
           hint: AppTextConstants.writeCertificateOrganizationName,
           controller: organizationNameController,
+          onChanged: (value) {
+            context.read<AddPostsQuestionsCertificatesCubit>().doIntent(
+              AddCertificateOrganizationIntent(organization: value),
+            );
+            context.read<AddPostsQuestionsCertificatesCubit>().doIntent(
+              CheckButtonEnabledIntent(),
+            );
+          },
+        ),
+        const SizedBox(height: 22),
+        Text(
+          AppTextConstants.issueDate,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            color: AppColors.black,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: 10),
+        BlocBuilder<
+          AddPostsQuestionsCertificatesCubit,
+          AddPostsQuestionsCertificatesState
+        >(
+          buildWhen: (previous, current) =>
+              previous.certificateIssueDate != current.certificateIssueDate,
+          builder: (context, state) {
+            final selectedDate = state.certificateIssueDate;
+            return InkWell(
+              onTap: () => _pickDate(context),
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 18,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.inputBorder),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        selectedDate ?? AppTextConstants.selectIssueDate,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: selectedDate != null
+                              ? AppColors.black
+                              : AppColors.textHint,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.calendar_today_rounded,
+                      size: 20,
+                      color: AppColors.textHint,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 22),
         Text(

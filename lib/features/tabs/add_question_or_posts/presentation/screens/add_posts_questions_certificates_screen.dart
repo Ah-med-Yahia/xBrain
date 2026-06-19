@@ -76,6 +76,7 @@ class _AddPostsQuestionsCertificatesScreenState
 
   void _changeContentType(AddContentType type) {
     _cubit.doIntent(ChangeContentTypeIntent(contentType: type));
+    _cubit.doIntent(CheckButtonEnabledIntent());
   }
 
   void _onPressed(AddPostsQuestionsCertificatesState state) {
@@ -88,7 +89,7 @@ class _AddPostsQuestionsCertificatesScreenState
               request: AddCertificateRequestEntity(
                 title: certificateNameController.text,
                 issuer: organizationNameController.text,
-                issueDate: DateTime.now().toString(),
+                issueDate: state.certificateIssueDate ?? '',
                 certificateFile: state.certificateImage!,
               ),
             ),
@@ -265,7 +266,7 @@ class _AddPostsQuestionsCertificatesScreenState
                           color: AppColors.lightPeriwinkle,
                         ),
                         const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          padding: EdgeInsets.symmetric(horizontal: 12),
                           child: AddAttachmentToolbar(),
                         ),
                         if (isQuestion) const AddSpendNotice(),
@@ -276,11 +277,14 @@ class _AddPostsQuestionsCertificatesScreenState
                       >(
                         buildWhen: (previous, current) =>
                             previous.selectedSpecializations !=
-                            current.selectedSpecializations,
+                                current.selectedSpecializations ||
+                            previous.contentType != current.contentType ||
+                            previous.butonEnabled != current.butonEnabled,
                         builder: (context, state) {
                           return AddSubmitButton(
                             label: state.contentType.label,
                             onPressed: () => _onPressed(state),
+                            buttonEnabled: state.butonEnabled,
                           );
                         },
                       ),

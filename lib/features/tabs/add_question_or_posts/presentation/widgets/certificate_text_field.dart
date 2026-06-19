@@ -8,11 +8,13 @@ class CertificateTextField extends StatelessWidget {
     required this.label,
     required this.hint,
     required this.controller,
+    required this.onChanged,
   });
 
   final String label;
   final String hint;
   final TextEditingController controller;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class CertificateTextField extends StatelessWidget {
         TextFormField(
           controller: controller,
           validator: (value) => AppValidators.validateRequired(value),
+          onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
