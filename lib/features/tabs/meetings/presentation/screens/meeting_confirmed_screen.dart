@@ -254,7 +254,6 @@ class _SuccessIllustrationState extends State<_SuccessIllustration>
   }
 }
 
-// ── Details card ──────────────────────────────────────────────────────────────
 class _DetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
