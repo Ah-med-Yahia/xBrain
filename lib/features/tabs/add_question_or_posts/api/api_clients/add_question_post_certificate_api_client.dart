@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:explaino/core/constants/api_constants.dart';
 import 'package:explaino/core/shared/data/models/posts/response/post_model/post_model.dart';
+import 'package:explaino/features/tabs/add_question_or_posts/data/models/response/add_certificate_response_model/add_certificate_response_model.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/data/models/response/add_question_response_model/add_question_response_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
@@ -21,5 +22,5 @@ abstract class AddQuestionPostCertificateApiClient {
   Future<PostModel> addPost(@Body() FormData formData);
 
   @POST(ApiConstants.addCertificate)
-  Future<dynamic> addCertificate(@Body() FormData formData);
+  Future<AddCertificateResponseModel> addCertificate(@Body() FormData formData);
 }

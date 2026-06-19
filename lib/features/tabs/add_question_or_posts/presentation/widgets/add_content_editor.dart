@@ -1,16 +1,17 @@
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/core/validators/app_validators.dart';
 import 'package:flutter/material.dart';
 
 class AddContentEditor extends StatelessWidget {
   const AddContentEditor({super.key, required this.controller});
-
   final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
+      validator: (value) => AppValidators.validateRequired(value),
       maxLines: null,
       expands: true,
       textAlignVertical: TextAlignVertical.top,

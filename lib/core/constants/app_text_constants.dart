@@ -128,4 +128,10 @@ class AppTextConstants {
   static const String answers = 'Answers';
   static const String beTheFirstToAnswerThisQuestion =
       'Be the first to answer this question';
+  //====================add_posts_questions_certificates_screen============================
+  static const String addDocument = 'Add Document';
+  static const String addVideo = 'Add Video';
+  static const String chooseAVideoFile = 'Choose a video file';
+  static const String video = 'Video';
+  static const String recordANewVideo = 'Record a new video';
 }

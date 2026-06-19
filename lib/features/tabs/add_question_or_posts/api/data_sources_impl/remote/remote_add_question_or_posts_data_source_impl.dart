@@ -4,8 +4,10 @@ import 'package:explaino/core/shared/data/models/posts/response/post_model/post_
 import 'package:explaino/features/tabs/add_question_or_posts/api/api_clients/add_question_post_certificate_api_client.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/data/data_sources/remote/remote_add_question_or_posts_data_source.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/data/mappers/add_question_or_posts_mapper.dart';
+import 'package:explaino/features/tabs/add_question_or_posts/data/models/request/add_certificate_request_model.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/data/models/request/add_post_request_model.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/data/models/request/add_question_request_model.dart';
+import 'package:explaino/features/tabs/add_question_or_posts/data/models/response/add_certificate_response_model/add_certificate_response_model.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/data/models/response/add_question_response_model/add_question_response_model.dart';
 import 'package:injectable/injectable.dart';
 
@@ -32,6 +34,17 @@ class RemoteAddQuestionOrPostsDataSourceImpl
     return safeApiCall(
       () async => _apiClient.addPost(
         await AddQuestionOrPostsMapper.postToFormData(request),
+      ),
+    );
+  }
+
+  @override
+  Future<BaseResponse<AddCertificateResponseModel>> addCertificate(
+    AddCertificateRequestModel request,
+  ) {
+    return safeApiCall(
+      () async => _apiClient.addCertificate(
+        await AddQuestionOrPostsMapper.certificateToFormData(request),
       ),
     );
   }

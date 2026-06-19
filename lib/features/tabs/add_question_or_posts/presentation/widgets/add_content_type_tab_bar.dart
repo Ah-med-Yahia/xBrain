@@ -1,36 +1,16 @@
-import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/add_posts_questions_certificates_state.dart';
 import 'package:flutter/material.dart';
-
-enum AddContentType { question, post, certificate }
-
-extension AddContentTypeInfo on AddContentType {
-  String get label {
-    return switch (this) {
-      AddContentType.question => AppTextConstants.question,
-      AddContentType.post => AppTextConstants.post,
-      AddContentType.certificate => AppTextConstants.certificate,
-    };
-  }
-
-  String get title {
-    return switch (this) {
-      AddContentType.question => AppTextConstants.newQuestion,
-      AddContentType.post => AppTextConstants.newPost,
-      AddContentType.certificate => AppTextConstants.newCertificate,
-    };
-  }
-}
 
 class AddContentTypeTabBar extends StatelessWidget {
   const AddContentTypeTabBar({
     super.key,
-    required this.selectedType,
     required this.onChanged,
+    required this.selectedType,
   });
 
-  final AddContentType selectedType;
   final ValueChanged<AddContentType> onChanged;
+  final AddContentType selectedType;
 
   @override
   Widget build(BuildContext context) {
