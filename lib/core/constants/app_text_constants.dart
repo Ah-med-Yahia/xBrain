@@ -134,4 +134,5 @@ class AppTextConstants {
   static const String chooseAVideoFile = 'Choose a video file';
   static const String video = 'Video';
   static const String recordANewVideo = 'Record a new video';
+  static const String add = 'Add';
 }
