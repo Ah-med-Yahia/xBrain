@@ -11,6 +11,7 @@ import 'package:explaino/features/on_boarding/presentation/screens/on_boarding_s
 import 'package:explaino/features/schedule_meeting/presentation/screens/schedule_meeting_screen.dart';
 import 'package:explaino/features/splash/presentation/screens/splash_screen.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/screens/add_posts_questions_certificates_screen.dart';
+import 'package:explaino/features/tabs/meetings/presentation/screens/meeting_confirmed_screen.dart';
 import 'package:explaino/features/tabs/profile/edit_profile/presentation/screens/edit_profile_image_screen.dart';
 import 'package:explaino/features/tabs/profile/edit_profile/presentation/screens/edit_profile_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -110,6 +111,11 @@ abstract class AppRouter {
 
           return ScheduleMeetingScreen(id: id, authorName: authorName);
         },
+      ),
+      GoRoute(
+        path: AppRoutesConstants.meetingConfirmedRoute,
+        name: AppRoutesConstants.meetingConfirmedRoute,
+        builder: (context, state) => const MeetingConfirmedScreen(),
       ),
     ],
   );

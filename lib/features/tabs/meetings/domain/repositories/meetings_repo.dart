@@ -1,0 +1,25 @@
+import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
+import 'package:explaino/features/tabs/meetings/domain/entities/response/meetings_response_entity.dart';
+
+abstract interface class MeetingsRepo {
+  Future<BaseResponse<MeetingsResponseEntity>> getIncomingMeetings({int? page});
+
+  Future<BaseResponse<MeetingsResponseEntity>> getOutgoingMeetings({int? page});
+
+  Future<BaseResponse<ScheduleMeetingResponseEntity>> acceptMeeting(
+    String id,
+    String createdAt,
+  );
+
+  Future<BaseResponse<ScheduleMeetingResponseEntity>> declineMeeting(
+    String id,
+    String message,
+  );
+
+  Future<BaseResponse<ScheduleMeetingResponseEntity>> cancelMeeting(String id);
+
+  Future<BaseResponse<ScheduleMeetingResponseEntity>> getSingleMeetingDetails(
+    String id,
+  );
+}

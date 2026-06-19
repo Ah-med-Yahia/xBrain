@@ -117,4 +117,12 @@ class ApiConstants {
   //==========================================================
   //==================== Schedule Meetings ==========================
   static const String scheduleMeeting = 'answers/{id}/request-meeting/';
+  static const String getOutgoingMeetings =
+      'users/me/meeting-requests/outgoing/';
+  static const String getIncomingMeetings =
+      'users/me/meeting-requests/incoming/';
+  static const String getSingleMeetingDetails = 'meeting-requests/{id}/';
+  static const String acceptMeeting = 'meeting-requests/{id}/accept/';
+  static const String declineMeeting = 'meeting-requests/{id}/decline/';
+  static const String cancelMeeting = 'meeting-requests/{id}/cancel/';
 }

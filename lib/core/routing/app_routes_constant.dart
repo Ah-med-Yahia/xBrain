@@ -21,4 +21,5 @@ abstract class AppRoutesConstants {
   static const String scheduleMeetingRoute = '/schedule-meeting';
   static const String idKey = 'id';
   static const String authorNameKey = 'authorName';
+  static const String meetingConfirmedRoute = '/meeting-confirmed';
 }
