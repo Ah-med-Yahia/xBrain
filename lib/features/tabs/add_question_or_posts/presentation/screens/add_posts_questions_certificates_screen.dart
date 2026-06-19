@@ -1,9 +1,13 @@
 import 'dart:async';
 
 import 'package:explaino/config/di/di.dart';
+import 'package:explaino/config/services/app_logger.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
+import 'package:explaino/features/tabs/add_question_or_posts/domain/entities/request/add_certificate_request_entity.dart';
+import 'package:explaino/features/tabs/add_question_or_posts/domain/entities/request/add_post_request_entity.dart';
+import 'package:explaino/features/tabs/add_question_or_posts/domain/entities/request/add_question_request_entity.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/add_posts_questions_certificates_cubit.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/add_posts_questions_certificates_intents.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/add_posts_questions_certificates_side_effects.dart';
@@ -14,6 +18,7 @@ import 'package:explaino/features/tabs/add_question_or_posts/presentation/widget
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_content_type_tab_bar.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_specialization_chips.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_spend_notice.dart';
+import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_submit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -71,6 +76,64 @@ class _AddPostsQuestionsCertificatesScreenState
 
   void _changeContentType(AddContentType type) {
     _cubit.doIntent(ChangeContentTypeIntent(contentType: type));
+    _cubit.doIntent(CheckButtonEnabledIntent());
+  }
+
+  void _onPressed(AddPostsQuestionsCertificatesState state) {
+    switch (state.contentType) {
+      case AddContentType.certificate:
+        final isFormValid = _formKey.currentState?.validate() ?? false;
+        if (isFormValid && state.certificateImage != null) {
+          _cubit.doIntent(
+            AddCertificateIntent(
+              request: AddCertificateRequestEntity(
+                title: certificateNameController.text,
+                issuer: organizationNameController.text,
+                issueDate: state.certificateIssueDate ?? '',
+                certificateFile: state.certificateImage!,
+              ),
+            ),
+          );
+        }
+      case AddContentType.post:
+        final isFormValid = _formKey.currentState?.validate() ?? false;
+        appLogger.i('content: ${contentController.text}');
+        appLogger.i(
+          'specializations: ${state.selectedSpecializations?.length}',
+        );
+        if (isFormValid &&
+            state.selectedSpecializations != null &&
+            state.selectedSpecializations!.isNotEmpty) {
+          _cubit.doIntent(
+            AddPostIntent(
+              request: AddPostRequestEntity(
+                content: contentController.text,
+                specializations: state.selectedSpecializations
+                    ?.map((e) => e.id)
+                    .toList(),
+                attachments: state.selectedAttachments,
+              ),
+            ),
+          );
+        }
+      case AddContentType.question:
+        final isFormValid = _formKey.currentState?.validate() ?? false;
+        if (isFormValid &&
+            state.selectedSpecializations != null &&
+            state.selectedSpecializations!.isNotEmpty) {
+          _cubit.doIntent(
+            AddQuestionIntent(
+              request: AddQuestionRequestEntity(
+                content: contentController.text,
+                attachments: state.selectedAttachments,
+                specializations: state.selectedSpecializations
+                    ?.map((e) => e.id)
+                    .toList(),
+              ),
+            ),
+          );
+        }
+    }
   }
 
   void _goBack() {
@@ -175,43 +238,56 @@ class _AddPostsQuestionsCertificatesScreenState
                               ),
                       ),
                       if (!isCertificate) ...[
-                        if (isQuestion)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                            child:
-                                BlocBuilder<
-                                  AddPostsQuestionsCertificatesCubit,
-                                  AddPostsQuestionsCertificatesState
-                                >(
-                                  buildWhen: (previous, current) =>
-                                      previous
-                                              .selectedSpecializations
-                                              ?.length !=
-                                          current
-                                              .selectedSpecializations
-                                              ?.length ||
-                                      previous.specializations.length !=
-                                          current.specializations.length,
-                                  builder: (context, state) {
-                                    return AddSpecializationChips(
-                                      specializations: state.specializations,
-                                      selectedSpecializations:
-                                          state.selectedSpecializations ?? [],
-                                    );
-                                  },
-                                ),
-                          ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                          child:
+                              BlocBuilder<
+                                AddPostsQuestionsCertificatesCubit,
+                                AddPostsQuestionsCertificatesState
+                              >(
+                                buildWhen: (previous, current) =>
+                                    previous.selectedSpecializations?.length !=
+                                        current
+                                            .selectedSpecializations
+                                            ?.length ||
+                                    previous.specializations.length !=
+                                        current.specializations.length,
+                                builder: (context, state) {
+                                  return AddSpecializationChips(
+                                    specializations: state.specializations,
+                                    selectedSpecializations:
+                                        state.selectedSpecializations ?? [],
+                                  );
+                                },
+                              ),
+                        ),
                         const Divider(
                           height: 1,
                           color: AppColors.lightPeriwinkle,
                         ),
                         const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          padding: EdgeInsets.symmetric(horizontal: 12),
                           child: AddAttachmentToolbar(),
                         ),
                         if (isQuestion) const AddSpendNotice(),
                       ],
-                      // const AddSubmitButton(),
+                      BlocBuilder<
+                        AddPostsQuestionsCertificatesCubit,
+                        AddPostsQuestionsCertificatesState
+                      >(
+                        buildWhen: (previous, current) =>
+                            previous.selectedSpecializations !=
+                                current.selectedSpecializations ||
+                            previous.contentType != current.contentType ||
+                            previous.butonEnabled != current.butonEnabled,
+                        builder: (context, state) {
+                          return AddSubmitButton(
+                            label: state.contentType.label,
+                            onPressed: () => _onPressed(state),
+                            buttonEnabled: state.butonEnabled,
+                          );
+                        },
+                      ),
                     ],
                   ),
                 );
