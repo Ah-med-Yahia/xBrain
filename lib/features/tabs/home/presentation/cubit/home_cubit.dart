@@ -45,17 +45,15 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> _handleGetQuestionList() async {
-    if (!_hasMoreQuestions || state.questionsState.isFetching) {
-      return;
-    }
-
+    if (state.questionsState.isFetching) return;
+    if (!_hasMoreQuestions && state.questionsState.errorMessage == null) return;
     final currentQuestions = state.questionsState.data?.questions ?? [];
 
     emit(
       state.copyWith(
         questionsState: state.questionsState.copyWith(
           isFetching: true,
-          errorMessage: null,
+          clearError: true,
         ),
       ),
     );
@@ -79,6 +77,8 @@ class HomeCubit extends Cubit<HomeState> {
         );
       },
       failure: (error) {
+        _questionsPage--;
+        _hasMoreQuestions = true;
         emit(
           state.copyWith(
             questionsState: state.questionsState.copyWith(
@@ -92,7 +92,8 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> _handleGetPostsList() async {
-    if (!_hasMorePosts || state.postsState.isFetching) return;
+    if (state.postsState.isFetching) return;
+    if (!_hasMorePosts && state.postsState.errorMessage == null) return;
 
     final currentPosts = state.postsState.data?.posts ?? [];
 
@@ -100,7 +101,7 @@ class HomeCubit extends Cubit<HomeState> {
       state.copyWith(
         postsState: state.postsState.copyWith(
           isFetching: true,
-          errorMessage: null,
+          clearError: true,
         ),
       ),
     );
@@ -124,6 +125,8 @@ class HomeCubit extends Cubit<HomeState> {
         );
       },
       failure: (error) {
+        _postsPage--;
+        _hasMorePosts = true;
         emit(
           state.copyWith(
             postsState: state.postsState.copyWith(
