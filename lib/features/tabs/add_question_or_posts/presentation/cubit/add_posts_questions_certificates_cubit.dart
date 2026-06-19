@@ -49,6 +49,8 @@ class AddPostsQuestionsCertificatesCubit
         _toggleSpecialization(specialization);
       case AddAttachmentIntent(file: final file):
         _addAttachment(file);
+      case RemoveAttachmentIntent(index: final index):
+        _removeAttachment(index);
       case AddQuestionIntent(request: final request):
         _addQuestion(request);
       case AddPostIntent(request: final request):
@@ -120,6 +122,17 @@ class AddPostsQuestionsCertificatesCubit
         selectedAttachments: [...state.selectedAttachments ?? [], file],
       ),
     );
+  }
+
+  void _removeAttachment(int index) {
+    final List<File> currentAttachments = state.selectedAttachments ?? [];
+    if (index >= 0 && index < currentAttachments.length) {
+      final List<File> updatedAttachments = [
+        ...currentAttachments.sublist(0, index),
+        ...currentAttachments.sublist(index + 1),
+      ];
+      emit(state.copyWith(selectedAttachments: updatedAttachments));
+    }
   }
 
   void _addQuestion(AddQuestionRequestEntity request) async {

@@ -34,6 +34,11 @@ class AddAttachmentIntent extends AddPostsQuestionsCertificatesIntents {
   AddAttachmentIntent({required this.file});
 }
 
+class RemoveAttachmentIntent extends AddPostsQuestionsCertificatesIntents {
+  final int index;
+  RemoveAttachmentIntent({required this.index});
+}
+
 class AddQuestionIntent extends AddPostsQuestionsCertificatesIntents {
   final AddQuestionRequestEntity request;
   AddQuestionIntent({required this.request});
