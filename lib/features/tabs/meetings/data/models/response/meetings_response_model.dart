@@ -7,9 +7,9 @@ class MeetingsResponseModel {
   @JsonKey(name: 'count')
   int count;
   @JsonKey(name: 'next')
-  String next;
+  String? next;
   @JsonKey(name: 'previous')
-  String previous;
+  String? previous;
   @JsonKey(name: 'results')
   List<ScheduleMeetingResponseModel> results;
 

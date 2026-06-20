@@ -9,7 +9,7 @@ class GetIncomingMeetingsUseCase {
 
   GetIncomingMeetingsUseCase({required this.meetingsRepo});
 
-  Future<BaseResponse<MeetingsResponseEntity>> call() {
-    return meetingsRepo.getIncomingMeetings();
+  Future<BaseResponse<MeetingsResponseEntity>> call({int? page}) {
+    return meetingsRepo.getIncomingMeetings(page: page);
   }
 }

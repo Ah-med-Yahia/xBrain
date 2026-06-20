@@ -71,10 +71,7 @@ class _CustomNavBarState extends State<CustomNavBar>
       icon: Icons.add_circle_rounded,
       label: AppTextConstants.post,
     ),
-    const _NavItemData(
-      icon: Icons.video_camera_front_rounded,
-      label: AppTextConstants.meetings,
-    ),
+    const _NavItemData(icon: Icons.videocam, label: AppTextConstants.meetings),
     const _NavItemData(
       icon: Icons.person_rounded,
       label: AppTextConstants.profile,

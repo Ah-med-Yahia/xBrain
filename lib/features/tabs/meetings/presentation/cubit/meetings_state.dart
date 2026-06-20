@@ -10,6 +10,11 @@ class MeetingsState extends Equatable {
   final BaseState<MeetingsResponseEntity> getOutgoingMeetingsState;
   final BaseState<MeetingsResponseEntity> getIncomingMeetingsState;
   final BaseState<ScheduleMeetingResponseEntity> getSingleMeetingDetailsState;
+  final bool incomingSelected;
+  final int incomingCurrentPage;
+  final bool incomingHasMore;
+  final int outgoingCurrentPage;
+  final bool outgoingHasMore;
 
   const MeetingsState({
     this.cancelMeetingstate = const BaseState<ScheduleMeetingResponseEntity>(),
@@ -21,6 +26,11 @@ class MeetingsState extends Equatable {
     this.getIncomingMeetingsState = const BaseState<MeetingsResponseEntity>(),
     this.getSingleMeetingDetailsState =
         const BaseState<ScheduleMeetingResponseEntity>(),
+    this.incomingSelected = true,
+    this.incomingCurrentPage = 1,
+    this.incomingHasMore = true,
+    this.outgoingCurrentPage = 1,
+    this.outgoingHasMore = true,
   });
 
   MeetingsState copyWith({
@@ -30,6 +40,11 @@ class MeetingsState extends Equatable {
     BaseState<MeetingsResponseEntity>? getOutgoingMeetingsState,
     BaseState<MeetingsResponseEntity>? getIncomingMeetingsState,
     BaseState<ScheduleMeetingResponseEntity>? getSingleMeetingDetailsState,
+    bool? incomingSelected,
+    int? incomingCurrentPage,
+    bool? incomingHasMore,
+    int? outgoingCurrentPage,
+    bool? outgoingHasMore,
   }) {
     return MeetingsState(
       cancelMeetingstate: cancelMeetingstate ?? this.cancelMeetingstate,
@@ -43,6 +58,11 @@ class MeetingsState extends Equatable {
           getIncomingMeetingsState ?? this.getIncomingMeetingsState,
       getSingleMeetingDetailsState:
           getSingleMeetingDetailsState ?? this.getSingleMeetingDetailsState,
+      incomingSelected: incomingSelected ?? this.incomingSelected,
+      incomingCurrentPage: incomingCurrentPage ?? this.incomingCurrentPage,
+      incomingHasMore: incomingHasMore ?? this.incomingHasMore,
+      outgoingCurrentPage: outgoingCurrentPage ?? this.outgoingCurrentPage,
+      outgoingHasMore: outgoingHasMore ?? this.outgoingHasMore,
     );
   }
 
@@ -54,5 +74,10 @@ class MeetingsState extends Equatable {
     getOutgoingMeetingsState,
     getIncomingMeetingsState,
     getSingleMeetingDetailsState,
+    incomingSelected,
+    incomingCurrentPage,
+    incomingHasMore,
+    outgoingCurrentPage,
+    outgoingHasMore,
   ];
 }

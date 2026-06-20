@@ -19,20 +19,17 @@ class DeclineMyMeetingsIntent extends MeetingsIntent {
   DeclineMyMeetingsIntent({required this.id, required this.message});
 }
 
-class GetOutgoingMeetingsIntent extends MeetingsIntent {
-  final String id;
+class GetOutgoingMeetingsIntent extends MeetingsIntent {}
 
-  GetOutgoingMeetingsIntent({required this.id});
-}
-
-class GetIncomingMeetingsIntent extends MeetingsIntent {
-  final String id;
-
-  GetIncomingMeetingsIntent({required this.id});
-}
+class GetIncomingMeetingsIntent extends MeetingsIntent {}
 
 class GetSingleMeetingDetailsIntent extends MeetingsIntent {
   final String id;
 
   GetSingleMeetingDetailsIntent({required this.id});
+}
+
+class IncomingMeetingsChangedIntent extends MeetingsIntent {
+  final bool incomingSelected;
+  IncomingMeetingsChangedIntent({required this.incomingSelected});
 }

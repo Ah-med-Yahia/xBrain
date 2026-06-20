@@ -38,6 +38,7 @@ class ScheduleMeetingResponseModel {
   @JsonKey(name: 'decline_message')
   final String? declineMessage;
 
+  @JsonKey(unknownEnumValue: MeetingStatus.pending)
   final MeetingStatus status;
 
   @JsonKey(name: 'created_at')

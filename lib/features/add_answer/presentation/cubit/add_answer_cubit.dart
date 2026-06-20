@@ -91,6 +91,7 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
         getAnswersState: state.getAnswersState.copyWith(
           isFetching: true,
           errorMessage: null,
+          clearError: true,
         ),
       ),
     );

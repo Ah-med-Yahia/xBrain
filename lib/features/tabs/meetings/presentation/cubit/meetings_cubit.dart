@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/features/tabs/meetings/domain/entities/response/meetings_response_entity.dart';
 import 'package:explaino/features/tabs/meetings/domain/usecase/accept_meeting_use_case.dart';
 import 'package:explaino/features/tabs/meetings/domain/usecase/cancel_meeting_use_case.dart';
 import 'package:explaino/features/tabs/meetings/domain/usecase/decline_meeting_use_case.dart';
@@ -11,7 +12,9 @@ import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_inte
 import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_side_effects.dart';
 import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class MeetingsCubit extends Cubit<MeetingsState> {
   final CancelMeetingUseCase _cancelMeetingUseCase;
   final AcceptMeetingUseCase _acceptMeetingUseCase;
@@ -58,6 +61,11 @@ class MeetingsCubit extends Cubit<MeetingsState> {
       case GetSingleMeetingDetailsIntent(id: final id):
         _handleGetSingleMeetingDetailsIntent(id);
         break;
+      case IncomingMeetingsChangedIntent(
+        incomingSelected: final incomingSelected,
+      ):
+        _handleTabChangedIntent(incomingSelected);
+        break;
     }
   }
 
@@ -102,6 +110,11 @@ class MeetingsCubit extends Cubit<MeetingsState> {
   }
 
   void _handleGetOutgoingMeetingsIntent() async {
+    // Guard: prevent duplicate fetches or fetching when no more pages
+    if (state.getOutgoingMeetingsState.isFetching || !state.outgoingHasMore) {
+      return;
+    }
+
     emit(
       state.copyWith(
         getOutgoingMeetingsState: state.getOutgoingMeetingsState.copyWith(
@@ -110,15 +123,27 @@ class MeetingsCubit extends Cubit<MeetingsState> {
         ),
       ),
     );
-    final result = await _getOutgoingMeetingsUseCase.call();
+    final result = await _getOutgoingMeetingsUseCase.call(
+      page: state.outgoingCurrentPage,
+    );
     result.when(
       success: (data) {
+        final existingResults =
+            state.getOutgoingMeetingsState.data?.results ?? [];
+        final updatedData = MeetingsResponseEntity(
+          count: data.count,
+          next: data.next,
+          previous: data.previous,
+          results: [...existingResults, ...data.results],
+        );
         emit(
           state.copyWith(
             getOutgoingMeetingsState: state.getOutgoingMeetingsState.copyWith(
               isFetching: false,
-              data: data,
+              data: updatedData,
             ),
+            outgoingCurrentPage: state.outgoingCurrentPage + 1,
+            outgoingHasMore: data.next != null,
           ),
         );
       },
@@ -134,6 +159,11 @@ class MeetingsCubit extends Cubit<MeetingsState> {
   }
 
   void _handleGetIncomingMeetingsIntent() async {
+    // Guard: prevent duplicate fetches or fetching when no more pages
+    if (state.getIncomingMeetingsState.isFetching || !state.incomingHasMore) {
+      return;
+    }
+
     emit(
       state.copyWith(
         getIncomingMeetingsState: state.getIncomingMeetingsState.copyWith(
@@ -142,15 +172,27 @@ class MeetingsCubit extends Cubit<MeetingsState> {
         ),
       ),
     );
-    final result = await _getIncomingMeetingsUseCase.call();
+    final result = await _getIncomingMeetingsUseCase.call(
+      page: state.incomingCurrentPage,
+    );
     result.when(
       success: (data) {
+        final existingResults =
+            state.getIncomingMeetingsState.data?.results ?? [];
+        final updatedData = MeetingsResponseEntity(
+          count: data.count,
+          next: data.next,
+          previous: data.previous,
+          results: [...existingResults, ...data.results],
+        );
         emit(
           state.copyWith(
             getIncomingMeetingsState: state.getIncomingMeetingsState.copyWith(
               isFetching: false,
-              data: data,
+              data: updatedData,
             ),
+            incomingCurrentPage: state.incomingCurrentPage + 1,
+            incomingHasMore: data.next != null,
           ),
         );
       },
@@ -189,5 +231,12 @@ class MeetingsCubit extends Cubit<MeetingsState> {
         ),
       ),
     );
+  }
+
+  void _handleTabChangedIntent(bool incomingSelected) {
+    emit(state.copyWith(incomingSelected: incomingSelected));
+    if (!incomingSelected) {
+      doIntent(GetOutgoingMeetingsIntent());
+    }
   }
 }

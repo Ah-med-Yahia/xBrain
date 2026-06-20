@@ -13,4 +13,5 @@ enum MeetingStatus {
 
   @JsonValue('cancelled')
   cancelled,
+  scheduled,
 }
