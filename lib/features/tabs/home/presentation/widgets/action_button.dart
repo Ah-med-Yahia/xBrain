@@ -1,3 +1,4 @@
+import 'package:explaino/core/constants/checker_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -29,20 +30,20 @@ class PostActions extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _ActionButton(
-            icon: myReaction == 'like'
+            icon: myReaction == CheckerConstants.like
                 ? Icons.thumb_up
                 : Icons.thumb_up_outlined,
             label: '$likesCount',
-            isActive: myReaction == 'like',
+            isActive: myReaction == CheckerConstants.like,
             onTap: onLike,
           ),
           const SizedBox(width: 16),
           _ActionButton(
-            icon: myReaction == 'dislike'
+            icon: myReaction == CheckerConstants.dislike
                 ? Icons.thumb_down
                 : Icons.thumb_down_outlined,
             label: '$dislikesCount',
-            isActive: myReaction == 'dislike',
+            isActive: myReaction == CheckerConstants.dislike,
             onTap: onDislike,
           ),
           const SizedBox(width: 16),
@@ -73,7 +74,7 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
       child: Row(
         mainAxisSize: MainAxisSize.min,
