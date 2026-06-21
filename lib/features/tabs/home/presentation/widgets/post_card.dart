@@ -1,24 +1,47 @@
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/helpers/text_direction_helper.dart';
+import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/shared/data/models/posts/response/get_posts_response_model/post_model.dart';
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/features/post_action/presentation/cubit/post_action_cubit.dart';
 import 'package:explaino/features/post_action/presentation/cubit/post_action_intents.dart';
+import 'package:explaino/features/post_action/presentation/cubit/post_action_side_effects.dart';
 import 'package:explaino/features/post_action/presentation/cubit/post_action_state.dart';
 import 'package:explaino/features/tabs/home/presentation/widgets/action_button.dart';
 import 'package:explaino/core/shared/presentation/widgets/attachment_preview.dart';
 import 'package:explaino/features/tabs/home/presentation/widgets/user_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final ShortPostModel shortPost;
   const PostCard({super.key, required this.shortPost});
 
   @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  late final PostActionCubit _postActionCubit;
+  @override
+  void initState() {
+    super.initState();
+    _postActionCubit = getIt<PostActionCubit>();
+    _postActionCubit.sideEffects.listen((sideEffect) {
+      if (sideEffect is ErrorWhenLikeOrDislikePost) {
+        if (mounted) {
+          UIUtils.showSnackBar(context: context, message: sideEffect.message);
+        }
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final textDirection = getTextDirection(shortPost.contentPreview);
+    final textDirection = getTextDirection(widget.shortPost.contentPreview);
 
     return BlocProvider(
       create: (context) => getIt<PostActionCubit>(),
@@ -42,14 +65,14 @@ class PostCard extends StatelessWidget {
             children: [
               UserHeader(
                 fullname:
-                    '${shortPost.author.firstName} ${shortPost.author.lastName}',
-                profileImageUrl: shortPost.author.profileImageUrl,
+                    '${widget.shortPost.author.firstName} ${widget.shortPost.author.lastName}',
+                profileImageUrl: widget.shortPost.author.profileImageUrl,
                 role: 'Software Engineer',
-                createdAt: shortPost.createdAt,
+                createdAt: widget.shortPost.createdAt,
               ),
               const SizedBox(height: 10),
               Text(
-                shortPost.contentPreview,
+                widget.shortPost.contentPreview,
                 textDirection: textDirection,
                 textAlign: textDirection == TextDirection.rtl
                     ? TextAlign.right
@@ -58,9 +81,9 @@ class PostCard extends StatelessWidget {
                   color: AppColors.lightTextPrimary,
                 ),
               ),
-              if (shortPost.attachments!.isNotEmpty) ...[
+              if (widget.shortPost.attachments!.isNotEmpty) ...[
                 const SizedBox(height: 10),
-                AttachmentPreview(attachments: shortPost.attachments!),
+                AttachmentPreview(attachments: widget.shortPost.attachments!),
               ],
               const SizedBox(height: 12),
               BlocBuilder<PostActionCubit, PostActionState>(
@@ -71,10 +94,10 @@ class PostCard extends StatelessWidget {
                   int dislikesCount;
                   int commentsCount;
                   if (state.post == null) {
-                    myReaction = shortPost.myReaction ?? '';
-                    likesCount = shortPost.likesCount;
-                    dislikesCount = shortPost.dislikesCount;
-                    commentsCount = shortPost.commentsCount;
+                    myReaction = widget.shortPost.myReaction ?? '';
+                    likesCount = widget.shortPost.likesCount;
+                    dislikesCount = widget.shortPost.dislikesCount;
+                    commentsCount = widget.shortPost.commentsCount;
                   } else {
                     myReaction = state.post!.myReaction ?? '';
                     likesCount = state.post!.likesCount;
@@ -88,15 +111,20 @@ class PostCard extends StatelessWidget {
                     commentsCount: commentsCount,
                     onLike: () {
                       context.read<PostActionCubit>().doIntent(
-                        LikePostIntent(postId: shortPost.id),
+                        LikePostIntent(postId: widget.shortPost.id),
                       );
                     },
                     onDislike: () {
                       context.read<PostActionCubit>().doIntent(
-                        DislikePostIntent(postId: shortPost.id),
+                        DislikePostIntent(postId: widget.shortPost.id),
                       );
                     },
-                    onComment: () {},
+                    onComment: () {
+                      context.pushNamed(
+                        AppRoutesConstants.postDetailsRoute,
+                        extra: widget.shortPost.id,
+                      );
+                    },
                   );
                 },
               ),

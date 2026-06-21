@@ -47,6 +47,7 @@ class PostActions extends StatelessWidget {
             onTap: onDislike,
           ),
           const SizedBox(width: 16),
+          const Spacer(),
           _ActionButton(
             icon: Icons.comment_outlined,
             label: '$commentsCount',
@@ -74,25 +75,34 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 18,
-            color: isActive ? AppColors.primary : AppColors.lightGrey,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        splashColor: AppColors.silver,
+        highlightColor: AppColors.silver,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                size: 18,
+                color: isActive ? AppColors.primary : AppColors.lightGrey,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: isActive ? AppColors.primary : AppColors.lightGrey,
+                  fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 4),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: isActive ? AppColors.primary : AppColors.lightGrey,
-              fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

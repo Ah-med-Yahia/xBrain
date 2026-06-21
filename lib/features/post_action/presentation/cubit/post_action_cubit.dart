@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/features/post_action/domain/usecase/get_comments_use_case.dart';
 import 'package:explaino/features/post_action/domain/usecase/get_single_post_use_case.dart';
 import 'package:explaino/features/post_action/domain/usecase/like_post_use_case.dart';
 import 'package:explaino/features/post_action/domain/usecase/unlike_post_use_case.dart';
@@ -16,11 +17,13 @@ class PostActionCubit extends Cubit<PostActionState> {
     required this.getSinglePostUseCase,
     required this.likePostUseCase,
     required this.dislikePostUseCase,
+    required this.getCommentsUseCase,
   }) : super(const PostActionState());
 
   final GetSinglePostUseCase getSinglePostUseCase;
   final LikePostUseCase likePostUseCase;
   final UnlikePostUseCase dislikePostUseCase;
+  final GetCommentsUseCase getCommentsUseCase;
 
   final StreamController<PostActionSideEffects> _sideEffectsController =
       StreamController<PostActionSideEffects>();
@@ -40,12 +43,10 @@ class PostActionCubit extends Cubit<PostActionState> {
         throw UnimplementedError();
       case DeleteCommentOrReplyIntent():
         throw UnimplementedError();
-      case GetCommentsIntent():
-        throw UnimplementedError();
+      case GetCommentsIntent(postId: final postId):
+        _getComments(postId);
       case GetRepliesIntent():
-        throw UnimplementedError();
       case GetSingleCommentOrReplyIntent():
-        throw UnimplementedError();
       case UpdateCommentOrReplyIntent():
         throw UnimplementedError();
     }
@@ -53,7 +54,21 @@ class PostActionCubit extends Cubit<PostActionState> {
 
   //================== Post ==================
 
-  void _getSinglePost(String postId) {}
+  void _getSinglePost(String postId) async {
+    _sideEffectsController.add(LoadingSideEffects());
+    final result = await getSinglePostUseCase(postId);
+    _sideEffectsController.add(HideLoadingSideEffects());
+    result.when(
+      success: (post) {
+        emit(state.copyWith(post: post));
+      },
+      failure: (failure) {
+        _sideEffectsController.add(
+          ErrorWhenGetSinglePost(message: failure.message),
+        );
+      },
+    );
+  }
 
   void _likePost(String postId) async {
     final result = await likePostUseCase(postId);
@@ -62,7 +77,9 @@ class PostActionCubit extends Cubit<PostActionState> {
         emit(state.copyWith(post: post));
       },
       failure: (failure) {
-        _sideEffectsController.add(ErrorWhenLikeOrDislikePost());
+        _sideEffectsController.add(
+          ErrorWhenLikeOrDislikePost(message: failure.message),
+        );
       },
     );
   }
@@ -74,7 +91,25 @@ class PostActionCubit extends Cubit<PostActionState> {
         emit(state.copyWith(post: post));
       },
       failure: (failure) {
-        _sideEffectsController.add(ErrorWhenLikeOrDislikePost());
+        _sideEffectsController.add(
+          ErrorWhenLikeOrDislikePost(message: failure.message),
+        );
+      },
+    );
+  }
+
+  //================== Comment ==================
+
+  void _getComments(String postId) async {
+    final result = await getCommentsUseCase(id: postId);
+    result.when(
+      success: (commentsResponse) {
+        emit(state.copyWith(commentsResponse: commentsResponse));
+      },
+      failure: (failure) {
+        _sideEffectsController.add(
+          ErrorWhenGetComments(message: failure.message),
+        );
       },
     );
   }
