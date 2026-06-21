@@ -4,6 +4,7 @@ import 'package:explaino/features/schedule_meeting/data/models/response/schedule
 import 'package:explaino/features/tabs/meetings/api/api_clients/metting_api_client.dart';
 import 'package:explaino/features/tabs/meetings/data/data_sources/remote/remote_meeting_data_source.dart';
 import 'package:explaino/features/tabs/meetings/data/models/response/meetings_response_model.dart';
+import 'package:explaino/features/tabs/meetings/data/models/request/accept_meeting_request_model.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: RemoteMeetingsDataSource)
@@ -24,10 +25,10 @@ class RemoteMeetingsDataSourceImpl implements RemoteMeetingsDataSource {
   @override
   Future<BaseResponse<ScheduleMeetingResponseModel>> acceptMeeting(
     String id,
-    String createdAt,
+    AcceptMeetingRequestModel request,
   ) async {
     return await safeApiCall<ScheduleMeetingResponseModel>(
-      () => _apiClient.acceptMeeting(id, createdAt),
+      () => _apiClient.acceptMeeting(id, request),
     );
   }
 

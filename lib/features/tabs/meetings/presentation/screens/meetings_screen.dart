@@ -1,9 +1,12 @@
 import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
 import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_cubit.dart';
 import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_intents.dart';
+import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_side_effects.dart';
 import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_state.dart';
+import 'package:explaino/features/tabs/meetings/presentation/screens/meeting_confirmed_screen.dart';
 import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card.dart';
 import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_list_view.dart';
 import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_tab_selector.dart';
@@ -26,7 +29,21 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
     super.initState();
     _meetingsCubit = getIt<MeetingsCubit>();
     _meetingsCubit.doIntent(GetIncomingMeetingsIntent());
-
+    _meetingsCubit.sideEffects.listen((effect) {
+      if (!mounted) return;
+      switch (effect) {
+        case ShowError():
+          _handelError(effect.message);
+        case ShowLoading():
+          _handelLoading();
+        case HideLoading():
+          _handelHideLoading();
+        case ShowSuccessMessage():
+          _handelSuccess(effect.message);
+        case NavigateToMeetingConfirmed():
+          _handleNavigateToMeetingConfirmed(effect.meeting);
+      }
+    });
     _incomingScrollController.addListener(() {
       if (_incomingScrollController.position.pixels >=
           _incomingScrollController.position.maxScrollExtent - 200) {
@@ -40,6 +57,43 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
         _meetingsCubit.doIntent(GetOutgoingMeetingsIntent());
       }
     });
+  }
+
+  void _handelLoading() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      UIUtils.showEasyLoading();
+    });
+  }
+
+  void _handelError(String message) {
+    UIUtils.showMessage(
+      message,
+      backGroundColor: AppColors.error,
+      textColor: AppColors.white,
+    );
+  }
+
+  void _handelHideLoading() {
+    UIUtils.hideEasyLoading();
+  }
+
+  void _handelSuccess(String message) {
+    UIUtils.showMessage(
+      message,
+      backGroundColor: AppColors.green,
+      textColor: AppColors.white,
+    );
+  }
+
+  void _handleNavigateToMeetingConfirmed(
+    ScheduleMeetingResponseEntity meeting,
+  ) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MeetingConfirmedScreen(meeting: meeting),
+      ),
+    );
   }
 
   @override

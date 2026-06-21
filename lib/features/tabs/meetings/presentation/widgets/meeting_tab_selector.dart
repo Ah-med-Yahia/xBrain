@@ -1,3 +1,4 @@
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_cubit.dart';
 import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_intents.dart';
@@ -52,7 +53,7 @@ class MeetingTabSelector extends StatelessWidget {
                     Row(
                       children: [
                         _MeetingTab(
-                          label: 'Incoming',
+                          label: AppTextConstants.incoming,
                           isSelected: selectedIndex == 0,
                           animationDuration: _animationDuration,
                           onTap: () {
@@ -64,7 +65,7 @@ class MeetingTabSelector extends StatelessWidget {
                           },
                         ),
                         _MeetingTab(
-                          label: 'Outgoing',
+                          label: AppTextConstants.outgoing,
                           isSelected: selectedIndex == 1,
                           animationDuration: _animationDuration,
                           onTap: () {

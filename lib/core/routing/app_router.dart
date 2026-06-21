@@ -8,6 +8,7 @@ import 'package:explaino/features/auth/login/presentation/screens/login_screen.d
 import 'package:explaino/features/auth/register/presentation/screens/register_screen.dart';
 import 'package:explaino/features/main/presentation/screens/main_screen.dart';
 import 'package:explaino/features/on_boarding/presentation/screens/on_boarding_screen.dart';
+import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
 import 'package:explaino/features/schedule_meeting/presentation/screens/schedule_meeting_screen.dart';
 import 'package:explaino/features/splash/presentation/screens/splash_screen.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/screens/add_posts_questions_certificates_screen.dart';
@@ -115,7 +116,11 @@ abstract class AppRouter {
       GoRoute(
         path: AppRoutesConstants.meetingConfirmedRoute,
         name: AppRoutesConstants.meetingConfirmedRoute,
-        builder: (context, state) => const MeetingConfirmedScreen(),
+        builder: (context, state) {
+          final meeting = state.extra as ScheduleMeetingResponseEntity;
+
+          return MeetingConfirmedScreen(meeting: meeting);
+        },
       ),
     ],
   );

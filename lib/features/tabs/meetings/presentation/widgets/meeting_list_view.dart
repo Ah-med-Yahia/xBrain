@@ -1,6 +1,8 @@
 import 'package:explaino/config/base_state/base_state.dart';
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/shared/presentation/widgets/custom_error_widget.dart';
-import 'package:explaino/features/tabs/home/presentation/widgets/card_shimmer.dart';
+import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_shimmer.dart';
 import 'package:flutter/material.dart';
 
 class MeetingsListView<T> extends StatelessWidget {
@@ -21,7 +23,8 @@ class MeetingsListView<T> extends StatelessWidget {
 
   static const int _shimmerItemCount = 6;
 
-  bool get _isInitialLoad => items.isEmpty && state.errorMessage == null;
+  bool get _isInitialLoad =>
+      state.isFetching && items.isEmpty && state.errorMessage == null;
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +36,37 @@ class MeetingsListView<T> extends StatelessWidget {
         ),
       );
     }
-
+    if (!state.isFetching && items.isEmpty) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                AppTextConstants.noMeetingsYet,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.jetBlack,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     if (_isInitialLoad) {
       return ListView.builder(
         itemCount: _shimmerItemCount + 1,
         itemBuilder: (_, index) {
-          return const CardShimmer();
+          return const MeetingCardShimmer();
         },
       );
     }
-
     final bool isLoadingMore = state.isFetching;
-
     return ListView.builder(
+      physics: const BouncingScrollPhysics(),
       controller: scrollController,
       itemCount: items.length + (isLoadingMore ? 1 : 0),
       itemBuilder: (_, index) {

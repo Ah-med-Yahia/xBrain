@@ -142,4 +142,21 @@ class AppTextConstants {
   static const String optional = 'optional';
   static const String meetingScheduledSuccessfully =
       'Meeting scheduled successfully with Status :';
+  //====================Meetings============================
+  static const String meetingRequest = 'Meeting request';
+  static const String chooseSlot =
+      'Choose one of the proposed times to accept the meeting.';
+  static const String selectAMeetingSlot = 'Select a Meeting Slot';
+  static const String confirmSlot = 'Confirm Slot';
+  static const String accept = 'Accept';
+  static const String decline = 'Decline';
+  static const String joinMeeting = 'Join Meeting';
+  static const String incoming = 'Incoming';
+  static const String outgoing = 'Outgoing';
+  static const String meetingScheduled = 'Meeting Scheduled!';
+  static const String meetingScheduledDesc =
+      'Your time is locked in and invitations have been sent.';
+  static const String productStrategySync = 'Product Strategy Sync';
+  static const String googleMeet = 'Google Meet';
+  static const String noMeetingsYet = 'No meetings yet';
 }

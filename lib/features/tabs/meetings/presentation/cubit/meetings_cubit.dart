@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/features/tabs/meetings/domain/entities/request/accept_meeting_request_entity.dart';
 import 'package:explaino/features/tabs/meetings/domain/entities/response/meetings_response_entity.dart';
 import 'package:explaino/features/tabs/meetings/domain/usecase/accept_meeting_use_case.dart';
 import 'package:explaino/features/tabs/meetings/domain/usecase/cancel_meeting_use_case.dart';
@@ -46,8 +47,11 @@ class MeetingsCubit extends Cubit<MeetingsState> {
       case CancelMeetingIntent(id: final id):
         _handleCancelMeetingIntent(id);
         break;
-      case AcceptMyMeetingsIntent(id: final id, createdAt: final createdAt):
-        _handleAcceptMyMeetingsIntent(id, createdAt);
+      case AcceptMyMeetingsIntent(
+        id: final id,
+        acceptMeetingRequestEntity: final acceptMeetingRequestEntity,
+      ):
+        _handleAcceptMyMeetingsIntent(id, acceptMeetingRequestEntity);
         break;
       case DeclineMyMeetingsIntent(id: final id, message: final message):
         _handleDeclineMyMeetingsIntent(id, message);
@@ -70,47 +74,64 @@ class MeetingsCubit extends Cubit<MeetingsState> {
   }
 
   void _handleCancelMeetingIntent(String id) async {
-    _sideEffectController.add(HideLoading());
+    _sideEffectController.add(ShowLoading());
     final result = await _cancelMeetingUseCase.call(id);
     result.when(
       success: (data) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(
           ShowSuccessMessage('Meeting Cancelled Successfully'),
         );
       },
-      failure: (failure) =>
-          _sideEffectController.add(ShowError(failure.message)),
+      failure: (failure) {
+        _sideEffectController.add(HideLoading());
+        _sideEffectController.add(ShowError(failure.message));
+      },
     );
   }
 
-  void _handleAcceptMyMeetingsIntent(String id, String createdAt) async {
-    final result = await _acceptMeetingUseCase.call(id, createdAt);
+  void _handleAcceptMyMeetingsIntent(
+    String id,
+    AcceptMeetingRequestEntity acceptMeetingRequestEntity,
+  ) async {
+    _sideEffectController.add(ShowLoading());
+    final result = await _acceptMeetingUseCase.call(
+      id,
+      acceptMeetingRequestEntity,
+    );
     result.when(
       success: (data) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(
           ShowSuccessMessage('Meeting Accepted Successfully'),
         );
+        _sideEffectController.add(NavigateToMeetingConfirmed(data));
       },
-      failure: (failure) =>
-          _sideEffectController.add(ShowError(failure.message)),
+      failure: (failure) {
+        _sideEffectController.add(HideLoading());
+        _sideEffectController.add(ShowError(failure.message));
+      },
     );
   }
 
   void _handleDeclineMyMeetingsIntent(String id, String message) async {
+    _sideEffectController.add(ShowLoading());
     final result = await _declineMeetingUseCase.call(id, message);
     result.when(
       success: (data) {
+        _sideEffectController.add(HideLoading());
         _sideEffectController.add(
           ShowSuccessMessage('Meeting Declined Successfully'),
         );
       },
-      failure: (failure) =>
-          _sideEffectController.add(ShowError(failure.message)),
+      failure: (failure) {
+        _sideEffectController.add(HideLoading());
+        _sideEffectController.add(ShowError(failure.message));
+      },
     );
   }
 
   void _handleGetOutgoingMeetingsIntent() async {
-    // Guard: prevent duplicate fetches or fetching when no more pages
     if (state.getOutgoingMeetingsState.isFetching || !state.outgoingHasMore) {
       return;
     }
@@ -159,7 +180,6 @@ class MeetingsCubit extends Cubit<MeetingsState> {
   }
 
   void _handleGetIncomingMeetingsIntent() async {
-    // Guard: prevent duplicate fetches or fetching when no more pages
     if (state.getIncomingMeetingsState.isFetching || !state.incomingHasMore) {
       return;
     }

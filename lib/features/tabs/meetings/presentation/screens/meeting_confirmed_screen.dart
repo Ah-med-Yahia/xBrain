@@ -1,3 +1,7 @@
+import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/gen/assets.gen.dart';
+import 'package:explaino/core/helpers/date_time_helper.dart';
+import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,64 +23,9 @@ class AppColor {
   static const outlineVariant = Color(0xFFC2C6D6);
 }
 
-class AppText {
-  static const headlineLgMobile = TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 28,
-    height: 36 / 28,
-    letterSpacing: -0.28,
-    fontWeight: FontWeight.w700,
-    color: AppColor.onSurface,
-  );
-
-  static const titleLg = TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 18,
-    height: 24 / 18,
-    fontWeight: FontWeight.w600,
-    color: AppColor.onSurface,
-  );
-
-  static const bodyLg = TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 16,
-    height: 24 / 16,
-    fontWeight: FontWeight.w400,
-    color: AppColor.onSurfaceVariant,
-  );
-
-  static const bodyMd = TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 14,
-    height: 20 / 14,
-    fontWeight: FontWeight.w400,
-    color: AppColor.onSurfaceVariant,
-  );
-
-  static const labelLg = TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 14,
-    height: 20 / 14,
-    letterSpacing: 0.1,
-    fontWeight: FontWeight.w500,
-  );
-}
-
-// ── Spacing tokens ────────────────────────────────────────────────────────────
-class Sp {
-  static const double xs = 4;
-  static const double sm = 8;
-  static const double md = 16;
-  static const double lg = 24;
-  static const double xl = 32;
-  static const double gutter = 16;
-  static const double marginMobile = 16;
-  static const double marginDesktop = 32;
-}
-
-// ── Screen ────────────────────────────────────────────────────────────────────
 class MeetingConfirmedScreen extends StatelessWidget {
-  const MeetingConfirmedScreen({super.key});
+  final ScheduleMeetingResponseEntity meeting;
+  const MeetingConfirmedScreen({super.key, required this.meeting});
 
   @override
   Widget build(BuildContext context) {
@@ -84,68 +33,27 @@ class MeetingConfirmedScreen extends StatelessWidget {
       backgroundColor: AppColor.background,
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(Sp.marginMobile),
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 576), // max-w-xl
-            decoration: BoxDecoration(
-              color: AppColor.surfaceContainerLowest,
-              borderRadius: BorderRadius.circular(24),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF0058BE).withValues(alpha: 0.04),
-                  blurRadius: 20,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Sp.marginMobile,
-                Sp.xl,
-                Sp.marginMobile,
-                Sp.marginDesktop,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _SuccessIllustration(),
+              const SizedBox(height: 24),
+              Text(
+                AppTextConstants.meetingScheduled,
+                style: Theme.of(context).textTheme.headlineLarge,
+                textAlign: TextAlign.center,
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // ── Illustration ──────────────────────────────────────────
-                  _SuccessIllustration(),
-
-                  const SizedBox(height: Sp.lg),
-
-                  // ── Headline ──────────────────────────────────────────────
-                  const Text(
-                    'Meeting Scheduled!',
-                    style: AppText.headlineLgMobile,
-                    textAlign: TextAlign.center,
-                  ),
-
-                  const SizedBox(height: Sp.sm),
-
-                  // ── Sub-headline ──────────────────────────────────────────
-                  const Text(
-                    'Your time is locked in and invitations have been sent.',
-                    style: AppText.bodyLg,
-                    textAlign: TextAlign.center,
-                  ),
-
-                  const SizedBox(height: Sp.xl),
-
-                  // ── Details card ──────────────────────────────────────────
-                  _DetailsCard(),
-
-                  const SizedBox(height: Sp.xl),
-
-                  // ── Action buttons ────────────────────────────────────────
-                  _ActionButtons(),
-
-                  const SizedBox(height: Sp.lg),
-
-                  // ── Return to Dashboard ───────────────────────────────────
-                  _ReturnLink(),
-                ],
+              const SizedBox(height: 8),
+              Text(
+                AppTextConstants.meetingScheduledDesc,
+                style: Theme.of(context).textTheme.bodyLarge,
+                textAlign: TextAlign.center,
               ),
-            ),
+              const SizedBox(height: 32),
+              _DetailsCard(meeting: meeting),
+              const SizedBox(height: 32),
+              _ActionButtons(meeting: meeting),
+            ],
           ),
         ),
       ),
@@ -185,14 +93,12 @@ class _SuccessIllustrationState extends State<_SuccessIllustration>
 
   @override
   Widget build(BuildContext context) {
-    // w-48 h-48 = 192×192
     return SizedBox(
       width: 192,
       height: 192,
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // bg circle  bg-surface-container-low
           Container(
             width: 192,
             height: 192,
@@ -202,7 +108,6 @@ class _SuccessIllustrationState extends State<_SuccessIllustration>
             ),
           ),
 
-          // Outer decorative ring — border-surface-container-high, animate-pulse
           AnimatedBuilder(
             animation: _pulse,
             builder: (_, _) => Opacity(
@@ -221,7 +126,6 @@ class _SuccessIllustrationState extends State<_SuccessIllustration>
             ),
           ),
 
-          // Inner decorative ring — inset-4 (16px each side → 192-32=160), border-primary-fixed, opacity 30%
           Opacity(
             opacity: 0.3,
             child: Container(
@@ -234,10 +138,8 @@ class _SuccessIllustrationState extends State<_SuccessIllustration>
             ),
           ),
 
-          // Calendar + checkmark image  w-32 h-32 = 128×128
           ClipOval(
-            child: Image.network(
-              'https://lh3.googleusercontent.com/aida-public/AB6AXuDf-0Ys6t_erkDm908-L604NZlOBPEq0jbSBy1qZbxiOR9vTjXz9lAs7s6pu3snPdJwby-Dy82kKbPX27BI6Gwn0IF54DLuig-m04nOePgjvn93hgXmy8rwEeHML8eGCF2D9_8VXOmv__ZBOAQVIaYNi8jnG_hOT7MxrTCQHAyvevNRWqBZYHFpws4lGyH2xP0Fy_cjvQUkeDYlxaJFWgl-azwT_C3xdhzBO_1ls7F7mEFRHrtiihjjCllJw6h0O7qHF0sJoylgEexQ',
+            child: Assets.images.successfulyScheduleImage.image(
               width: 128,
               height: 128,
               fit: BoxFit.contain,
@@ -255,6 +157,9 @@ class _SuccessIllustrationState extends State<_SuccessIllustration>
 }
 
 class _DetailsCard extends StatelessWidget {
+  final ScheduleMeetingResponseEntity meeting;
+  const _DetailsCard({required this.meeting});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -271,37 +176,39 @@ class _DetailsCard extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(Sp.lg),
+      padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Date / time row
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Padding(
-                padding: EdgeInsets.only(top: Sp.xs),
+                padding: EdgeInsets.only(top: 4),
                 child: Icon(
                   Icons.event_outlined,
                   color: AppColor.primary,
                   size: 24,
                 ),
               ),
-              const SizedBox(width: Sp.md),
+              const SizedBox(width: 16),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Product Strategy Sync', style: AppText.titleLg),
-                  const SizedBox(height: Sp.xs),
                   Text(
-                    'Monday, Oct 28 at 10:00 AM',
-                    style: AppText.bodyMd.copyWith(
+                    AppTextConstants.productStrategySync,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${meeting.scheduledAt!.dayName},${meeting.scheduledAt!.shortDate} at ${meeting.scheduledAt!.time12Hour}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColor.onSurfaceVariant,
                     ),
                   ),
                   Text(
-                    '45 minutes',
-                    style: AppText.bodyMd.copyWith(
+                    '${meeting.durationMinutes} minutes',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColor.onSurfaceVariant,
                     ),
                   ),
@@ -312,7 +219,7 @@ class _DetailsCard extends StatelessWidget {
 
           // Divider  my-md
           const Padding(
-            padding: EdgeInsets.symmetric(vertical: Sp.md),
+            padding: EdgeInsets.symmetric(vertical: 16),
             child: Divider(
               color: AppColor.surfaceContainerHigh,
               thickness: 1,
@@ -328,36 +235,35 @@ class _DetailsCard extends StatelessWidget {
                 color: AppColor.primary,
                 size: 24,
               ),
-              const SizedBox(width: Sp.md),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Google Meet',
-                      style: AppText.labelLg.copyWith(
+                      AppTextConstants.googleMeet,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         color: AppColor.onSurface,
                       ),
                     ),
                     Text(
-                      'meet.google.com/abc-defg-hij',
-                      style: AppText.bodyMd.copyWith(color: AppColor.primary),
+                      meeting.meetLink!,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: AppColor.primary),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: Sp.md),
-              // Copy button  w-10 h-10 = 40×40, rounded-full, bg-surface-container-low
+              const SizedBox(width: 16),
               Material(
                 color: AppColor.surfaceContainerLow,
                 shape: const CircleBorder(),
                 child: InkWell(
                   customBorder: const CircleBorder(),
                   onTap: () {
-                    Clipboard.setData(
-                      const ClipboardData(text: 'meet.google.com/abc-defg-hij'),
-                    );
+                    Clipboard.setData(ClipboardData(text: meeting.meetLink!));
                   },
                   child: const SizedBox(
                     width: 40,
@@ -378,25 +284,16 @@ class _DetailsCard extends StatelessWidget {
   }
 }
 
-// ── Action buttons ────────────────────────────────────────────────────────────
 class _ActionButtons extends StatelessWidget {
+  final ScheduleMeetingResponseEntity meeting;
+  const _ActionButtons({required this.meeting});
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Join Meeting — bg-primary text-on-primary rounded-xl py-md
         _buildButton(
-          label: 'Join Meeting',
-          icon: Icons.video_camera_front_outlined,
-          backgroundColor: AppColor.primary,
-          foregroundColor: AppColor.onPrimary,
-          onTap: () {},
-        ),
-
-        const SizedBox(height: Sp.md),
-
-        // Add to Calendar — bg-surface-container-low text-primary rounded-xl py-md
-        _buildButton(
+          context: context,
           label: 'Add to Calendar',
           icon: Icons.calendar_month_outlined,
           backgroundColor: AppColor.surfaceContainerLow,
@@ -408,6 +305,7 @@ class _ActionButtons extends StatelessWidget {
   }
 
   Widget _buildButton({
+    required BuildContext context,
     required String label,
     required IconData icon,
     required Color backgroundColor,
@@ -416,51 +314,29 @@ class _ActionButtons extends StatelessWidget {
   }) {
     return Material(
       color: backgroundColor,
-      borderRadius: BorderRadius.circular(12), // rounded-xl
+      borderRadius: BorderRadius.circular(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: onTap,
         child: SizedBox(
           width: double.infinity,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: Sp.md), // py-md
+            padding: const EdgeInsets.symmetric(vertical: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(icon, color: foregroundColor, size: 20),
-                const SizedBox(width: Sp.sm),
+                const SizedBox(width: 8),
                 Text(
                   label,
-                  style: AppText.labelLg.copyWith(color: foregroundColor),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelLarge?.copyWith(color: foregroundColor),
                 ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _ReturnLink extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.arrow_back,
-            size: 18,
-            color: AppColor.onSurfaceVariant,
-          ),
-          const SizedBox(width: Sp.xs),
-          Text(
-            'Return to Dashboard',
-            style: AppText.labelLg.copyWith(color: AppColor.onSurfaceVariant),
-          ),
-        ],
       ),
     );
   }

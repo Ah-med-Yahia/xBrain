@@ -1,3 +1,5 @@
+import 'package:explaino/features/tabs/meetings/domain/entities/request/accept_meeting_request_entity.dart';
+
 sealed class MeetingsIntent {}
 
 class CancelMeetingIntent extends MeetingsIntent {
@@ -8,8 +10,12 @@ class CancelMeetingIntent extends MeetingsIntent {
 
 class AcceptMyMeetingsIntent extends MeetingsIntent {
   final String id;
-  final String createdAt;
-  AcceptMyMeetingsIntent({required this.id, required this.createdAt});
+  final AcceptMeetingRequestEntity acceptMeetingRequestEntity;
+
+  AcceptMyMeetingsIntent({
+    required this.id,
+    required this.acceptMeetingRequestEntity,
+  });
 }
 
 class DeclineMyMeetingsIntent extends MeetingsIntent {
