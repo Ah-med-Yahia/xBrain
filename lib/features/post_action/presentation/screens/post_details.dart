@@ -39,13 +39,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
           _handleLoading();
         case HideLoadingSideEffects():
           _handleHideLoading();
-        case ErrorWhenGetSinglePost(message: final message):
-          _handleError(message);
-        case ErrorWhenGetComments(message: final message):
-          _handleError(message);
-        case ErrorWhenAddComment(message: final message):
-          _handleError(message);
-        case ErrorWhenAddReply(message: final message):
+        case ErrorSideEffect(message: final message):
           _handleError(message);
         case CommentAddedSuccessfully():
         case ReplyAddedSuccessfully():
@@ -191,8 +185,17 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
             separatorBuilder: (context, index) => const SizedBox.shrink(),
             itemBuilder: (context, index) {
               final comment = comments[index].toEntity();
+              final repliesForComment = state.commentReplies[comment.id];
+              final isLoadingReplies = state.loadingReplies.contains(
+                comment.id,
+              );
               return CommentItem(
                 comment: comment,
+                replies: repliesForComment,
+                isLoadingReplies: isLoadingReplies,
+                onViewReplies: () {
+                  _cubit.doIntent(GetRepliesIntent(id: comment.id, page: 1));
+                },
                 onReply: () {
                   _cubit.doIntent(SetReplyingToCommentIntent(comment: comment));
                   _commentFocusNode.requestFocus();

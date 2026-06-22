@@ -9,26 +9,11 @@ class LoadingSideEffects extends PostActionSideEffects {}
 
 class HideLoadingSideEffects extends PostActionSideEffects {}
 
-class ErrorWhenGetSinglePost extends PostActionSideEffects {
+class ErrorSideEffect extends PostActionSideEffects {
   final String message;
-  ErrorWhenGetSinglePost({required this.message});
-}
-
-class ErrorWhenGetComments extends PostActionSideEffects {
-  final String message;
-  ErrorWhenGetComments({required this.message});
-}
-
-class ErrorWhenAddComment extends PostActionSideEffects {
-  final String message;
-  ErrorWhenAddComment({required this.message});
+  ErrorSideEffect({required this.message});
 }
 
 class CommentAddedSuccessfully extends PostActionSideEffects {}
-
-class ErrorWhenAddReply extends PostActionSideEffects {
-  final String message;
-  ErrorWhenAddReply({required this.message});
-}
 
 class ReplyAddedSuccessfully extends PostActionSideEffects {}

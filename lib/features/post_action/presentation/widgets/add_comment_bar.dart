@@ -87,9 +87,6 @@ class AddCommentBar extends StatelessWidget {
                   focusNode: commentFocusNode,
                   minLines: 1,
                   maxLines: 4,
-                  onTapOutside: (_) {
-                    commentFocusNode.unfocus();
-                  },
                   textInputAction: TextInputAction.newline,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.lightTextPrimary,
