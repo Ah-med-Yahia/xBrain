@@ -82,7 +82,7 @@ class MeetingsCubit extends Cubit<MeetingsState> {
 
   void _handleCancelMeetingIntent(String id) async {
     _sideEffectController.add(ShowLoading());
-    final result = await _cancelMeetingUseCase.call(id);
+    final result = await _cancelMeetingUseCase(id);
     result.when(
       success: (data) {
         _sideEffectController.add(HideLoading());
@@ -103,10 +103,7 @@ class MeetingsCubit extends Cubit<MeetingsState> {
     AcceptMeetingRequestEntity acceptMeetingRequestEntity,
   ) async {
     _sideEffectController.add(ShowLoading());
-    final result = await _acceptMeetingUseCase.call(
-      id,
-      acceptMeetingRequestEntity,
-    );
+    final result = await _acceptMeetingUseCase(id, acceptMeetingRequestEntity);
     result.when(
       success: (data) {
         _sideEffectController.add(HideLoading());
@@ -128,7 +125,7 @@ class MeetingsCubit extends Cubit<MeetingsState> {
     DeclineMeetingRequestEntity request,
   ) async {
     _sideEffectController.add(ShowLoading());
-    final result = await _declineMeetingUseCase.call(id, request);
+    final result = await _declineMeetingUseCase(id, request);
     result.when(
       success: (data) {
         _sideEffectController.add(HideLoading());
@@ -157,7 +154,7 @@ class MeetingsCubit extends Cubit<MeetingsState> {
         ),
       ),
     );
-    final result = await _getOutgoingMeetingsUseCase.call(
+    final result = await _getOutgoingMeetingsUseCase(
       page: state.outgoingCurrentPage,
     );
     result.when(
@@ -205,7 +202,7 @@ class MeetingsCubit extends Cubit<MeetingsState> {
         ),
       ),
     );
-    final result = await _getIncomingMeetingsUseCase.call(
+    final result = await _getIncomingMeetingsUseCase(
       page: state.incomingCurrentPage,
     );
     result.when(
@@ -247,7 +244,7 @@ class MeetingsCubit extends Cubit<MeetingsState> {
             .copyWith(isFetching: true, errorMessage: null),
       ),
     );
-    final result = await _getSingleMeetingDetailsUseCase.call(id);
+    final result = await _getSingleMeetingDetailsUseCase(id);
     result.when(
       success: (data) {
         emit(
@@ -286,7 +283,7 @@ class MeetingsCubit extends Cubit<MeetingsState> {
       ),
     );
 
-    final result = await _getIncomingMeetingsUseCase.call(page: 1);
+    final result = await _getIncomingMeetingsUseCase(page: 1);
 
     result.when(
       success: (data) {
@@ -327,7 +324,7 @@ class MeetingsCubit extends Cubit<MeetingsState> {
       ),
     );
 
-    final result = await _getOutgoingMeetingsUseCase.call(page: 1);
+    final result = await _getOutgoingMeetingsUseCase(page: 1);
 
     result.when(
       success: (data) {

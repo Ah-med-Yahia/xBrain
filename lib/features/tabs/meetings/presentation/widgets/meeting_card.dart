@@ -90,7 +90,10 @@ class _MeetingCardState extends State<MeetingCard>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            UserMeetingHeader(meeting: meeting),
+                            UserMeetingHeader(
+                              meeting: meeting,
+                              namingList: widget.namingList,
+                            ),
                             const SizedBox(height: 16),
                             InfoRow(meeting: meeting),
                             const SizedBox(height: 14),

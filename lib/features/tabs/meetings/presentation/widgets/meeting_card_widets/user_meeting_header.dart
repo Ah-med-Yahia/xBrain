@@ -8,7 +8,12 @@ import 'package:flutter/material.dart';
 
 class UserMeetingHeader extends StatelessWidget {
   final ScheduleMeetingResponseEntity meeting;
-  const UserMeetingHeader({super.key, required this.meeting});
+  final String namingList;
+  const UserMeetingHeader({
+    super.key,
+    required this.meeting,
+    required this.namingList,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,9 @@ class UserMeetingHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${meeting.asker.firstName} ${meeting.asker.lastName}',
+                namingList == AppTextConstants.incoming.toLowerCase()
+                    ? '${meeting.asker.firstName} ${meeting.asker.lastName}'
+                    : '${meeting.answerer.firstName} ${meeting.answerer.lastName}',
                 style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
