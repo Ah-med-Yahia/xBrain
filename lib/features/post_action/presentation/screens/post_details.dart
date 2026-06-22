@@ -45,7 +45,10 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
           _handleError(message);
         case ErrorWhenAddComment(message: final message):
           _handleError(message);
+        case ErrorWhenAddReply(message: final message):
+          _handleError(message);
         case CommentAddedSuccessfully():
+        case ReplyAddedSuccessfully():
           _commentController.clear();
       }
     });
@@ -68,15 +71,25 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     );
   }
 
-  void _submitComment() {
+  void _submitComment(PostActionState state) {
     final text = _commentController.text.trim();
     if (text.isEmpty) return;
-    _cubit.doIntent(
-      AddCommentIntent(
-        id: widget.postId,
-        request: CommentRequestEntity(content: text),
-      ),
-    );
+
+    if (state.replyingToComment != null) {
+      _cubit.doIntent(
+        AddReplyIntent(
+          commentId: state.replyingToComment!.id,
+          request: CommentRequestEntity(content: text),
+        ),
+      );
+    } else {
+      _cubit.doIntent(
+        AddCommentIntent(
+          id: widget.postId,
+          request: CommentRequestEntity(content: text),
+        ),
+      );
+    }
     _commentFocusNode.unfocus();
   }
 
@@ -110,7 +123,13 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
             bottomNavigationBar: AddCommentBar(
               commentController: _commentController,
               commentFocusNode: _commentFocusNode,
-              submitComment: _submitComment,
+              submitComment: () => _submitComment(state),
+              replyingToUser: state.replyingToComment != null
+                  ? '${state.replyingToComment!.author.firstName} ${state.replyingToComment!.author.lastName}'
+                  : null,
+              onCancelReply: () {
+                _cubit.doIntent(SetReplyingToCommentIntent(comment: null));
+              },
             ),
           );
         },
@@ -170,8 +189,16 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
           SliverList.separated(
             itemCount: comments.length,
             separatorBuilder: (context, index) => const SizedBox.shrink(),
-            itemBuilder: (context, index) =>
-                CommentItem(comment: comments[index].toEntity()),
+            itemBuilder: (context, index) {
+              final comment = comments[index].toEntity();
+              return CommentItem(
+                comment: comment,
+                onReply: () {
+                  _cubit.doIntent(SetReplyingToCommentIntent(comment: comment));
+                  _commentFocusNode.requestFocus();
+                },
+              );
+            },
           ),
         if (comments.isEmpty)
           SliverToBoxAdapter(

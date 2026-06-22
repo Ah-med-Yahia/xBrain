@@ -140,6 +140,7 @@ class AppTextConstants {
   static const String add = 'Add';
   static const String comments = 'Comments';
   static const String addComment = 'Add a comment...';
+  static const String replyTo = 'Reply to ';
   //====================post_details_screen============================
   static const String s = 's'; // seconds
   static const String m = 'm'; // minutes

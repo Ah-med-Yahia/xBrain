@@ -25,3 +25,10 @@ class ErrorWhenAddComment extends PostActionSideEffects {
 }
 
 class CommentAddedSuccessfully extends PostActionSideEffects {}
+
+class ErrorWhenAddReply extends PostActionSideEffects {
+  final String message;
+  ErrorWhenAddReply({required this.message});
+}
+
+class ReplyAddedSuccessfully extends PostActionSideEffects {}

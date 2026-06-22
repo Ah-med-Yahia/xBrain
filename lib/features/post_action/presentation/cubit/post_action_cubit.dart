@@ -7,6 +7,7 @@ import 'package:explaino/features/post_action/domain/usecase/get_comments_use_ca
 import 'package:explaino/features/post_action/domain/usecase/get_single_post_use_case.dart';
 import 'package:explaino/features/post_action/domain/usecase/like_post_use_case.dart';
 import 'package:explaino/features/post_action/domain/usecase/unlike_post_use_case.dart';
+import 'package:explaino/features/post_action/domain/usecase/add_reply_on_comment_use_case.dart';
 import 'package:explaino/features/post_action/presentation/cubit/post_action_intents.dart';
 import 'package:explaino/features/post_action/presentation/cubit/post_action_side_effects.dart';
 import 'package:explaino/features/post_action/presentation/cubit/post_action_state.dart';
@@ -21,6 +22,7 @@ class PostActionCubit extends Cubit<PostActionState> {
     required this.dislikePostUseCase,
     required this.getCommentsUseCase,
     required this.addCommentUseCase,
+    required this.addReplyOnCommentUseCase,
   }) : super(const PostActionState());
 
   final GetSinglePostUseCase getSinglePostUseCase;
@@ -28,6 +30,7 @@ class PostActionCubit extends Cubit<PostActionState> {
   final UnlikePostUseCase dislikePostUseCase;
   final GetCommentsUseCase getCommentsUseCase;
   final AddCommentUseCase addCommentUseCase;
+  final AddReplyOnCommentUseCase addReplyOnCommentUseCase;
 
   final StreamController<PostActionSideEffects> _sideEffectsController =
       StreamController<PostActionSideEffects>();
@@ -44,8 +47,15 @@ class PostActionCubit extends Cubit<PostActionState> {
         _dislikePost(postId);
       case AddCommentIntent(id: final id, request: final request):
         _addComment(id: id, request: request);
-      case AddReplyIntent():
-        throw UnimplementedError();
+      case AddReplyIntent(commentId: final commentId, request: final request):
+        _addReply(commentId: commentId, request: request);
+      case SetReplyingToCommentIntent(comment: final comment):
+        emit(
+          state.copyWith(
+            replyingToComment: comment,
+            clearReplyingToComment: comment == null,
+          ),
+        );
       case DeleteCommentOrReplyIntent():
         throw UnimplementedError();
       case GetRepliesIntent():
@@ -112,6 +122,7 @@ class PostActionCubit extends Cubit<PostActionState> {
     _sideEffectsController.add(HideLoadingSideEffects());
     result.when(
       success: (_) {
+        emit(state.copyWith(clearReplyingToComment: true));
         _sideEffectsController.add(CommentAddedSuccessfully());
         _getSinglePost(state.post!.id);
       },
@@ -119,6 +130,30 @@ class PostActionCubit extends Cubit<PostActionState> {
         _sideEffectsController.add(
           ErrorWhenAddComment(message: failure.message),
         );
+      },
+    );
+  }
+
+  void _addReply({
+    required String commentId,
+    required CommentRequestEntity request,
+  }) async {
+    _sideEffectsController.add(LoadingSideEffects());
+    final result = await addReplyOnCommentUseCase(
+      id: commentId,
+      request: request,
+    );
+    _sideEffectsController.add(HideLoadingSideEffects());
+    result.when(
+      success: (_) {
+        emit(state.copyWith(clearReplyingToComment: true));
+        _sideEffectsController.add(ReplyAddedSuccessfully());
+        if (state.post != null) {
+          _getSinglePost(state.post!.id);
+        }
+      },
+      failure: (failure) {
+        _sideEffectsController.add(ErrorWhenAddReply(message: failure.message));
       },
     );
   }

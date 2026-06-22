@@ -1,4 +1,5 @@
 import 'package:explaino/features/post_action/domain/entities/request/comment_request_entity.dart';
+import 'package:explaino/features/post_action/domain/entities/response/comment_entity.dart';
 
 sealed class PostActionIntents {}
 
@@ -53,4 +54,9 @@ class UpdateCommentOrReplyIntent extends PostActionIntents {
   final String id;
   final CommentRequestEntity request;
   UpdateCommentOrReplyIntent({required this.id, required this.request});
+}
+
+class SetReplyingToCommentIntent extends PostActionIntents {
+  final CommentEntity? comment;
+  SetReplyingToCommentIntent({this.comment});
 }
