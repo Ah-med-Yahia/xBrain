@@ -10,8 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostCardInPostDetails extends StatelessWidget {
-  const PostCardInPostDetails({super.key, required this.post});
+  const PostCardInPostDetails({
+    super.key,
+    required this.post,
+    required this.onComment,
+  });
   final PostEntity post;
+  final VoidCallback onComment;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +138,7 @@ class PostCardInPostDetails extends StatelessWidget {
                     DislikePostIntent(postId: post.id),
                   );
                 },
-                onComment: () {},
+                onComment: onComment,
               ),
             ],
           ),

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/features/post_action/domain/entities/request/comment_request_entity.dart';
+import 'package:explaino/features/post_action/domain/usecase/add_comment_use_case.dart';
 import 'package:explaino/features/post_action/domain/usecase/get_comments_use_case.dart';
 import 'package:explaino/features/post_action/domain/usecase/get_single_post_use_case.dart';
 import 'package:explaino/features/post_action/domain/usecase/like_post_use_case.dart';
@@ -18,12 +20,14 @@ class PostActionCubit extends Cubit<PostActionState> {
     required this.likePostUseCase,
     required this.dislikePostUseCase,
     required this.getCommentsUseCase,
+    required this.addCommentUseCase,
   }) : super(const PostActionState());
 
   final GetSinglePostUseCase getSinglePostUseCase;
   final LikePostUseCase likePostUseCase;
   final UnlikePostUseCase dislikePostUseCase;
   final GetCommentsUseCase getCommentsUseCase;
+  final AddCommentUseCase addCommentUseCase;
 
   final StreamController<PostActionSideEffects> _sideEffectsController =
       StreamController<PostActionSideEffects>();
@@ -38,13 +42,12 @@ class PostActionCubit extends Cubit<PostActionState> {
         _likePost(postId);
       case DislikePostIntent(postId: final postId):
         _dislikePost(postId);
-      case AddCommentIntent():
+      case AddCommentIntent(id: final id, request: final request):
+        _addComment(id: id, request: request);
       case AddReplyIntent():
         throw UnimplementedError();
       case DeleteCommentOrReplyIntent():
         throw UnimplementedError();
-      case GetCommentsIntent(postId: final postId):
-        _getComments(postId);
       case GetRepliesIntent():
       case GetSingleCommentOrReplyIntent():
       case UpdateCommentOrReplyIntent():
@@ -100,15 +103,21 @@ class PostActionCubit extends Cubit<PostActionState> {
 
   //================== Comment ==================
 
-  void _getComments(String postId) async {
-    final result = await getCommentsUseCase(id: postId);
+  void _addComment({
+    required String id,
+    required CommentRequestEntity request,
+  }) async {
+    _sideEffectsController.add(LoadingSideEffects());
+    final result = await addCommentUseCase(id: id, request: request);
+    _sideEffectsController.add(HideLoadingSideEffects());
     result.when(
-      success: (commentsResponse) {
-        emit(state.copyWith(commentsResponse: commentsResponse));
+      success: (_) {
+        _sideEffectsController.add(CommentAddedSuccessfully());
+        _getSinglePost(state.post!.id);
       },
       failure: (failure) {
         _sideEffectsController.add(
-          ErrorWhenGetComments(message: failure.message),
+          ErrorWhenAddComment(message: failure.message),
         );
       },
     );

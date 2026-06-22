@@ -38,12 +38,6 @@ class DeleteCommentOrReplyIntent extends PostActionIntents {
   DeleteCommentOrReplyIntent({required this.id});
 }
 
-class GetCommentsIntent extends PostActionIntents {
-  final String postId;
-  final int page;
-  GetCommentsIntent({required this.postId, this.page = 1});
-}
-
 class GetRepliesIntent extends PostActionIntents {
   final String id;
   final int page;

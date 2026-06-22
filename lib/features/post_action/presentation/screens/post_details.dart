@@ -3,10 +3,12 @@ import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/features/post_action/data/mappers/comment_mapper.dart';
+import 'package:explaino/features/post_action/domain/entities/request/comment_request_entity.dart';
 import 'package:explaino/features/post_action/presentation/cubit/post_action_cubit.dart';
 import 'package:explaino/features/post_action/presentation/cubit/post_action_intents.dart';
 import 'package:explaino/features/post_action/presentation/cubit/post_action_side_effects.dart';
 import 'package:explaino/features/post_action/presentation/cubit/post_action_state.dart';
+import 'package:explaino/features/post_action/presentation/widgets/add_comment_bar.dart';
 import 'package:explaino/features/post_action/presentation/widgets/comment_item.dart';
 import 'package:explaino/features/post_action/presentation/widgets/post_card_in_post_details.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,9 @@ class PostDetailsScreen extends StatefulWidget {
 
 class _PostDetailsScreenState extends State<PostDetailsScreen> {
   late final PostActionCubit _cubit;
+  final TextEditingController _commentController = TextEditingController();
+  final FocusNode _commentFocusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -38,6 +43,10 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
           _handleError(message);
         case ErrorWhenGetComments(message: final message):
           _handleError(message);
+        case ErrorWhenAddComment(message: final message):
+          _handleError(message);
+        case CommentAddedSuccessfully():
+          _commentController.clear();
       }
     });
     _cubit.doIntent(GetSinglePostIntent(postId: widget.postId));
@@ -59,6 +68,26 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     );
   }
 
+  void _submitComment() {
+    final text = _commentController.text.trim();
+    if (text.isEmpty) return;
+    _cubit.doIntent(
+      AddCommentIntent(
+        id: widget.postId,
+        request: CommentRequestEntity(content: text),
+      ),
+    );
+    _commentFocusNode.unfocus();
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    _commentFocusNode.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -78,6 +107,11 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
             body: state.post == null
                 ? const SizedBox.shrink()
                 : _buildContent(context, state),
+            bottomNavigationBar: AddCommentBar(
+              commentController: _commentController,
+              commentFocusNode: _commentFocusNode,
+              submitComment: _submitComment,
+            ),
           );
         },
       ),
@@ -89,8 +123,14 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     final comments = post.comments;
     final textTheme = Theme.of(context).textTheme;
     return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
       slivers: [
-        PostCardInPostDetails(post: post),
+        PostCardInPostDetails(
+          post: post,
+          onComment: () {
+            _commentFocusNode.requestFocus();
+          },
+        ),
         if (comments.isNotEmpty)
           SliverToBoxAdapter(
             child: Padding(

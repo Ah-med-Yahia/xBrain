@@ -18,3 +18,10 @@ class ErrorWhenGetComments extends PostActionSideEffects {
   final String message;
   ErrorWhenGetComments({required this.message});
 }
+
+class ErrorWhenAddComment extends PostActionSideEffects {
+  final String message;
+  ErrorWhenAddComment({required this.message});
+}
+
+class CommentAddedSuccessfully extends PostActionSideEffects {}
