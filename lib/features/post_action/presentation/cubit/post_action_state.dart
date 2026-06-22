@@ -1,10 +1,13 @@
-part of 'post_action_cubit.dart';
+import 'package:equatable/equatable.dart';
+import 'package:explaino/features/post_action/domain/entities/response/post_entity.dart';
 
-abstract class PostActionState extends Equatable {
-  const PostActionState();
+class PostActionState extends Equatable {
+  final PostEntity? post;
+  const PostActionState({this.post});
+
+  PostActionState copyWith({PostEntity? post}) =>
+      PostActionState(post: post ?? this.post);
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [post];
 }
-
-class PostActionInitial extends PostActionState {}

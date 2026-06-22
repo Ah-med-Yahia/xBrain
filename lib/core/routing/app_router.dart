@@ -12,6 +12,7 @@ import 'package:explaino/features/splash/presentation/screens/splash_screen.dart
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/screens/add_posts_questions_certificates_screen.dart';
 import 'package:explaino/features/tabs/profile/edit_profile/presentation/screens/edit_profile_image_screen.dart';
 import 'package:explaino/features/tabs/profile/edit_profile/presentation/screens/edit_profile_screen.dart';
+import 'package:explaino/features/post_action/presentation/screens/post_details.dart';
 import 'package:go_router/go_router.dart';
 
 abstract class AppRouter {
@@ -97,6 +98,14 @@ abstract class AppRouter {
             questionId: questionId,
             hasQuestion: hasQuestion,
           );
+        },
+      ),
+      GoRoute(
+        path: AppRoutesConstants.postDetailsRoute,
+        name: AppRoutesConstants.postDetailsRoute,
+        builder: (context, state) {
+          final postId = state.extra as String;
+          return PostDetailsScreen(postId: postId);
         },
       ),
     ],

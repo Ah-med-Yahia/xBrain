@@ -136,5 +136,15 @@ class AppTextConstants {
   static const String chooseAVideoFile = 'Choose a video file';
   static const String video = 'Video';
   static const String recordANewVideo = 'Record a new video';
+  static const String noCommentsYet = 'No comments yet';
   static const String add = 'Add';
+  static const String comments = 'Comments';
+  static const String addComment = 'Add a comment...';
+  //====================post_details_screen============================
+  static const String s = 's'; // seconds
+  static const String m = 'm'; // minutes
+  static const String h = 'h'; // hours
+  static const String d = 'd'; // days
+  static const String w = 'w'; // weeks
+  static const String ago = 'ago';
 }
