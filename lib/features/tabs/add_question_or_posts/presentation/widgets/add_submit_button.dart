@@ -1,3 +1,4 @@
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -6,12 +7,11 @@ class AddSubmitButton extends StatelessWidget {
     super.key,
     required this.label,
     required this.onPressed,
-    this.enabled = true,
+    required this.buttonEnabled,
   });
-
   final String label;
   final VoidCallback onPressed;
-  final bool enabled;
+  final bool buttonEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +21,12 @@ class AddSubmitButton extends StatelessWidget {
         width: double.infinity,
         height: 48,
         child: ElevatedButton(
-          onPressed: enabled ? onPressed : null,
+          onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
+            backgroundColor: buttonEnabled
+                ? AppColors.primary
+                : AppColors.lightGrey,
             foregroundColor: AppColors.white,
-            disabledBackgroundColor: AppColors.shimmerBaseColor,
             elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
@@ -36,7 +37,7 @@ class AddSubmitButton extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  label,
+                  '${AppTextConstants.add} $label',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(

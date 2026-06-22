@@ -95,6 +95,8 @@ class AppTextConstants {
   static const String certificateImage = 'Certificate Image';
   static const String addCertificateImage = 'Add certificate image';
   static const String changeCertificateImage = 'Change certificate image';
+  static const String issueDate = 'Issue Date';
+  static const String selectIssueDate = 'Select issue date (YYYY-MM-DD)';
   static const String addImage = 'Add image';
   static const String addLink = 'Add link';
   static const String pointsBalance = '1,000';
@@ -128,6 +130,23 @@ class AppTextConstants {
   static const String answers = 'Answers';
   static const String beTheFirstToAnswerThisQuestion =
       'Be the first to answer this question';
+  //====================add_posts_questions_certificates_screen============================
+  static const String addDocument = 'Add Document';
+  static const String addVideo = 'Add Video';
+  static const String chooseAVideoFile = 'Choose a video file';
+  static const String video = 'Video';
+  static const String recordANewVideo = 'Record a new video';
+  static const String noCommentsYet = 'No comments yet';
+  static const String add = 'Add';
+  static const String comments = 'Comments';
+  static const String addComment = 'Add a comment...';
+  //====================post_details_screen============================
+  static const String s = 's'; // seconds
+  static const String m = 'm'; // minutes
+  static const String h = 'h'; // hours
+  static const String d = 'd'; // days
+  static const String w = 'w'; // weeks
+  static const String ago = 'ago';
   //====================Schedule Meeting============================
   static const String requestMeeting = 'Request Meeting';
   static const String wouldLoveAQuickWalkthroughOfYourAnswer =

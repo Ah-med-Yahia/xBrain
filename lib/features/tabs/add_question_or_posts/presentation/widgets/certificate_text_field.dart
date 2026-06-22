@@ -1,4 +1,5 @@
 import 'package:explaino/core/theme/app_colors.dart';
+import 'package:explaino/core/validators/app_validators.dart';
 import 'package:flutter/material.dart';
 
 class CertificateTextField extends StatelessWidget {
@@ -7,11 +8,13 @@ class CertificateTextField extends StatelessWidget {
     required this.label,
     required this.hint,
     required this.controller,
+    required this.onChanged,
   });
 
   final String label;
   final String hint;
   final TextEditingController controller;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +29,10 @@ class CertificateTextField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        TextField(
+        TextFormField(
           controller: controller,
+          validator: (value) => AppValidators.validateRequired(value),
+          onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(

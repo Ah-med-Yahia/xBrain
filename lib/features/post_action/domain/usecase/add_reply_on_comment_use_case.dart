@@ -1,0 +1,19 @@
+import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/features/post_action/domain/entities/request/comment_request_entity.dart';
+import 'package:explaino/features/post_action/domain/entities/response/comment_entity.dart';
+import 'package:explaino/features/post_action/domain/repositories/post_action_repo.dart';
+import 'package:injectable/injectable.dart';
+
+@injectable
+class AddReplyOnCommentUseCase {
+  final PostActionRepo _repo;
+
+  AddReplyOnCommentUseCase(this._repo);
+
+  Future<BaseResponse<CommentEntity>> call({
+    required String id,
+    required CommentRequestEntity request,
+  }) {
+    return _repo.addReplyOnComment(id: id, request: request);
+  }
+}

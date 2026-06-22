@@ -23,7 +23,7 @@ class UserHeader extends StatelessWidget {
 
     return Row(
       children: [
-        UserAvatar(username: fullname, profileImageUrl: profileImageUrl),
+        UserAvatar(userName: fullname, profileImageUrl: profileImageUrl),
         const SizedBox(width: 10),
         Expanded(
           child: Column(

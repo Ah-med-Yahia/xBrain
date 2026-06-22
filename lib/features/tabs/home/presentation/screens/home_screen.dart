@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return _homeCubit.state.postsState.isFetching;
           });
         },
-        itemBuilder: (post) => PostCard(post: post),
+        itemBuilder: (post) => PostCard(shortPost: post),
         scrollController: _postsScrollController,
       ),
     );
