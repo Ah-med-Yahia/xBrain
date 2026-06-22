@@ -1,9 +1,9 @@
+import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/extensions/meeting_status_x.dart';
 import 'package:explaino/core/theme/app_colors.dart';
-import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card.dart';
+import 'package:explaino/features/tabs/meetings/domain/entities/request/decline_meeting_request_entity.dart';
 import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/glass_action_button.dart';
 import 'package:flutter/material.dart';
-
-const int _maxDeclineMessageLength = 500;
 
 class DeclineMeetingSheet extends StatefulWidget {
   const DeclineMeetingSheet({super.key});
@@ -13,14 +13,12 @@ class DeclineMeetingSheet extends StatefulWidget {
 }
 
 class _DeclineMeetingSheetState extends State<DeclineMeetingSheet> {
-  final _controller = TextEditingController();
+  late final TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() {
-      setState(() {});
-    });
+    _controller = TextEditingController();
   }
 
   @override
@@ -29,9 +27,14 @@ class _DeclineMeetingSheetState extends State<DeclineMeetingSheet> {
     super.dispose();
   }
 
-  void _submit() {
-    final text = _controller.text.trim();
-    Navigator.pop(context, text.isEmpty ? null : text);
+  void _handleDecline() {
+    final message = _controller.text.trim();
+    Navigator.pop(
+      context,
+      message.isEmpty
+          ? const DeclineMeetingRequestEntity(message: '')
+          : DeclineMeetingRequestEntity(message: message),
+    );
   }
 
   @override
@@ -42,17 +45,7 @@ class _DeclineMeetingSheetState extends State<DeclineMeetingSheet> {
       duration: const Duration(milliseconds: 200),
       padding: EdgeInsets.only(bottom: bottomInset),
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: .08),
-              blurRadius: 30,
-              offset: const Offset(0, -8),
-            ),
-          ],
-        ),
+        decoration: _buildDecoration(),
         padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
         child: SafeArea(
           top: false,
@@ -61,98 +54,150 @@ class _DeclineMeetingSheetState extends State<DeclineMeetingSheet> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 42,
-                  height: 5,
-                  margin: const EdgeInsets.only(bottom: 24),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE0E5ED),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                ),
-                Container(
-                  width: 72,
-                  height: 72,
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade50,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.event_busy_rounded,
-                    size: 36,
-                    color: Colors.red.shade500,
-                  ),
-                ),
+                _buildHandleBar(),
                 const SizedBox(height: 20),
-                const Text(
-                  'Decline Meeting',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF1A1A2E),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'You may optionally include a reason.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
-                    height: 1.5,
-                  ),
-                ),
+                _buildIconCircle(),
+                const SizedBox(height: 20),
+                _buildHeader(),
+                const SizedBox(height: 12),
+                _buildDescription(),
                 const SizedBox(height: 24),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: const Color(0xFFE5E9F2)),
-                  ),
-                  child: TextField(
-                    controller: _controller,
-                    maxLength: _maxDeclineMessageLength,
-                    maxLines: 5,
-                    minLines: 5,
-                    style: const TextStyle(fontSize: 15),
-                    decoration: InputDecoration(
-                      hintText: "Tell them why you're unavailable...",
-                      hintStyle: TextStyle(color: Colors.grey.shade500),
-                      counterText: '',
-                      filled: true,
-                      fillColor: const Color(0xFFF8FAFD),
-                      contentPadding: const EdgeInsets.all(16),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: const BorderSide(color: AppColors.primary),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    '${_controller.text.length}/$_maxDeclineMessageLength',
-                    style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
-                  ),
-                ),
+                _buildTextFieldWithCounter(),
                 const SizedBox(height: 24),
-                GlassActionButton(
-                  label: 'Decline',
-                  icon: Icons.close_rounded,
-                  variant: ButtonVariant.solid,
-                  onTap: _submit,
-                ),
+                _buildDeclineButton(),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  BoxDecoration _buildDecoration() {
+    return BoxDecoration(
+      color: Colors.white,
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.08),
+          blurRadius: 30,
+          offset: const Offset(0, -8),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHandleBar() {
+    return Container(
+      width: 42,
+      height: 5,
+      decoration: BoxDecoration(
+        color: const Color(0xFFE0E5ED),
+        borderRadius: BorderRadius.circular(999),
+      ),
+    );
+  }
+
+  Widget _buildIconCircle() {
+    return Container(
+      width: 72,
+      height: 72,
+      decoration: BoxDecoration(
+        color: Colors.red.shade50,
+        shape: BoxShape.circle,
+      ),
+      child: Icon(
+        Icons.event_busy_rounded,
+        size: 36,
+        color: Colors.red.shade500,
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return const Text(
+      AppTextConstants.declineMeeting,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: Color(0xFF1A1A2E),
+      ),
+    );
+  }
+
+  Widget _buildDescription() {
+    return Text(
+      AppTextConstants.declineMeetingDescription,
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 14, color: Colors.grey.shade600, height: 1.5),
+    );
+  }
+
+  Widget _buildTextFieldWithCounter() {
+    return Column(
+      children: [
+        _buildTextField(),
+        const SizedBox(height: 8),
+        _buildCharacterCounter(),
+      ],
+    );
+  }
+
+  Widget _buildTextField() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFFE5E9F2)),
+      ),
+      child: TextField(
+        controller: _controller,
+        maxLength: 500,
+        maxLines: 3,
+        minLines: 3,
+        style: const TextStyle(fontSize: 15),
+        decoration: InputDecoration(
+          hintText: AppTextConstants.declineMeetingHintText,
+          hintStyle: TextStyle(color: Colors.grey.shade500),
+          counterText: '',
+          filled: true,
+          fillColor: const Color(0xFFF8FAFD),
+          contentPadding: const EdgeInsets.all(16),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: AppColors.primary),
+          ),
+        ),
+        onChanged: (_) => setState(() {}),
+      ),
+    );
+  }
+
+  Widget _buildCharacterCounter() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: ValueListenableBuilder<TextEditingValue>(
+        valueListenable: _controller,
+        builder: (context, value, _) {
+          return Text(
+            '${value.text.length}/500',
+            style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildDeclineButton() {
+    return GlassActionButton(
+      label: AppTextConstants.decline,
+      icon: Icons.close_rounded,
+      variant: ButtonVariant.solid,
+      onTap: _handleDecline,
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:explaino/core/constants/api_constants.dart';
 import 'package:explaino/features/schedule_meeting/data/models/response/schedule_meeting_response_model.dart';
+import 'package:explaino/features/tabs/meetings/data/models/request/decline_meeting_request_model.dart';
 import 'package:explaino/features/tabs/meetings/data/models/response/meetings_response_model.dart';
 import 'package:explaino/features/tabs/meetings/data/models/request/accept_meeting_request_model.dart';
 import 'package:injectable/injectable.dart';
@@ -25,7 +26,7 @@ abstract class MeetingsApiClient {
   @POST(ApiConstants.declineMeeting)
   Future<ScheduleMeetingResponseModel> declineMeeting(
     @Path() String id,
-    @Body() String message,
+    @Body() DeclineMeetingRequestModel request,
   );
 
   @POST(ApiConstants.acceptMeeting)

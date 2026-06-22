@@ -140,8 +140,8 @@ class AppTextConstants {
   static const String proposedTimeSlots = 'Proposed time slots';
   static const String message = 'Message';
   static const String optional = 'optional';
-  static const String meetingScheduledSuccessfully =
-      'Meeting scheduled successfully with Status :';
+  static const String meetingRequestSentSuccessfully =
+      'Meeting request sent successfully';
   //====================Meetings============================
   static const String meetingRequest = 'Meeting request';
   static const String chooseSlot =
@@ -159,4 +159,18 @@ class AppTextConstants {
   static const String productStrategySync = 'Product Strategy Sync';
   static const String googleMeet = 'Google Meet';
   static const String noMeetingsYet = 'No meetings yet';
+  //====================Decline Meeting============================
+  static const String declineMeeting = 'Decline Meeting';
+  static const String declineMeetingDescription =
+      'You may optionally include a reason.';
+  static const String declineMeetingHintText =
+      "Tell them why you're unavailable...";
+  static const String slot = 'slot';
+  static const String slots = 'slots';
+  static const String meetingCancelledSuccessfully =
+      'Meeting Cancelled Successfully';
+  static const String meetingAcceptedSuccessfully =
+      'Meeting Accepted Successfully';
+  static const String meetingDeclinedSuccessfully =
+      'Meeting Declined Successfully';
 }

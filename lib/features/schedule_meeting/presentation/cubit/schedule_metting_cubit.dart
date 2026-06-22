@@ -92,9 +92,7 @@ class ScheduleMeetingCubit extends Cubit<ScheduleMeetingState> {
       success: (data) {
         _sideEffectController.add(HideLoading());
         _sideEffectController.add(
-          ShowSuccessMessage(
-            '${AppTextConstants.meetingScheduledSuccessfully} ${data.status.name}',
-          ),
+          ShowSuccessMessage(AppTextConstants.meetingRequestSentSuccessfully),
         );
       },
       failure: (error) {

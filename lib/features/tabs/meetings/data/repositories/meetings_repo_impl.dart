@@ -3,8 +3,10 @@ import 'package:explaino/features/schedule_meeting/data/mappers/schedule_metting
 import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
 import 'package:explaino/features/tabs/meetings/data/data_sources/remote/remote_meeting_data_source.dart';
 import 'package:explaino/features/tabs/meetings/data/mappers/accept_meeting_request_mapper.dart';
+import 'package:explaino/features/tabs/meetings/data/mappers/decline_meeting_request_entity.dart';
 import 'package:explaino/features/tabs/meetings/data/mappers/meetings_response_mapper.dart';
 import 'package:explaino/features/tabs/meetings/domain/entities/request/accept_meeting_request_entity.dart';
+import 'package:explaino/features/tabs/meetings/domain/entities/request/decline_meeting_request_entity.dart';
 import 'package:explaino/features/tabs/meetings/domain/entities/response/meetings_response_entity.dart';
 import 'package:explaino/features/tabs/meetings/domain/repositories/meetings_repo.dart';
 import 'package:injectable/injectable.dart';
@@ -73,9 +75,12 @@ class MeetingsRepoImpl implements MeetingsRepo {
   @override
   Future<BaseResponse<ScheduleMeetingResponseEntity>> declineMeeting(
     String id,
-    String message,
+    DeclineMeetingRequestEntity request,
   ) async {
-    final result = await remoteMeetingsDataSource.declineMeeting(id, message);
+    final result = await remoteMeetingsDataSource.declineMeeting(
+      id,
+      request.toModel(),
+    );
     return result.when(
       success: (data) {
         return BaseResponse<ScheduleMeetingResponseEntity>.success(

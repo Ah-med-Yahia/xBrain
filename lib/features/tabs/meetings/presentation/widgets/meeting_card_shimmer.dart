@@ -77,7 +77,6 @@ class _MeetingCardShimmerState extends State<MeetingCardShimmer>
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // UserMeetingHeader Shimmer
                             Row(
                               children: [
                                 _ShimmerBox(
@@ -111,7 +110,6 @@ class _MeetingCardShimmerState extends State<MeetingCardShimmer>
                               ],
                             ),
                             const SizedBox(height: 16),
-                            // InfoRow Shimmer (Date, Duration)
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -130,7 +128,6 @@ class _MeetingCardShimmerState extends State<MeetingCardShimmer>
                               ],
                             ),
                             const SizedBox(height: 14),
-                            // QuestionPreview Shimmer
                             _ShimmerBox(
                               width: double.infinity,
                               height: 14,
@@ -145,7 +142,6 @@ class _MeetingCardShimmerState extends State<MeetingCardShimmer>
                               animation: _animation,
                             ),
                             const SizedBox(height: 18),
-                            // PendingActions / JoinButton Shimmer
                             Row(
                               children: [
                                 Expanded(

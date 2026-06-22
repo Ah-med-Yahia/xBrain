@@ -66,3 +66,5 @@ extension MeetingStatusX on MeetingStatus {
     }
   }
 }
+
+enum ButtonVariant { filled, outline, gradient, solid }

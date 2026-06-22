@@ -1,4 +1,5 @@
 import 'package:explaino/features/tabs/meetings/domain/entities/request/accept_meeting_request_entity.dart';
+import 'package:explaino/features/tabs/meetings/domain/entities/request/decline_meeting_request_entity.dart';
 
 sealed class MeetingsIntent {}
 
@@ -20,9 +21,12 @@ class AcceptMyMeetingsIntent extends MeetingsIntent {
 
 class DeclineMyMeetingsIntent extends MeetingsIntent {
   final String id;
-  final String message;
+  final DeclineMeetingRequestEntity declineMeetingRequestEntity;
 
-  DeclineMyMeetingsIntent({required this.id, required this.message});
+  DeclineMyMeetingsIntent({
+    required this.id,
+    required this.declineMeetingRequestEntity,
+  });
 }
 
 class GetOutgoingMeetingsIntent extends MeetingsIntent {}
@@ -38,4 +42,9 @@ class GetSingleMeetingDetailsIntent extends MeetingsIntent {
 class IncomingMeetingsChangedIntent extends MeetingsIntent {
   final bool incomingSelected;
   IncomingMeetingsChangedIntent({required this.incomingSelected});
+}
+
+class SelectMeetingSlotIntent extends MeetingsIntent {
+  final DateTime slot;
+  SelectMeetingSlotIntent({required this.slot});
 }

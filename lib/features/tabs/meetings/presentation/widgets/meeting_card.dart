@@ -1,17 +1,26 @@
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/extensions/meeting_status_x.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/schedule_meeting/data/models/meeting_status.dart';
 import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
+import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_cubit.dart';
+import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_intents.dart';
+import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/glass_action_button.dart';
 import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/info_row.dart';
-import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/join_button.dart';
 import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/pending_actions.dart';
 import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/question_preview.dart';
 import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/user_meeting_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MeetingCard extends StatefulWidget {
   final ScheduleMeetingResponseEntity meeting;
-  const MeetingCard({super.key, required this.meeting});
+  final String namingList;
+  const MeetingCard({
+    super.key,
+    required this.meeting,
+    required this.namingList,
+  });
 
   @override
   State<MeetingCard> createState() => _MeetingCardState();
@@ -21,7 +30,6 @@ class _MeetingCardState extends State<MeetingCard>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _scaleAnimation;
-
   ScheduleMeetingResponseEntity get meeting => widget.meeting;
 
   @override
@@ -52,22 +60,6 @@ class _MeetingCardState extends State<MeetingCard>
         opacity: _scaleAnimation,
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primary.withValues(alpha: 0.06),
-                blurRadius: 24,
-                offset: const Offset(0, 8),
-                spreadRadius: 0,
-              ),
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.03),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(24),
             child: Container(
@@ -101,19 +93,37 @@ class _MeetingCardState extends State<MeetingCard>
                             UserMeetingHeader(meeting: meeting),
                             const SizedBox(height: 16),
                             InfoRow(meeting: meeting),
-                            if (meeting.questionPreview.isNotEmpty) ...[
-                              const SizedBox(height: 14),
-                              QuestionPreview(
-                                question: meeting.questionPreview,
-                              ),
-                            ],
-                            if (meeting.status == MeetingStatus.pending) ...[
+                            const SizedBox(height: 14),
+                            QuestionPreview(question: meeting.questionPreview),
+                            if (meeting.status == MeetingStatus.pending &&
+                                widget.namingList ==
+                                    AppTextConstants.incoming
+                                        .toLowerCase()) ...[
                               const SizedBox(height: 18),
                               PendingActions(meeting: meeting),
                             ] else if (meeting.status ==
                                 MeetingStatus.accepted) ...[
                               const SizedBox(height: 18),
-                              const JoinButton(),
+                              GlassActionButton(
+                                label: AppTextConstants.joinMeeting,
+                                icon: Icons.videocam_rounded,
+                                variant: ButtonVariant.gradient,
+                                onTap: () {},
+                              ),
+                            ],
+                            if (widget.namingList ==
+                                AppTextConstants.outgoing.toLowerCase()) ...[
+                              const SizedBox(height: 18),
+                              GlassActionButton(
+                                label: AppTextConstants.cancel,
+                                icon: Icons.close,
+                                variant: ButtonVariant.solid,
+                                onTap: () {
+                                  context.read<MeetingsCubit>().doIntent(
+                                    CancelMeetingIntent(id: meeting.id),
+                                  );
+                                },
+                              ),
                             ],
                           ],
                         ),
@@ -129,5 +139,3 @@ class _MeetingCardState extends State<MeetingCard>
     );
   }
 }
-
-enum ButtonVariant { filled, outline, gradient, solid }

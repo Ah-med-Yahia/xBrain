@@ -77,7 +77,7 @@ class HomeCubit extends Cubit<HomeState> {
         );
       },
       failure: (error) {
-        _questionsPage--;
+        // _questionsPage--;
         _hasMoreQuestions = true;
         emit(
           state.copyWith(
@@ -125,7 +125,7 @@ class HomeCubit extends Cubit<HomeState> {
         );
       },
       failure: (error) {
-        _postsPage--;
+        // _postsPage--;
         _hasMorePosts = true;
         emit(
           state.copyWith(

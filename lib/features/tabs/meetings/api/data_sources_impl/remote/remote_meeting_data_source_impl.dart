@@ -3,6 +3,7 @@ import 'package:explaino/config/network/safe_api_call.dart';
 import 'package:explaino/features/schedule_meeting/data/models/response/schedule_meeting_response_model.dart';
 import 'package:explaino/features/tabs/meetings/api/api_clients/metting_api_client.dart';
 import 'package:explaino/features/tabs/meetings/data/data_sources/remote/remote_meeting_data_source.dart';
+import 'package:explaino/features/tabs/meetings/data/models/request/decline_meeting_request_model.dart';
 import 'package:explaino/features/tabs/meetings/data/models/response/meetings_response_model.dart';
 import 'package:explaino/features/tabs/meetings/data/models/request/accept_meeting_request_model.dart';
 import 'package:injectable/injectable.dart';
@@ -44,10 +45,10 @@ class RemoteMeetingsDataSourceImpl implements RemoteMeetingsDataSource {
   @override
   Future<BaseResponse<ScheduleMeetingResponseModel>> declineMeeting(
     String id,
-    String message,
+    DeclineMeetingRequestModel request,
   ) async {
     return await safeApiCall<ScheduleMeetingResponseModel>(
-      () => _apiClient.declineMeeting(id, message),
+      () => _apiClient.declineMeeting(id, request),
     );
   }
 

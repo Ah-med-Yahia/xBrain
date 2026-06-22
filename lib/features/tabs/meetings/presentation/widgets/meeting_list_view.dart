@@ -20,11 +20,7 @@ class MeetingsListView<T> extends StatelessWidget {
   final Widget Function(T item) itemBuilder;
   final VoidCallback onRetry;
   final ScrollController scrollController;
-
   static const int _shimmerItemCount = 6;
-
-  bool get _isInitialLoad =>
-      state.isFetching && items.isEmpty && state.errorMessage == null;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +32,7 @@ class MeetingsListView<T> extends StatelessWidget {
         ),
       );
     }
-    if (!state.isFetching && items.isEmpty) {
+    if (!state.isFetching && items.isEmpty && state.data != null) {
       return const Center(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24),
@@ -56,7 +52,7 @@ class MeetingsListView<T> extends StatelessWidget {
         ),
       );
     }
-    if (_isInitialLoad) {
+    if (state.isFetching && items.isEmpty) {
       return ListView.builder(
         itemCount: _shimmerItemCount + 1,
         itemBuilder: (_, index) {

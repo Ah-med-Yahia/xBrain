@@ -1,4 +1,5 @@
 import 'package:explaino/config/di/di.dart';
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/core/utils/ui_utils.dart';
 import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
@@ -133,13 +134,17 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
   Widget _buildIncomingMeetingsList() {
     return BlocBuilder<MeetingsCubit, MeetingsState>(
       buildWhen: (prev, next) =>
-          prev.getIncomingMeetingsState != next.getIncomingMeetingsState,
+          prev.getIncomingMeetingsState.data?.results !=
+          next.getIncomingMeetingsState.data?.results,
       builder: (context, state) =>
           MeetingsListView<ScheduleMeetingResponseEntity>(
             state: state.getIncomingMeetingsState,
             items: state.getIncomingMeetingsState.data?.results ?? [],
             onRetry: () => _meetingsCubit.doIntent(GetIncomingMeetingsIntent()),
-            itemBuilder: (meeting) => MeetingCard(meeting: meeting),
+            itemBuilder: (meeting) => MeetingCard(
+              meeting: meeting,
+              namingList: AppTextConstants.incoming.toLowerCase(),
+            ),
             scrollController: _incomingScrollController,
           ),
     );
@@ -154,7 +159,10 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
             state: state.getOutgoingMeetingsState,
             items: state.getOutgoingMeetingsState.data?.results ?? [],
             onRetry: () => _meetingsCubit.doIntent(GetOutgoingMeetingsIntent()),
-            itemBuilder: (meeting) => MeetingCard(meeting: meeting),
+            itemBuilder: (meeting) => MeetingCard(
+              meeting: meeting,
+              namingList: AppTextConstants.outgoing.toLowerCase(),
+            ),
             scrollController: _outgoingScrollController,
           ),
     );

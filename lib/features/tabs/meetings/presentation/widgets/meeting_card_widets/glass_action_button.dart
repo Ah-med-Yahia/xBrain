@@ -1,5 +1,5 @@
+import 'package:explaino/core/extensions/meeting_status_x.dart';
 import 'package:explaino/core/theme/app_colors.dart';
-import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card.dart';
 import 'package:flutter/material.dart';
 
 class GlassActionButton extends StatelessWidget {

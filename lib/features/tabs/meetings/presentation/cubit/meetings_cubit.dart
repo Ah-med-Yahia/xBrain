@@ -1,7 +1,8 @@
 import 'dart:async';
-
 import 'package:explaino/config/base_response/base_response.dart';
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/features/tabs/meetings/domain/entities/request/accept_meeting_request_entity.dart';
+import 'package:explaino/features/tabs/meetings/domain/entities/request/decline_meeting_request_entity.dart';
 import 'package:explaino/features/tabs/meetings/domain/entities/response/meetings_response_entity.dart';
 import 'package:explaino/features/tabs/meetings/domain/usecase/accept_meeting_use_case.dart';
 import 'package:explaino/features/tabs/meetings/domain/usecase/cancel_meeting_use_case.dart';
@@ -53,8 +54,11 @@ class MeetingsCubit extends Cubit<MeetingsState> {
       ):
         _handleAcceptMyMeetingsIntent(id, acceptMeetingRequestEntity);
         break;
-      case DeclineMyMeetingsIntent(id: final id, message: final message):
-        _handleDeclineMyMeetingsIntent(id, message);
+      case DeclineMyMeetingsIntent(
+        id: final id,
+        declineMeetingRequestEntity: final declineMeetingRequestEntity,
+      ):
+        _handleDeclineMyMeetingsIntent(id, declineMeetingRequestEntity);
         break;
       case GetOutgoingMeetingsIntent():
         _handleGetOutgoingMeetingsIntent();
@@ -70,6 +74,9 @@ class MeetingsCubit extends Cubit<MeetingsState> {
       ):
         _handleTabChangedIntent(incomingSelected);
         break;
+      case SelectMeetingSlotIntent(slot: final slot):
+        _handleSelectMeetingSlotIntent(slot);
+        break;
     }
   }
 
@@ -80,8 +87,9 @@ class MeetingsCubit extends Cubit<MeetingsState> {
       success: (data) {
         _sideEffectController.add(HideLoading());
         _sideEffectController.add(
-          ShowSuccessMessage('Meeting Cancelled Successfully'),
+          ShowSuccessMessage(AppTextConstants.meetingCancelledSuccessfully),
         );
+        _refreshOutgoingMeetings();
       },
       failure: (failure) {
         _sideEffectController.add(HideLoading());
@@ -103,8 +111,9 @@ class MeetingsCubit extends Cubit<MeetingsState> {
       success: (data) {
         _sideEffectController.add(HideLoading());
         _sideEffectController.add(
-          ShowSuccessMessage('Meeting Accepted Successfully'),
+          ShowSuccessMessage(AppTextConstants.meetingAcceptedSuccessfully),
         );
+        _refreshIncomingMeetings();
         _sideEffectController.add(NavigateToMeetingConfirmed(data));
       },
       failure: (failure) {
@@ -114,15 +123,19 @@ class MeetingsCubit extends Cubit<MeetingsState> {
     );
   }
 
-  void _handleDeclineMyMeetingsIntent(String id, String message) async {
+  void _handleDeclineMyMeetingsIntent(
+    String id,
+    DeclineMeetingRequestEntity request,
+  ) async {
     _sideEffectController.add(ShowLoading());
-    final result = await _declineMeetingUseCase.call(id, message);
+    final result = await _declineMeetingUseCase.call(id, request);
     result.when(
       success: (data) {
         _sideEffectController.add(HideLoading());
         _sideEffectController.add(
-          ShowSuccessMessage('Meeting Declined Successfully'),
+          ShowSuccessMessage(AppTextConstants.meetingDeclinedSuccessfully),
         );
+        _refreshIncomingMeetings();
       },
       failure: (failure) {
         _sideEffectController.add(HideLoading());
@@ -258,5 +271,91 @@ class MeetingsCubit extends Cubit<MeetingsState> {
     if (!incomingSelected) {
       doIntent(GetOutgoingMeetingsIntent());
     }
+  }
+
+  void _refreshIncomingMeetings() async {
+    emit(
+      state.copyWith(
+        incomingCurrentPage: 1,
+        incomingHasMore: true,
+        getIncomingMeetingsState: state.getIncomingMeetingsState.copyWith(
+          data: null,
+          isFetching: true,
+          errorMessage: null,
+        ),
+      ),
+    );
+
+    final result = await _getIncomingMeetingsUseCase.call(page: 1);
+
+    result.when(
+      success: (data) {
+        emit(
+          state.copyWith(
+            getIncomingMeetingsState: state.getIncomingMeetingsState.copyWith(
+              isFetching: false,
+              data: data,
+            ),
+            incomingCurrentPage: 2,
+            incomingHasMore: data.next != null,
+          ),
+        );
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            getIncomingMeetingsState: state.getIncomingMeetingsState.copyWith(
+              isFetching: false,
+              errorMessage: failure.message,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _refreshOutgoingMeetings() async {
+    emit(
+      state.copyWith(
+        outgoingCurrentPage: 1,
+        outgoingHasMore: true,
+        getOutgoingMeetingsState: state.getOutgoingMeetingsState.copyWith(
+          data: null,
+          isFetching: true,
+          errorMessage: null,
+        ),
+      ),
+    );
+
+    final result = await _getOutgoingMeetingsUseCase.call(page: 1);
+
+    result.when(
+      success: (data) {
+        emit(
+          state.copyWith(
+            getOutgoingMeetingsState: state.getOutgoingMeetingsState.copyWith(
+              isFetching: false,
+              data: data,
+            ),
+            outgoingCurrentPage: 2,
+            outgoingHasMore: data.next != null,
+          ),
+        );
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            getOutgoingMeetingsState: state.getOutgoingMeetingsState.copyWith(
+              isFetching: false,
+              errorMessage: failure.message,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _handleSelectMeetingSlotIntent(DateTime slot) {
+    emit(state.copyWith(selectedSlot: slot));
   }
 }

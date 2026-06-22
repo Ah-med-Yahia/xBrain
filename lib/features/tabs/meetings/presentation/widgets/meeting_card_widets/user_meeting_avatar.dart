@@ -3,9 +3,8 @@ import 'package:explaino/features/schedule_meeting/domain/entities/response/sche
 import 'package:flutter/material.dart';
 
 class UserAvatar extends StatelessWidget {
-  const UserAvatar({super.key, required this.meeting});
-
   final ScheduleMeetingResponseEntity meeting;
+  const UserAvatar({super.key, required this.meeting});
 
   bool get _hasAvatar =>
       (meeting.asker.profileImageUrl ?? '').trim().isNotEmpty;
