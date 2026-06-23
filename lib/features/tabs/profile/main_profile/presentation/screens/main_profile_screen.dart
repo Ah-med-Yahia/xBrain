@@ -40,6 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     });
     mainProfileCubit.doIntent(GetProfileDataIntent());
+    mainProfileCubit.doIntent(GetMyQuestionsIntent());
   }
 
   void _handleShowLoading() {
@@ -89,13 +90,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return BlocProvider(
       create: (context) => mainProfileCubit,
       child: const SafeArea(
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: MainBody(),
-            ),
-          ],
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: MainBody(),
         ),
       ),
     );
