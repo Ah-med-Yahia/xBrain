@@ -6,6 +6,13 @@ sealed class ChatbotIntents {}
 
 class ListMyChatsIntent extends ChatbotIntents {}
 
+class OpenNewChatIntent extends ChatbotIntents {}
+
+class ToggleChatHistoryIntent extends ChatbotIntents {
+  final bool isOpen;
+  ToggleChatHistoryIntent({required this.isOpen});
+}
+
 class StartNewChatIntent extends ChatbotIntents {
   final StartNewChatRequestEntity? request;
   StartNewChatIntent({this.request});

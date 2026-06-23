@@ -193,4 +193,14 @@ class AppTextConstants {
       'Meeting Accepted Successfully';
   static const String meetingDeclinedSuccessfully =
       'Meeting Declined Successfully';
+  //====================Chatbot============================
+  static const String chatbotAppBarTitle = 'xBrain Chatbot';
+  static const String history = 'History';
+  static const String newChat = 'New Chat';
+  static const String chatInputHint = 'Write your message...';
+  static const String send = 'Send';
+  static const String noChatsYet = 'No chats yet';
+  static const String chats = 'Chats';
+  static const String tryAgain = 'Try Again';
+  static const String delete = 'Delete';
 }
