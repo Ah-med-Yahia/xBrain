@@ -70,56 +70,53 @@ class ChatInputBarState extends State<ChatInputBar> {
                 ),
               ],
             ),
-            child: Container(
-              // color: AppColors.red,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      focusNode: _focusNode,
-                      minLines: 1,
-                      maxLines: 5,
-                      textInputAction: TextInputAction.newline,
-                      decoration: const InputDecoration(
-                        hintText: AppTextConstants.chatInputHint,
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        filled: false,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 14,
-                        ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    focusNode: _focusNode,
+                    minLines: 1,
+                    maxLines: 5,
+                    textInputAction: TextInputAction.newline,
+                    decoration: const InputDecoration(
+                      hintText: AppTextConstants.chatInputHint,
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      filled: false,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 14,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: IconButton.filled(
-                      tooltip: AppTextConstants.send,
-                      onPressed: _canSend ? _send : null,
-                      style: IconButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        disabledBackgroundColor: AppColors.buttonBorder,
-                        foregroundColor: AppColors.onPrimary,
-                        fixedSize: const Size(38, 38),
-                      ),
-                      icon: widget.isSending
-                          ? const SizedBox(
-                              width: 18,
-                              height: 18,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: AppColors.onPrimary,
-                              ),
-                            )
-                          : const Icon(Icons.arrow_upward_rounded, size: 20),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 4),
+                  child: IconButton.filled(
+                    tooltip: AppTextConstants.send,
+                    onPressed: _canSend ? _send : null,
+                    style: IconButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      disabledBackgroundColor: AppColors.buttonBorder,
+                      foregroundColor: AppColors.onPrimary,
+                      fixedSize: const Size(38, 38),
                     ),
+                    icon: widget.isSending
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppColors.onPrimary,
+                            ),
+                          )
+                        : const Icon(Icons.arrow_upward_rounded, size: 20),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
