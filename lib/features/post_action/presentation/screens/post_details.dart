@@ -39,13 +39,10 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
           _handleLoading();
         case HideLoadingSideEffects():
           _handleHideLoading();
-        case ErrorWhenGetSinglePost(message: final message):
-          _handleError(message);
-        case ErrorWhenGetComments(message: final message):
-          _handleError(message);
-        case ErrorWhenAddComment(message: final message):
+        case ErrorSideEffect(message: final message):
           _handleError(message);
         case CommentAddedSuccessfully():
+        case ReplyAddedSuccessfully():
           _commentController.clear();
       }
     });
@@ -68,15 +65,25 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     );
   }
 
-  void _submitComment() {
+  void _submitComment(PostActionState state) {
     final text = _commentController.text.trim();
     if (text.isEmpty) return;
-    _cubit.doIntent(
-      AddCommentIntent(
-        id: widget.postId,
-        request: CommentRequestEntity(content: text),
-      ),
-    );
+
+    if (state.replyingToComment != null) {
+      _cubit.doIntent(
+        AddReplyIntent(
+          commentId: state.replyingToComment!.id,
+          request: CommentRequestEntity(content: text),
+        ),
+      );
+    } else {
+      _cubit.doIntent(
+        AddCommentIntent(
+          id: widget.postId,
+          request: CommentRequestEntity(content: text),
+        ),
+      );
+    }
     _commentFocusNode.unfocus();
   }
 
@@ -110,10 +117,54 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
             bottomNavigationBar: AddCommentBar(
               commentController: _commentController,
               commentFocusNode: _commentFocusNode,
-              submitComment: _submitComment,
+              submitComment: () => _submitComment(state),
+              replyingToUser: state.replyingToComment != null
+                  ? '${state.replyingToComment!.author.firstName} ${state.replyingToComment!.author.lastName}'
+                  : null,
+              onCancelReply: () {
+                _cubit.doIntent(SetReplyingToCommentIntent(comment: null));
+              },
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildViewMoreCommentsButton(
+    BuildContext context,
+    int remaining,
+    int loadedCount,
+  ) {
+    final textTheme = Theme.of(context).textTheme;
+    // Each page has 10 comments, so next page = loadedCount ~/ 10 + 1
+    final nextPage = loadedCount ~/ 10 + 1;
+    return InkWell(
+      onTap: () {
+        _cubit.doIntent(
+          GetCommentsIntent(postId: widget.postId, page: nextPage),
+        );
+      },
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.expand_more_rounded,
+              size: 18,
+              color: AppColors.primary,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              'View $remaining more comment${remaining > 1 ? 's' : ''}',
+              style: textTheme.bodySmall?.copyWith(
+                color: AppColors.primary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -170,8 +221,33 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
           SliverList.separated(
             itemCount: comments.length,
             separatorBuilder: (context, index) => const SizedBox.shrink(),
-            itemBuilder: (context, index) =>
-                CommentItem(comment: comments[index].toEntity()),
+            itemBuilder: (context, index) {
+              final comment = comments[index].toEntity();
+              final repliesForComment = state.commentReplies[comment.id];
+              final isLoadingReplies = state.loadingReplies.contains(
+                comment.id,
+              );
+              return CommentItem(
+                comment: comment,
+                replies: repliesForComment,
+                isLoadingReplies: isLoadingReplies,
+                onViewReplies: () {
+                  _cubit.doIntent(GetRepliesIntent(id: comment.id, page: 1));
+                },
+                onReply: () {
+                  _cubit.doIntent(SetReplyingToCommentIntent(comment: comment));
+                  _commentFocusNode.requestFocus();
+                },
+              );
+            },
+          ),
+        if (comments.isNotEmpty && post.commentsCount > comments.length)
+          SliverToBoxAdapter(
+            child: _buildViewMoreCommentsButton(
+              context,
+              post.commentsCount - comments.length,
+              comments.length,
+            ),
           ),
         if (comments.isEmpty)
           SliverToBoxAdapter(

@@ -8,10 +8,14 @@ class AddCommentBar extends StatelessWidget {
     required this.commentController,
     required this.commentFocusNode,
     required this.submitComment,
+    this.replyingToUser,
+    this.onCancelReply,
   });
   final TextEditingController commentController;
   final FocusNode commentFocusNode;
   final VoidCallback submitComment;
+  final String? replyingToUser;
+  final VoidCallback? onCancelReply;
 
   @override
   Widget build(BuildContext context) {
@@ -37,63 +41,105 @@ class AddCommentBar extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: TextField(
-              controller: commentController,
-              focusNode: commentFocusNode,
-              minLines: 1,
-              maxLines: 4,
-              onTapOutside: (_) {
-                commentFocusNode.unfocus();
-              },
-              textInputAction: TextInputAction.newline,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.lightTextPrimary,
+          if (replyingToUser != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0, left: 16.0),
+              child: Row(
+                children: [
+                  Text(
+                    AppTextConstants.replyTo,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: AppColors.lightTextSecondary,
+                    ),
+                  ),
+                  Text(
+                    replyingToUser!,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    onTap: onCancelReply,
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Icon(
+                        Icons.close,
+                        size: 16,
+                        color: AppColors.lightTextSecondary,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              decoration: InputDecoration(
-                hintText: AppTextConstants.addComment,
-                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.lightTextSecondary,
-                ),
-                filled: true,
-                fillColor: AppColors.lightTextSecondary.withValues(alpha: 0.08),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide(
-                    color: AppColors.primary.withValues(alpha: 0.5),
-                    width: 1.5,
+            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: commentController,
+                  focusNode: commentFocusNode,
+                  minLines: 1,
+                  maxLines: 4,
+                  textInputAction: TextInputAction.newline,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.lightTextPrimary,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: AppTextConstants.addComment,
+                    hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.lightTextSecondary,
+                    ),
+                    filled: true,
+                    fillColor: AppColors.lightTextSecondary.withValues(
+                      alpha: 0.08,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      borderSide: BorderSide(
+                        color: AppColors.primary.withValues(alpha: 0.5),
+                        width: 1.5,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Material(
-            color: AppColors.primary,
-            borderRadius: BorderRadius.circular(24),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(24),
-              onTap: submitComment,
-              child: const Padding(
-                padding: EdgeInsets.all(10),
-                child: Icon(Icons.send_rounded, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
+              Material(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(24),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(24),
+                  onTap: submitComment,
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(
+                      Icons.send_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),

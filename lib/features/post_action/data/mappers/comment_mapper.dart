@@ -15,3 +15,18 @@ extension CommentMapper on CommentModel {
     );
   }
 }
+
+extension CommentEntityMapper on CommentEntity {
+  CommentModel toModel() {
+    return CommentModel(
+      id: id,
+      post: post,
+      author: author,
+      content: content,
+      parentComment: parentComment,
+      repliesCount: repliesCount,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+  }
+}
