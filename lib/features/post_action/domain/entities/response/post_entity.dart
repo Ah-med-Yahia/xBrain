@@ -31,4 +31,34 @@ class PostEntity {
     required this.createdAt,
     required this.updatedAt,
   });
+
+  PostEntity copyWith({
+    String? id,
+    AuthorModel? author,
+    String? content,
+    List<SpecializationModel>? specializations,
+    List<AttachmentModel>? attachments,
+    int? likesCount,
+    int? dislikesCount,
+    String? myReaction,
+    int? commentsCount,
+    List<CommentModel>? comments,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return PostEntity(
+      id: id ?? this.id,
+      author: author ?? this.author,
+      content: content ?? this.content,
+      specializations: specializations ?? this.specializations,
+      attachments: attachments ?? this.attachments,
+      likesCount: likesCount ?? this.likesCount,
+      dislikesCount: dislikesCount ?? this.dislikesCount,
+      myReaction: myReaction ?? this.myReaction,
+      commentsCount: commentsCount ?? this.commentsCount,
+      comments: comments ?? this.comments,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }

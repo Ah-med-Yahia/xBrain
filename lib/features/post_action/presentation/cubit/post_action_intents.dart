@@ -1,4 +1,5 @@
 import 'package:explaino/features/post_action/domain/entities/request/comment_request_entity.dart';
+import 'package:explaino/features/post_action/domain/entities/response/comment_entity.dart';
 
 sealed class PostActionIntents {}
 
@@ -38,6 +39,12 @@ class DeleteCommentOrReplyIntent extends PostActionIntents {
   DeleteCommentOrReplyIntent({required this.id});
 }
 
+class GetCommentsIntent extends PostActionIntents {
+  final String postId;
+  final int page;
+  GetCommentsIntent({required this.postId, this.page = 1});
+}
+
 class GetRepliesIntent extends PostActionIntents {
   final String id;
   final int page;
@@ -53,4 +60,9 @@ class UpdateCommentOrReplyIntent extends PostActionIntents {
   final String id;
   final CommentRequestEntity request;
   UpdateCommentOrReplyIntent({required this.id, required this.request});
+}
+
+class SetReplyingToCommentIntent extends PostActionIntents {
+  final CommentEntity? comment;
+  SetReplyingToCommentIntent({this.comment});
 }
