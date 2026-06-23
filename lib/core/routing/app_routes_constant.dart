@@ -20,4 +20,9 @@ abstract class AppRoutesConstants {
   static const String hasQuestionKey = 'hasQuestion';
   static const String postDetailsRoute = '/post-details';
   static const String postIdKey = 'postId';
+  static const String scheduleMeetingRoute = '/schedule-meeting';
+  static const String idKey = 'id';
+  static const String authorNameKey = 'authorName';
+  static const String meetingConfirmedRoute = '/meeting-confirmed';
+  static const String meetingEntityKey = 'meetingEntity';
 }

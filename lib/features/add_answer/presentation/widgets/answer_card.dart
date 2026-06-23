@@ -2,6 +2,7 @@ import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/gen/assets.gen.dart';
 import 'package:explaino/core/helpers/text_direction_helper.dart';
 import 'package:explaino/core/helpers/time_ago_helper.dart';
+import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/shared/data/models/questions/response/first_ten_answers_of_question_response_model/answer_model.dart';
 import 'package:explaino/core/shared/presentation/widgets/attachment_preview.dart';
 import 'package:explaino/core/shared/presentation/widgets/custom_error_widget.dart';
@@ -14,6 +15,7 @@ import 'package:explaino/features/add_answer/presentation/widgets/reply_card.dar
 import 'package:explaino/features/add_answer/presentation/widgets/shimmer/reply_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class AnswerCard extends StatelessWidget {
   final AnswerModel answer;
@@ -99,11 +101,23 @@ class AnswerCard extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: Assets.icons.videoCall.image(
-                                color: AppColors.grey,
+                            InkWell(
+                              onTap: () {
+                                GoRouter.of(context).push(
+                                  AppRoutesConstants.scheduleMeetingRoute,
+                                  extra: {
+                                    AppRoutesConstants.idKey: answer.id,
+                                    AppRoutesConstants.authorNameKey:
+                                        '${answer.author.firstName} ${answer.author.lastName}',
+                                  },
+                                );
+                              },
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: Assets.icons.videoCall.image(
+                                  color: AppColors.grey,
+                                ),
                               ),
                             ),
                             const SizedBox(width: 16),

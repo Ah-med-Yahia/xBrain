@@ -71,7 +71,7 @@ class AppTextConstants {
   static const String home = 'Home';
   static const String search = 'Search';
   static const String post = 'Post';
-  static const String groups = 'Groups';
+  static const String meetings = 'Meetings';
   static const String profile = 'Profile';
   static const String welcomeToXbrain = 'Welcome To xBrain';
   static const String appName = 'xBrain';
@@ -147,4 +147,49 @@ class AppTextConstants {
   static const String d = 'd'; // days
   static const String w = 'w'; // weeks
   static const String ago = 'ago';
+  //====================Schedule Meeting============================
+  static const String requestMeeting = 'Request Meeting';
+  static const String wouldLoveAQuickWalkthroughOfYourAnswer =
+      'Would love a quick walkthrough of your answer.';
+  static const String chars1000 = ' / 1000';
+  static const String noSlotsAddedYet = 'No slots added yet';
+  static const String minutes = 'min';
+  static const String scheduleAMeeting = 'Meeting With';
+  static const String duration = 'Duration';
+  static const String proposedTimeSlots = 'Proposed time slots';
+  static const String message = 'Message';
+  static const String optional = 'optional';
+  static const String meetingRequestSentSuccessfully =
+      'Meeting request sent successfully';
+  //====================Meetings============================
+  static const String meetingRequest = 'Meeting request';
+  static const String chooseSlot =
+      'Choose one of the proposed times to accept the meeting.';
+  static const String selectAMeetingSlot = 'Select a Meeting Slot';
+  static const String confirmSlot = 'Confirm Slot';
+  static const String accept = 'Accept';
+  static const String decline = 'Decline';
+  static const String joinMeeting = 'Join Meeting';
+  static const String incoming = 'Incoming';
+  static const String outgoing = 'Outgoing';
+  static const String meetingScheduled = 'Meeting Scheduled!';
+  static const String meetingScheduledDesc =
+      'Your time is locked in and invitations have been sent.';
+  static const String productStrategySync = 'Product Strategy Sync';
+  static const String googleMeet = 'Google Meet';
+  static const String noMeetingsYet = 'No meetings yet';
+  //====================Decline Meeting============================
+  static const String declineMeeting = 'Decline Meeting';
+  static const String declineMeetingDescription =
+      'You may optionally include a reason.';
+  static const String declineMeetingHintText =
+      "Tell them why you're unavailable...";
+  static const String slot = 'slot';
+  static const String slots = 'slots';
+  static const String meetingCancelledSuccessfully =
+      'Meeting Cancelled Successfully';
+  static const String meetingAcceptedSuccessfully =
+      'Meeting Accepted Successfully';
+  static const String meetingDeclinedSuccessfully =
+      'Meeting Declined Successfully';
 }

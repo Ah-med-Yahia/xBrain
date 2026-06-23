@@ -16,11 +16,12 @@ class BaseState<T> extends Equatable {
   BaseState<T> copyWith({
     String? errorMessage,
     bool? isEmpty,
+    bool clearError = false,
     bool? isFetching,
     T? data,
   }) {
     return BaseState<T>(
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
       isEmpty: isEmpty ?? this.isEmpty,
       isFetching: isFetching ?? this.isFetching,
       data: data ?? this.data,

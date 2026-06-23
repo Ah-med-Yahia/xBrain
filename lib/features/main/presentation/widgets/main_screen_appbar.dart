@@ -18,7 +18,9 @@ class MainScreenAppbar extends StatelessWidget implements PreferredSizeWidget {
 
     return BlocBuilder<MainCubit, MainState>(
       builder: (context, state) {
-        if (state.selectedIndex == 4) return const SizedBox.shrink();
+        if (state.selectedIndex == 4 || state.selectedIndex == 3) {
+          return const SizedBox.shrink();
+        }
         return AppBar(
           leading: Padding(
             padding: EdgeInsets.only(

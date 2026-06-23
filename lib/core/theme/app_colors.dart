@@ -96,4 +96,15 @@ class AppColors {
   static const Color jetBlack = Color(0xFF1A1A1A);
   static const Color spanishGray = Color(0xFF888888);
   static const Color silverGray = Color(0xFF999999);
+  static const Color grayishPurple = Color(0xFF79747E);
+  static const Color ghostWhite = Color(0xFFF5F7FA);
+  static const Color oxdordBlue = Color(0xFF1A1A2E);
+  static const Color athensGray = Color(0xFFEDF1F7);
+  static const Color aliceBlue = Color(0xFFF8FAFD);
+  static const Color lavenderBlue = Color(0xFFF2F5FA);
+  static const Color lightBlueGray = Color(0xFFEEF2F8);
+  static const Color paleBlueGray = Color(0xFFE0E5ED);
+  static const Color brightPurple = Color(0xFF8B5CF6);
+  static const Color darkGray = Color(0xFF4A5568);
+  static const Color azureBlue = Color(0xFF0D8AE0);
 }

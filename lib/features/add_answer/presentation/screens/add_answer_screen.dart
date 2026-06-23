@@ -210,6 +210,7 @@ class _AddAnswerScreenState extends State<AddAnswerScreen> {
     }
 
     return ListView.builder(
+      physics: const BouncingScrollPhysics(),
       controller: scrollController,
       padding: const EdgeInsets.only(bottom: 80),
       itemCount: items.length + (state.isFetching ? 1 : 0),
