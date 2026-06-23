@@ -16,6 +16,7 @@ class MeetingsState extends Equatable {
   final int outgoingCurrentPage;
   final bool outgoingHasMore;
   final DateTime? selectedSlot;
+  final int declineMessageLength;
 
   const MeetingsState({
     this.cancelMeetingstate = const BaseState<ScheduleMeetingResponseEntity>(),
@@ -33,6 +34,7 @@ class MeetingsState extends Equatable {
     this.outgoingCurrentPage = 1,
     this.outgoingHasMore = true,
     this.selectedSlot,
+    this.declineMessageLength = 0,
   });
 
   MeetingsState copyWith({
@@ -48,6 +50,7 @@ class MeetingsState extends Equatable {
     int? outgoingCurrentPage,
     bool? outgoingHasMore,
     DateTime? selectedSlot,
+    int? declineMessageLength,
   }) {
     return MeetingsState(
       cancelMeetingstate: cancelMeetingstate ?? this.cancelMeetingstate,
@@ -67,6 +70,7 @@ class MeetingsState extends Equatable {
       outgoingCurrentPage: outgoingCurrentPage ?? this.outgoingCurrentPage,
       outgoingHasMore: outgoingHasMore ?? this.outgoingHasMore,
       selectedSlot: selectedSlot ?? this.selectedSlot,
+      declineMessageLength: declineMessageLength ?? this.declineMessageLength,
     );
   }
 
@@ -84,5 +88,6 @@ class MeetingsState extends Equatable {
     outgoingCurrentPage,
     outgoingHasMore,
     selectedSlot,
+    declineMessageLength,
   ];
 }

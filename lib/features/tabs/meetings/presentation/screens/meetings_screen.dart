@@ -141,6 +141,8 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
             state: state.getIncomingMeetingsState,
             items: state.getIncomingMeetingsState.data?.results ?? [],
             onRetry: () => _meetingsCubit.doIntent(GetIncomingMeetingsIntent()),
+            onRefresh: () =>
+                _meetingsCubit.doIntent(RefreshIncomingMeetingsIntent()),
             itemBuilder: (meeting) => MeetingCard(
               meeting: meeting,
               namingList: AppTextConstants.incoming.toLowerCase(),
@@ -159,6 +161,8 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
             state: state.getOutgoingMeetingsState,
             items: state.getOutgoingMeetingsState.data?.results ?? [],
             onRetry: () => _meetingsCubit.doIntent(GetOutgoingMeetingsIntent()),
+            onRefresh: () =>
+                _meetingsCubit.doIntent(RefreshOutGoingMeetingsIntent()),
             itemBuilder: (meeting) => MeetingCard(
               meeting: meeting,
               namingList: AppTextConstants.outgoing.toLowerCase(),
