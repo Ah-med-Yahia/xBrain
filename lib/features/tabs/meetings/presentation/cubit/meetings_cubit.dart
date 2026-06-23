@@ -80,6 +80,12 @@ class MeetingsCubit extends Cubit<MeetingsState> {
       case DeclineMessageLengthChangedIntent(length: final length):
         _handleDeclineMessageLengthChangedIntent(length);
         break;
+      case RefreshOutGoingMeetingsIntent():
+        _handleGetOutgoingMeetingsIntent();
+        break;
+      case RefreshIncomingMeetingsIntent():
+        _handleGetIncomingMeetingsIntent();
+        break;
     }
   }
 
@@ -115,7 +121,7 @@ class MeetingsCubit extends Cubit<MeetingsState> {
       success: (data) {
         _sideEffectController.add(HideLoading());
         _sideEffectController.add(NavigateToMeetingConfirmed(data));
-        _refreshIncomingMeetings();
+        doIntent(RefreshIncomingMeetingsIntent());
       },
       failure: (failure) {
         _sideEffectController.add(HideLoading());
@@ -136,7 +142,7 @@ class MeetingsCubit extends Cubit<MeetingsState> {
         _sideEffectController.add(
           ShowSuccessMessage(AppTextConstants.meetingDeclinedSuccessfully),
         );
-        _refreshIncomingMeetings();
+        doIntent(RefreshIncomingMeetingsIntent());
       },
       failure: (failure) {
         _sideEffectController.add(HideLoading());

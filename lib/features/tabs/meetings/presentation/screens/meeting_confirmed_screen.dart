@@ -1,9 +1,7 @@
 import 'package:explaino/core/constants/app_text_constants.dart';
-import 'package:explaino/core/extensions/meeting_status_x.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
 import 'package:explaino/features/tabs/meetings/presentation/widgets/details_confirmed_card.dart';
-import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widgets/glass_action_button.dart';
 import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_confirmed_animation.dart';
 import 'package:flutter/material.dart';
 
@@ -43,12 +41,12 @@ class MeetingConfirmedScreen extends StatelessWidget {
               const SizedBox(height: 32),
               DetailsConfirmedCard(meeting: meeting),
               const SizedBox(height: 40),
-              GlassActionButton(
-                label: AppTextConstants.addToCalendar,
-                icon: Icons.calendar_month_outlined,
-                variant: ButtonVariant.solid,
-                onTap: () {},
-              ),
+              // GlassActionButton(
+              //   label: AppTextConstants.addToCalendar,
+              //   icon: Icons.calendar_month_outlined,
+              //   variant: ButtonVariant.solid,
+              //   onTap: () {},
+              // ),
             ],
           ),
         ),

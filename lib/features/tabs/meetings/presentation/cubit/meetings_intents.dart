@@ -53,3 +53,7 @@ class DeclineMessageLengthChangedIntent extends MeetingsIntent {
   final int length;
   DeclineMessageLengthChangedIntent({required this.length});
 }
+
+class RefreshOutGoingMeetingsIntent extends MeetingsIntent {}
+
+class RefreshIncomingMeetingsIntent extends MeetingsIntent {}

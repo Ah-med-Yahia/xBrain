@@ -12,6 +12,7 @@ class MeetingsListView<T> extends StatelessWidget {
     required this.items,
     required this.itemBuilder,
     required this.onRetry,
+    required this.onRefresh,
     required this.scrollController,
   });
 
@@ -19,11 +20,21 @@ class MeetingsListView<T> extends StatelessWidget {
   final List<T> items;
   final Widget Function(T item) itemBuilder;
   final VoidCallback onRetry;
+  final VoidCallback onRefresh;
   final ScrollController scrollController;
   static const int _shimmerItemCount = 6;
 
   @override
   Widget build(BuildContext context) {
+    if (items.isEmpty && state.errorMessage == null) {
+      return ListView.builder(
+        itemCount: _shimmerItemCount + 1,
+        itemBuilder: (_, index) {
+          return const MeetingCardShimmer();
+        },
+      );
+    }
+
     if (state.errorMessage != null) {
       return Center(
         child: CustomErrorWidget(
@@ -32,6 +43,7 @@ class MeetingsListView<T> extends StatelessWidget {
         ),
       );
     }
+
     if (!state.isFetching && items.isEmpty && state.data != null) {
       return const Center(
         child: Padding(
@@ -52,31 +64,33 @@ class MeetingsListView<T> extends StatelessWidget {
         ),
       );
     }
-    if (items.isEmpty && state.errorMessage == null) {
-      return ListView.builder(
-        itemCount: _shimmerItemCount + 1,
-        itemBuilder: (_, index) {
-          return const MeetingCardShimmer();
-        },
-      );
-    }
+
     final bool isLoadingMore = state.isFetching;
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      controller: scrollController,
-      itemCount: items.length + (isLoadingMore ? 1 : 0),
-      itemBuilder: (_, index) {
-        final itemIndex = index;
-
-        if (itemIndex == items.length) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-
-        return itemBuilder(items[itemIndex]);
+    return RefreshIndicator(
+      color: AppColors.primary,
+      elevation: 0,
+      backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+      onRefresh: () async {
+        onRefresh();
+        await Future.doWhile(() async {
+          await Future.delayed(const Duration(milliseconds: 100));
+          return state.isFetching;
+        });
       },
+      child: ListView.builder(
+        controller: scrollController,
+        itemCount: items.length + (isLoadingMore ? 1 : 0),
+        itemBuilder: (_, index) {
+          final itemIndex = index;
+          if (itemIndex == items.length) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+          return itemBuilder(items[itemIndex]);
+        },
+      ),
     );
   }
 }
