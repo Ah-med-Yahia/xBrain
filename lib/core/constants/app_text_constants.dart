@@ -164,7 +164,7 @@ class AppTextConstants {
   //====================Meetings============================
   static const String meetingRequest = 'Meeting request';
   static const String chooseSlot =
-      'Choose one of the proposed times to accept the meeting.';
+      'Choose one of the proposed times to accept the meeting';
   static const String selectAMeetingSlot = 'Select a Meeting Slot';
   static const String confirmSlot = 'Confirm Slot';
   static const String accept = 'Accept';
@@ -176,7 +176,7 @@ class AppTextConstants {
   static const String meetingScheduledDesc =
       'Your time is locked in and invitations have been sent.';
   static const String productStrategySync = 'Product Strategy Sync';
-  static const String googleMeet = 'Google Meet';
+  static const String googleMeet = 'Meeting Link';
   static const String noMeetingsYet = 'No meetings yet';
   //====================Decline Meeting============================
   static const String declineMeeting = 'Decline Meeting';
@@ -192,4 +192,5 @@ class AppTextConstants {
       'Meeting Accepted Successfully';
   static const String meetingDeclinedSuccessfully =
       'Meeting Declined Successfully';
+  static const String addToCalendar = 'Add to Calendar';
 }

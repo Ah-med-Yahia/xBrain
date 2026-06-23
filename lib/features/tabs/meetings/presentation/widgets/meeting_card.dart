@@ -5,11 +5,11 @@ import 'package:explaino/features/schedule_meeting/data/models/meeting_status.da
 import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
 import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_cubit.dart';
 import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_intents.dart';
-import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/glass_action_button.dart';
-import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/info_row.dart';
-import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/pending_actions.dart';
-import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/question_preview.dart';
-import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/user_meeting_header.dart';
+import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widgets/glass_action_button.dart';
+import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widgets/info_row.dart';
+import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widgets/pending_actions.dart';
+import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widgets/question_preview.dart';
+import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widgets/user_meeting_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -115,7 +115,10 @@ class _MeetingCardState extends State<MeetingCard>
                               ),
                             ],
                             if (widget.namingList ==
-                                AppTextConstants.outgoing.toLowerCase()) ...[
+                                    AppTextConstants.outgoing.toLowerCase() &&
+                                (meeting.status == MeetingStatus.pending ||
+                                    meeting.status ==
+                                        MeetingStatus.scheduled)) ...[
                               const SizedBox(height: 18),
                               GlassActionButton(
                                 label: AppTextConstants.cancel,

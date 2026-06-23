@@ -77,7 +77,14 @@ class MeetingsCubit extends Cubit<MeetingsState> {
       case SelectMeetingSlotIntent(slot: final slot):
         _handleSelectMeetingSlotIntent(slot);
         break;
+      case DeclineMessageLengthChangedIntent(length: final length):
+        _handleDeclineMessageLengthChangedIntent(length);
+        break;
     }
+  }
+
+  void _handleDeclineMessageLengthChangedIntent(int length) {
+    emit(state.copyWith(declineMessageLength: length));
   }
 
   void _handleCancelMeetingIntent(String id) async {
@@ -107,11 +114,8 @@ class MeetingsCubit extends Cubit<MeetingsState> {
     result.when(
       success: (data) {
         _sideEffectController.add(HideLoading());
-        _sideEffectController.add(
-          ShowSuccessMessage(AppTextConstants.meetingAcceptedSuccessfully),
-        );
-        _refreshIncomingMeetings();
         _sideEffectController.add(NavigateToMeetingConfirmed(data));
+        _refreshIncomingMeetings();
       },
       failure: (failure) {
         _sideEffectController.add(HideLoading());
