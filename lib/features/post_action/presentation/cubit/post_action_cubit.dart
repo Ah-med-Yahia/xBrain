@@ -114,7 +114,11 @@ class PostActionCubit extends Cubit<PostActionState> {
     );
   }
 
-  void _getComments({required String postId, int page = 1}) async {
+  Future<void> _getComments({
+    required String postId,
+    int page = 1,
+    bool updatePageCount = true,
+  }) async {
     final result = await getCommentsUseCase(id: postId, page: page);
     result.when(
       success: (response) {
@@ -131,7 +135,16 @@ class PostActionCubit extends Cubit<PostActionState> {
             comments: currentComments,
             commentsCount: response.count,
           );
-          emit(state.copyWith(post: updatedPost));
+          emit(
+            state.copyWith(
+              post: updatedPost,
+              loadedPagesCount: updatePageCount
+                  ? (page > state.loadedPagesCount
+                        ? page
+                        : state.loadedPagesCount)
+                  : state.loadedPagesCount,
+            ),
+          );
         }
       },
       failure: (failure) {
@@ -148,20 +161,29 @@ class PostActionCubit extends Cubit<PostActionState> {
   }) async {
     _sideEffectsController.add(LoadingSideEffects());
     final result = await addCommentUseCase(id: id, request: request);
-    _sideEffectsController.add(HideLoadingSideEffects());
 
-    result.when(
-      success: (_) {
+    switch (result) {
+      case Success():
         emit(state.copyWith(clearReplyingToComment: true));
         _sideEffectsController.add(CommentAddedSuccessfully());
         if (state.post != null) {
-          _getComments(postId: state.post!.id, page: 1);
+          await _reloadAllLoadedCommentPages(state.post!.id);
         }
-      },
-      failure: (failure) {
-        _sideEffectsController.add(ErrorSideEffect(message: failure.message));
-      },
-    );
+        _sideEffectsController.add(HideLoadingSideEffects());
+      case Failure(exception: final exception):
+        _sideEffectsController.add(HideLoadingSideEffects());
+        _sideEffectsController.add(ErrorSideEffect(message: exception.message));
+    }
+  }
+
+  Future<void> _reloadAllLoadedCommentPages(String postId) async {
+    final pages = state.loadedPagesCount; // snapshot before any page resets it
+    for (int p = 1; p <= pages; p++) {
+      // pass updatePageCount: false so we don't overwrite the saved page count mid-loop
+      await _getComments(postId: postId, page: p, updatePageCount: false);
+    }
+    // restore the correct page count after reload
+    emit(state.copyWith(loadedPagesCount: pages));
   }
 
   void _addReply({

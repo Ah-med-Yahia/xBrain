@@ -7,12 +7,14 @@ class PostActionState extends Equatable {
   final CommentEntity? replyingToComment;
   final Map<String, List<CommentEntity>> commentReplies;
   final Set<String> loadingReplies;
+  final int loadedPagesCount;
 
   const PostActionState({
     this.post,
     this.replyingToComment,
     this.commentReplies = const {},
     this.loadingReplies = const {},
+    this.loadedPagesCount = 1,
   });
 
   PostActionState copyWith({
@@ -21,6 +23,7 @@ class PostActionState extends Equatable {
     bool clearReplyingToComment = false,
     Map<String, List<CommentEntity>>? commentReplies,
     Set<String>? loadingReplies,
+    int? loadedPagesCount,
   }) => PostActionState(
     post: post ?? this.post,
     replyingToComment: clearReplyingToComment
@@ -28,6 +31,7 @@ class PostActionState extends Equatable {
         : (replyingToComment ?? this.replyingToComment),
     commentReplies: commentReplies ?? this.commentReplies,
     loadingReplies: loadingReplies ?? this.loadingReplies,
+    loadedPagesCount: loadedPagesCount ?? this.loadedPagesCount,
   );
 
   @override
@@ -36,5 +40,6 @@ class PostActionState extends Equatable {
     replyingToComment,
     commentReplies,
     loadingReplies,
+    loadedPagesCount,
   ];
 }
