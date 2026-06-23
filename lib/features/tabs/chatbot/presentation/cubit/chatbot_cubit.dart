@@ -1,8 +1,6 @@
-import 'package:equatable/equatable.dart';
+import 'package:explaino/features/tabs/chatbot/presentation/cubit/chatbot_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'chatbot_state.dart';
-
 class ChatbotCubit extends Cubit<ChatbotState> {
-  ChatbotCubit() : super(ChatbotInitial());
+  ChatbotCubit() : super(const ChatbotState());
 }

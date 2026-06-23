@@ -7,13 +7,7 @@ class AskQuestionUseCase {
 
   AskQuestionUseCase(this._chatbotRepository);
 
-  Stream<String> call({
-    required String chatId,
-    required String question,
-  }) {
-    return _chatbotRepository.askQuestion(
-      chatId: chatId,
-      question: question,
-    );
+  Stream<String> call({required String chatId, required String question}) {
+    return _chatbotRepository.askQuestion(chatId: chatId, question: question);
   }
 }
