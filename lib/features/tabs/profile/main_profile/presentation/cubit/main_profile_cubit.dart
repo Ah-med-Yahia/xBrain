@@ -114,6 +114,7 @@ class MainProfileCubit extends Cubit<ProfileState> {
           state.copyWith(
             certificatesBaseState: state.certificatesBaseState?.copyWith(
               data: data,
+              isFetching: false,
             ),
           ),
         );
@@ -123,6 +124,7 @@ class MainProfileCubit extends Cubit<ProfileState> {
           state.copyWith(
             certificatesBaseState: state.certificatesBaseState?.copyWith(
               errorMessage: failure.message,
+              isFetching: false,
             ),
           ),
         );
@@ -143,7 +145,10 @@ class MainProfileCubit extends Cubit<ProfileState> {
       success: (data) {
         emit(
           state.copyWith(
-            questionsBaseState: state.questionsBaseState?.copyWith(data: data),
+            questionsBaseState: state.questionsBaseState?.copyWith(
+              data: data,
+              isFetching: false,
+            ),
           ),
         );
       },
@@ -152,6 +157,7 @@ class MainProfileCubit extends Cubit<ProfileState> {
           state.copyWith(
             questionsBaseState: state.questionsBaseState?.copyWith(
               errorMessage: failure.message,
+              isFetching: false,
             ),
           ),
         );
@@ -170,7 +176,10 @@ class MainProfileCubit extends Cubit<ProfileState> {
       success: (data) {
         emit(
           state.copyWith(
-            postsBaseState: state.postsBaseState?.copyWith(data: data),
+            postsBaseState: state.postsBaseState?.copyWith(
+              data: data,
+              isFetching: false,
+            ),
           ),
         );
       },
@@ -179,6 +188,7 @@ class MainProfileCubit extends Cubit<ProfileState> {
           state.copyWith(
             postsBaseState: state.postsBaseState?.copyWith(
               errorMessage: failure.message,
+              isFetching: false,
             ),
           ),
         );
@@ -199,7 +209,9 @@ class MainProfileCubit extends Cubit<ProfileState> {
       success: (data) {
         emit(
           state.copyWith(
-            certificatesBaseState: state.certificatesBaseState?.copyWith(),
+            certificatesBaseState: state.certificatesBaseState?.copyWith(
+              isFetching: false,
+            ),
           ),
         );
       },
@@ -208,6 +220,7 @@ class MainProfileCubit extends Cubit<ProfileState> {
           state.copyWith(
             certificatesBaseState: state.certificatesBaseState?.copyWith(
               errorMessage: failure.message,
+              isFetching: false,
             ),
           ),
         );

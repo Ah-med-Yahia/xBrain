@@ -89,12 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => mainProfileCubit,
-      child: const SafeArea(
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: MainBody(),
-        ),
-      ),
+      child: const ColoredBox(color: AppColors.kLight, child: MainBody()),
     );
   }
 }
