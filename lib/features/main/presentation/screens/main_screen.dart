@@ -143,7 +143,9 @@ class _MainScreenState extends State<MainScreen>
               child: ScaleTransition(
                 scale: _fabScaleAnimation,
                 child: FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.pushNamed(AppRoutesConstants.chatbotRoute);
+                  },
                   child: Assets.images.chatbotLogo.svg(),
                 ),
               ),

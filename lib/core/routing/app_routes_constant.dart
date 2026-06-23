@@ -25,4 +25,5 @@ abstract class AppRoutesConstants {
   static const String authorNameKey = 'authorName';
   static const String meetingConfirmedRoute = '/meeting-confirmed';
   static const String meetingEntityKey = 'meetingEntity';
+  static const String chatbotRoute = '/chatbot';
 }

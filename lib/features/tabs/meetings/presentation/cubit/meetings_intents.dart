@@ -48,3 +48,12 @@ class SelectMeetingSlotIntent extends MeetingsIntent {
   final DateTime slot;
   SelectMeetingSlotIntent({required this.slot});
 }
+
+class DeclineMessageLengthChangedIntent extends MeetingsIntent {
+  final int length;
+  DeclineMessageLengthChangedIntent({required this.length});
+}
+
+class RefreshOutGoingMeetingsIntent extends MeetingsIntent {}
+
+class RefreshIncomingMeetingsIntent extends MeetingsIntent {}

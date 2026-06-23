@@ -1,9 +1,15 @@
+import 'package:explaino/config/di/di.dart';
 import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/extensions/meeting_status_x.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/tabs/meetings/domain/entities/request/decline_meeting_request_entity.dart';
-import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widets/glass_action_button.dart';
+import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_cubit.dart';
+import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_intents.dart';
+import 'package:explaino/features/tabs/meetings/presentation/cubit/meetings_state.dart';
+import 'package:explaino/features/tabs/meetings/presentation/widgets/base_buttom_sheet.dart';
+import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widgets/glass_action_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeclineMeetingSheet extends StatefulWidget {
   const DeclineMeetingSheet({super.key});
@@ -14,17 +20,26 @@ class DeclineMeetingSheet extends StatefulWidget {
 
 class _DeclineMeetingSheetState extends State<DeclineMeetingSheet> {
   late final TextEditingController _controller;
+  late final TextTheme textTheme;
+  late final MeetingsCubit _meetingsCubit;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    _meetingsCubit = getIt<MeetingsCubit>();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    textTheme = Theme.of(context).textTheme;
   }
 
   void _handleDecline() {
@@ -39,156 +54,73 @@ class _DeclineMeetingSheetState extends State<DeclineMeetingSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
-
-    return AnimatedPadding(
-      duration: const Duration(milliseconds: 200),
-      padding: EdgeInsets.only(bottom: bottomInset),
-      child: Container(
-        decoration: _buildDecoration(),
-        padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
-        child: SafeArea(
-          top: false,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildHandleBar(),
-                const SizedBox(height: 20),
-                _buildIconCircle(),
-                const SizedBox(height: 20),
-                _buildHeader(),
-                const SizedBox(height: 12),
-                _buildDescription(),
-                const SizedBox(height: 24),
-                _buildTextFieldWithCounter(),
-                const SizedBox(height: 24),
-                _buildDeclineButton(),
-              ],
-            ),
+    return BlocProvider(
+      create: (context) => _meetingsCubit,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BaseBottomSheet(
+            icon: Icons.event_busy_rounded,
+            iconColor: AppColors.red.withValues(alpha: 0.7),
+            backgroundColor: AppColors.red.withValues(alpha: 0.1),
+            title: AppTextConstants.declineMeeting,
+            description: AppTextConstants.declineMeetingDescription,
+            children: [
+              _buildTextField(),
+              const SizedBox(height: 8),
+              _buildCharacterCounter(),
+              const SizedBox(height: 24),
+              _buildDeclineButton(),
+            ],
           ),
-        ),
+        ],
       ),
-    );
-  }
-
-  BoxDecoration _buildDecoration() {
-    return BoxDecoration(
-      color: Colors.white,
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withValues(alpha: 0.08),
-          blurRadius: 30,
-          offset: const Offset(0, -8),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildHandleBar() {
-    return Container(
-      width: 42,
-      height: 5,
-      decoration: BoxDecoration(
-        color: const Color(0xFFE0E5ED),
-        borderRadius: BorderRadius.circular(999),
-      ),
-    );
-  }
-
-  Widget _buildIconCircle() {
-    return Container(
-      width: 72,
-      height: 72,
-      decoration: BoxDecoration(
-        color: Colors.red.shade50,
-        shape: BoxShape.circle,
-      ),
-      child: Icon(
-        Icons.event_busy_rounded,
-        size: 36,
-        color: Colors.red.shade500,
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return const Text(
-      AppTextConstants.declineMeeting,
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w700,
-        color: Color(0xFF1A1A2E),
-      ),
-    );
-  }
-
-  Widget _buildDescription() {
-    return Text(
-      AppTextConstants.declineMeetingDescription,
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 14, color: Colors.grey.shade600, height: 1.5),
-    );
-  }
-
-  Widget _buildTextFieldWithCounter() {
-    return Column(
-      children: [
-        _buildTextField(),
-        const SizedBox(height: 8),
-        _buildCharacterCounter(),
-      ],
     );
   }
 
   Widget _buildTextField() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFFE5E9F2)),
-      ),
-      child: TextField(
-        controller: _controller,
-        maxLength: 500,
-        maxLines: 3,
-        minLines: 3,
-        style: const TextStyle(fontSize: 15),
-        decoration: InputDecoration(
-          hintText: AppTextConstants.declineMeetingHintText,
-          hintStyle: TextStyle(color: Colors.grey.shade500),
-          counterText: '',
-          filled: true,
-          fillColor: const Color(0xFFF8FAFD),
-          contentPadding: const EdgeInsets.all(16),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(18),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14),
-            borderSide: const BorderSide(color: AppColors.primary),
-          ),
+    return TextField(
+      controller: _controller,
+      maxLength: 500,
+      maxLines: 3,
+      minLines: 3,
+      style: textTheme.bodyMedium?.copyWith(fontSize: 15),
+      decoration: InputDecoration(
+        hintText: AppTextConstants.declineMeetingHintText,
+        hintStyle: textTheme.bodyMedium?.copyWith(color: AppColors.textHint),
+        counterText: '',
+        filled: true,
+        fillColor: AppColors.aliceBlue,
+        contentPadding: const EdgeInsets.all(16),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide.none,
         ),
-        onChanged: (_) => setState(() {}),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: AppColors.primary),
+        ),
+      ),
+      onChanged: (_) => _meetingsCubit.doIntent(
+        DeclineMessageLengthChangedIntent(length: _controller.text.length),
       ),
     );
   }
 
   Widget _buildCharacterCounter() {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: ValueListenableBuilder<TextEditingValue>(
-        valueListenable: _controller,
-        builder: (context, value, _) {
-          return Text(
-            '${value.text.length}/500',
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
-          );
-        },
-      ),
+    return BlocBuilder<MeetingsCubit, MeetingsState>(
+      buildWhen: (previous, current) =>
+          previous.declineMessageLength != current.declineMessageLength,
+      builder: (context, state) {
+        return Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            '${state.declineMessageLength}/500',
+            style: textTheme.bodySmall?.copyWith(color: AppColors.textHint),
+          ),
+        );
+      },
     );
   }
 

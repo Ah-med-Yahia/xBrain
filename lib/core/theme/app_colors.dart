@@ -107,4 +107,15 @@ class AppColors {
   static const Color brightPurple = Color(0xFF8B5CF6);
   static const Color darkGray = Color(0xFF4A5568);
   static const Color azureBlue = Color(0xFF0D8AE0);
+  static const veryLightBlue = Color(0xFFF8F9FF);
+  static const softBlue = Color(0xFFEFF4FF);
+  static const lightBlue = Color(0xFFE5EEFF);
+  static const paleBlue = Color(0xFFDCE9FF);
+  static const powderBlue = Color(0xFFD3E4FE);
+  static const royalBlue = Color(0xFF2170E4);
+  static const softLavender = Color(0xFFD8E2FF);
+  static const darkNavy = Color(0xFF0B1C30);
+  static const slateGray = Color(0xFF424754);
+  static const lightGray = Color(0xFFC2C6D6);
+  static const accentBlue = Color(0xFF0058BE);
 }
