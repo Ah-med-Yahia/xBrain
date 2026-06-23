@@ -52,7 +52,7 @@ class MeetingsListView<T> extends StatelessWidget {
         ),
       );
     }
-    if (state.isFetching && items.isEmpty) {
+    if (items.isEmpty && state.errorMessage == null) {
       return ListView.builder(
         itemCount: _shimmerItemCount + 1,
         itemBuilder: (_, index) {

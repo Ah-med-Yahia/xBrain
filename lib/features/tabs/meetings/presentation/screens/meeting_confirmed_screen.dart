@@ -14,43 +14,42 @@ class MeetingConfirmedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                MeetingConfirmedAnimation(meeting: meeting),
-                const SizedBox(height: 32),
-                Text(
-                  AppTextConstants.meetingScheduled,
-                  style: textTheme.headlineLarge!.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.center,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 32),
+              MeetingConfirmedAnimation(meeting: meeting),
+              const SizedBox(height: 32),
+              Text(
+                AppTextConstants.meetingScheduled,
+                style: textTheme.headlineLarge!.copyWith(
+                  fontWeight: FontWeight.w600,
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  AppTextConstants.meetingScheduledDesc,
-                  style: textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 32),
-                DetailsConfirmedCard(meeting: meeting),
-                const SizedBox(height: 32),
-                GlassActionButton(
-                  label: AppTextConstants.addToCalendar,
-                  icon: Icons.calendar_month_outlined,
-                  variant: ButtonVariant.solid,
-                  onTap: () {},
-                ),
-              ],
-            ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                AppTextConstants.meetingScheduledDesc,
+                style: textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              DetailsConfirmedCard(meeting: meeting),
+              const SizedBox(height: 40),
+              GlassActionButton(
+                label: AppTextConstants.addToCalendar,
+                icon: Icons.calendar_month_outlined,
+                variant: ButtonVariant.solid,
+                onTap: () {},
+              ),
+            ],
           ),
         ),
       ),
