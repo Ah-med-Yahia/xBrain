@@ -5,7 +5,7 @@ import 'package:explaino/features/tabs/meetings/data/models/request/decline_meet
 import 'package:explaino/features/tabs/meetings/data/models/response/meetings_response_model.dart';
 import 'package:explaino/features/tabs/meetings/data/models/request/accept_meeting_request_model.dart';
 import 'package:injectable/injectable.dart';
-import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 part 'metting_api_client.g.dart';
 
 @singleton
