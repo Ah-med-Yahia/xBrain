@@ -3,7 +3,7 @@ import 'package:explaino/core/constants/api_constants.dart';
 import 'package:explaino/features/schedule_meeting/data/models/request/schedule_meeting_request_model.dart';
 import 'package:explaino/features/schedule_meeting/data/models/response/schedule_meeting_response_model.dart';
 import 'package:injectable/injectable.dart';
-import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 part 'schedule_meeting_api_client.g.dart';
 
 @singleton
