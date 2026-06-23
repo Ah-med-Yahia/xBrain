@@ -81,10 +81,10 @@ class MeetingsCubit extends Cubit<MeetingsState> {
         _handleDeclineMessageLengthChangedIntent(length);
         break;
       case RefreshOutGoingMeetingsIntent():
-        _handleGetOutgoingMeetingsIntent();
+        _refreshOutgoingMeetings();
         break;
       case RefreshIncomingMeetingsIntent():
-        _handleGetIncomingMeetingsIntent();
+        _refreshIncomingMeetings();
         break;
     }
   }
