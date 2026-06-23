@@ -11,6 +11,11 @@ abstract interface class ChatbotRepository {
     StartNewChatRequestEntity? request,
   );
 
+  Stream<String> askQuestion({
+    required String chatId,
+    required String question,
+  });
+
   Future<BaseResponse<SessionDetailsEntity>> getChatDetails(String id);
 
   Future<BaseResponse<SessionEntity>> renameChat(

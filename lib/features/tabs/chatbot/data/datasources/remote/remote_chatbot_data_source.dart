@@ -9,6 +9,11 @@ abstract interface class RemoteChatbotDataSource {
 
   Future<BaseResponse<SessionModel>> startNewChat(StartNewChatRequest? request);
 
+  Stream<String> askQuestion({
+    required String chatId,
+    required String question,
+  });
+
   Future<BaseResponse<SessionDetailsModel>> getChatDetails(String id);
 
   Future<BaseResponse<SessionModel>> renameChat(

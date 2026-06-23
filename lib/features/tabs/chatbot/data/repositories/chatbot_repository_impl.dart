@@ -40,6 +40,17 @@ class ChatbotRepositoryImpl implements ChatbotRepository {
   }
 
   @override
+  Stream<String> askQuestion({
+    required String chatId,
+    required String question,
+  }) {
+    return _remoteChatbotDataSource.askQuestion(
+      chatId: chatId,
+      question: question,
+    );
+  }
+
+  @override
   Future<BaseResponse<SessionDetailsEntity>> getChatDetails(String id) async {
     final result = await _remoteChatbotDataSource.getChatDetails(id);
     return result.when(

@@ -1,5 +1,6 @@
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/config/network/safe_api_call.dart';
+import 'package:explaino/features/tabs/chatbot/api/api_clients/chat_stream_service.dart';
 import 'package:explaino/features/tabs/chatbot/api/api_clients/chatbot_api_client.dart';
 import 'package:explaino/features/tabs/chatbot/data/datasources/remote/remote_chatbot_data_source.dart';
 import 'package:explaino/features/tabs/chatbot/data/models/request/start_new_chat_request.dart';
@@ -11,8 +12,9 @@ import 'package:injectable/injectable.dart';
 @Injectable(as: RemoteChatbotDataSource)
 class RemoteChatbotDataSourceImpl implements RemoteChatbotDataSource {
   final ChatbotApiClient _chatbotApiClient;
+  final ChatStreamService _chatStreamService;
 
-  RemoteChatbotDataSourceImpl(this._chatbotApiClient);
+  RemoteChatbotDataSourceImpl(this._chatbotApiClient, this._chatStreamService);
 
   @override
   Future<BaseResponse<GetMyChatsResponse>> listMyChats() async {
@@ -24,6 +26,14 @@ class RemoteChatbotDataSourceImpl implements RemoteChatbotDataSource {
     StartNewChatRequest? request,
   ) async {
     return await safeApiCall(() => _chatbotApiClient.startNewChat(request));
+  }
+
+  @override
+  Stream<String> askQuestion({
+    required String chatId,
+    required String question,
+  }) {
+    return _chatStreamService.askQuestion(chatId: chatId, question: question);
   }
 
   @override
