@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/features/tabs/profile/main_profile/domain/usecase/delete_certificate_use_case.dart';
 import 'package:explaino/features/tabs/profile/main_profile/domain/usecase/get_main_profile_use_case.dart';
-import 'package:explaino/features/tabs/profile/main_profile/domain/usecase/get_my_Questions_use_case.dart';
+import 'package:explaino/features/tabs/profile/main_profile/domain/usecase/get_my_questions_use_case.dart';
 import 'package:explaino/features/tabs/profile/main_profile/domain/usecase/get_my_certificates_use_case.dart';
 import 'package:explaino/features/tabs/profile/main_profile/domain/usecase/get_my_posts_use_case.dart';
 import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/main_profile_intents.dart';
