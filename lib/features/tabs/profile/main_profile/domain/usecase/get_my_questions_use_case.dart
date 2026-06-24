@@ -9,7 +9,7 @@ class GetMyQuestionsUseCase {
 
   GetMyQuestionsUseCase(this._repository);
 
-  Future<BaseResponse<GetQuestionListEntity>> call() {
-    return _repository.getMyQuestions();
+  Future<BaseResponse<GetQuestionListEntity>> call(int page) {
+    return _repository.getMyQuestions(page);
   }
 }

@@ -17,7 +17,7 @@ class StatCard extends StatelessWidget {
           number,
           style: textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.w500,
-            color: AppColors.greyScale,
+            color: AppColors.black,
             letterSpacing: -1,
           ),
         ),
@@ -25,7 +25,7 @@ class StatCard extends StatelessWidget {
         Text(
           title,
           style: textTheme.labelMedium?.copyWith(
-            color: AppColors.greyScale,
+            color: AppColors.black,
             letterSpacing: 0.5,
           ),
         ),

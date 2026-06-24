@@ -66,6 +66,14 @@ class AppTextConstants {
   static const String retryAgainMessage = 'Retry Again';
   static const String done = 'Done';
   static const String bio = 'BIO';
+  static const String certificateDeletedSuccessfully =
+      'Certificate deleted successfully';
+  static const String issuedOn = 'Issued on ';
+  static const String noSpecialization = 'No Specialization';
+  static const String noItemsFound = 'No items found';
+  static const String questions = 'Questions';
+  static const String posts = 'Posts';
+  static const String certificates = 'Certificates';
   //====================main============================
   static const String xBrain = 'xBrain';
   static const String home = 'Home';

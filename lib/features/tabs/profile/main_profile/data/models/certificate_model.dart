@@ -5,7 +5,7 @@ part 'certificate_model.g.dart';
 @JsonSerializable()
 class CertificateModel {
   @JsonKey(name: 'id')
-  final int id;
+  final String id;
   @JsonKey(name: 'title')
   final String title;
   @JsonKey(name: 'issuer')

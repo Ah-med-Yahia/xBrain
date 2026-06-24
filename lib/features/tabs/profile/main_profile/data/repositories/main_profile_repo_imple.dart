@@ -26,9 +26,10 @@ class MainProfileRepoImpl implements MainProfileRepository {
   }
 
   @override
-  Future<BaseResponse<GetCertificatesResponseEntity>>
-  getMyCertificates() async {
-    final result = await _remoteProfileDataSource.getMyCertificates();
+  Future<BaseResponse<GetCertificatesResponseEntity>> getMyCertificates(
+    int page,
+  ) async {
+    final result = await _remoteProfileDataSource.getMyCertificates(page);
     return result.when(
       success: (data) => BaseResponse.success(data.toEntity()),
       failure: (error) => BaseResponse.failure(error),
@@ -45,8 +46,8 @@ class MainProfileRepoImpl implements MainProfileRepository {
   }
 
   @override
-  Future<BaseResponse<GetPostsResponseEntity>> getMyPosts() async {
-    final result = await _remoteProfileDataSource.getMyPosts();
+  Future<BaseResponse<GetPostsResponseEntity>> getMyPosts(int page) async {
+    final result = await _remoteProfileDataSource.getMyPosts(page);
     return result.when(
       success: (data) => BaseResponse.success(data.toEntity()),
       failure: (error) => BaseResponse.failure(error),
@@ -54,8 +55,8 @@ class MainProfileRepoImpl implements MainProfileRepository {
   }
 
   @override
-  Future<BaseResponse<GetQuestionListEntity>> getMyQuestions() async {
-    final result = await _remoteProfileDataSource.getMyQuestions();
+  Future<BaseResponse<GetQuestionListEntity>> getMyQuestions(int page) async {
+    final result = await _remoteProfileDataSource.getMyQuestions(page);
     return result.when(
       success: (data) => BaseResponse.success(data.toEntity()),
       failure: (error) => BaseResponse.failure(error),

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/main_profile_cubit.dart';
 import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/main_profile_intents.dart';
@@ -96,25 +97,25 @@ class HeaderSection extends StatelessWidget {
                 const SizedBox(width: _verticalSpacing),
                 Expanded(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Flexible(
                         child: StatCard(
                           number: questions.toString(),
-                          title: 'Questions',
+                          title: AppTextConstants.questions,
                         ),
                       ),
                       Flexible(
                         child: StatCard(
                           number: posts.toString(),
-                          title: 'Posts',
+                          title: AppTextConstants.posts,
                         ),
                       ),
                       Flexible(
                         child: StatCard(
                           number: certificates.toString(),
-                          title: 'Certificates',
+                          title: AppTextConstants.certificates,
                         ),
                       ),
                     ],

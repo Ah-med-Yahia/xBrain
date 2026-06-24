@@ -20,8 +20,10 @@ class RemoteMainProfileDataSourceImpl implements RemoteMainProfileDataSource {
   }
 
   @override
-  Future<BaseResponse<GetCertificatesResponseModel>> getMyCertificates() {
-    return safeApiCall(() => _mainProfileApiClient.getMyCertificates());
+  Future<BaseResponse<GetCertificatesResponseModel>> getMyCertificates(
+    int page,
+  ) {
+    return safeApiCall(() => _mainProfileApiClient.getMyCertificates(page));
   }
 
   @override
@@ -30,12 +32,12 @@ class RemoteMainProfileDataSourceImpl implements RemoteMainProfileDataSource {
   }
 
   @override
-  Future<BaseResponse<GetListQuestionsResponseModel>> getMyQuestions() {
-    return safeApiCall(() => _mainProfileApiClient.getMyQuestions());
+  Future<BaseResponse<GetListQuestionsResponseModel>> getMyQuestions(int page) {
+    return safeApiCall(() => _mainProfileApiClient.getMyQuestions(page));
   }
 
   @override
-  Future<BaseResponse<GetPostsResponsModel>> getMyPosts() {
-    return safeApiCall(() => _mainProfileApiClient.getMyPosts());
+  Future<BaseResponse<GetPostsResponsModel>> getMyPosts(int page) {
+    return safeApiCall(() => _mainProfileApiClient.getMyPosts(page));
   }
 }

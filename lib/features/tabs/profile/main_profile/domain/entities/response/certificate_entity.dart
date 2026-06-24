@@ -1,5 +1,5 @@
 class CertificateEntity {
-  final int id;
+  final String id;
   final String title;
   final String issuer;
   final String issueDate;

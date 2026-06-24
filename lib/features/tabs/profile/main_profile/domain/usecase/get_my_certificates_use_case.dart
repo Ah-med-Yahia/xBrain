@@ -9,7 +9,7 @@ class GetMyCertificatesUseCase {
 
   GetMyCertificatesUseCase(this._repository);
 
-  Future<BaseResponse<GetCertificatesResponseEntity>> call() {
-    return _repository.getMyCertificates();
+  Future<BaseResponse<GetCertificatesResponseEntity>> call(int page) {
+    return _repository.getMyCertificates(page);
   }
 }

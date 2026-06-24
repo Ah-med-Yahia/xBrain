@@ -7,11 +7,13 @@ import 'package:explaino/features/tabs/profile/main_profile/domain/entities/resp
 abstract interface class MainProfileRepository {
   Future<BaseResponse<UserEntity>> getProfile();
 
-  Future<BaseResponse<GetCertificatesResponseEntity>> getMyCertificates();
+  Future<BaseResponse<GetCertificatesResponseEntity>> getMyCertificates(
+    int page,
+  );
 
   Future<BaseResponse<void>> deleteCertificate(String id);
 
-  Future<BaseResponse<GetPostsResponseEntity>> getMyPosts();
+  Future<BaseResponse<GetPostsResponseEntity>> getMyPosts(int page);
 
-  Future<BaseResponse<GetQuestionListEntity>> getMyQuestions();
+  Future<BaseResponse<GetQuestionListEntity>> getMyQuestions(int page);
 }

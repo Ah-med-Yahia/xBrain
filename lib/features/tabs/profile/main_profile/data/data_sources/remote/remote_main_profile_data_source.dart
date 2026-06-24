@@ -6,8 +6,10 @@ import 'package:explaino/features/tabs/profile/main_profile/data/models/response
 
 abstract interface class RemoteMainProfileDataSource {
   Future<BaseResponse<UserModel>> getProfile();
-  Future<BaseResponse<GetCertificatesResponseModel>> getMyCertificates();
+  Future<BaseResponse<GetCertificatesResponseModel>> getMyCertificates(
+    int page,
+  );
   Future<BaseResponse<void>> deleteCertificate(String id);
-  Future<BaseResponse<GetListQuestionsResponseModel>> getMyQuestions();
-  Future<BaseResponse<GetPostsResponsModel>> getMyPosts();
+  Future<BaseResponse<GetListQuestionsResponseModel>> getMyQuestions(int page);
+  Future<BaseResponse<GetPostsResponsModel>> getMyPosts(int page);
 }

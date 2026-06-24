@@ -37,10 +37,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _handleNavigateToEditProfileScreen(sideEffect.user);
         case NavigationToEditProfileImageScreen():
           _handleNavigationToEditProfileImageScreen(sideEffect.imageUrl);
+        case ShowSuccessMessage():
+          _handleShowSuccessMessage(sideEffect.message);
       }
     });
     mainProfileCubit.doIntent(GetProfileDataIntent());
-    mainProfileCubit.doIntent(GetMyQuestionsIntent());
   }
 
   void _handleShowLoading() {
@@ -55,6 +56,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     UIUtils.showMessage(
       message,
       backGroundColor: AppColors.error,
+      textColor: AppColors.white,
+    );
+  }
+
+  void _handleShowSuccessMessage(String message) {
+    UIUtils.showMessage(
+      message,
+      backGroundColor: AppColors.green,
       textColor: AppColors.white,
     );
   }

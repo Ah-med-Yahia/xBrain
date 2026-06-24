@@ -1,4 +1,6 @@
 import 'package:explaino/config/base_state/base_state.dart';
+import 'package:explaino/core/constants/app_text_constants.dart';
+import 'package:explaino/core/shared/domain/entities/auth/user_entity/user_entity.dart';
 import 'package:explaino/core/shared/presentation/widgets/custom_error_widget.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/cubit/add_posts_questions_certificates_state.dart';
@@ -41,6 +43,21 @@ class _MainBodyState extends State<MainBody> {
     }
   }
 
+  void _onTabChanged(AddContentType type, BuildContext context) {
+    setState(() => _selectedType = type);
+    final cubit = context.read<MainProfileCubit>();
+    switch (type) {
+      case AddContentType.post:
+        cubit.doIntent(GetMyPostsIntent());
+        break;
+      case AddContentType.question:
+        cubit.doIntent(GetMyQuestionsIntent());
+        break;
+      default:
+        cubit.doIntent(GetMyCertificatesIntent());
+    }
+  }
+
   @override
   void dispose() {
     _postsScrollController.dispose();
@@ -51,10 +68,12 @@ class _MainBodyState extends State<MainBody> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return BlocBuilder<MainProfileCubit, ProfileState>(
-      buildWhen: (prev, next) => prev.profileBaseState != next.profileBaseState,
+      buildWhen: (prev, next) =>
+          prev.profileBaseState != next.profileBaseState ||
+          prev.postCount != next.postCount ||
+          prev.questionCount != next.questionCount ||
+          prev.certificateCount != next.certificateCount,
       builder: (context, state) {
         final baseState = state.profileBaseState;
         if (baseState == null) return const SizedBox.shrink();
@@ -73,57 +92,27 @@ class _MainBodyState extends State<MainBody> {
         }
 
         final user = baseState.data!;
-        final fullName = '${user.firstName} ${user.lastName}'.trim();
-        final specialization = user.specializations.isNotEmpty
-            ? user.specializations.first.name
-            : 'No Specialization';
 
         return NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          headerSliverBuilder: (context, _) => [
             SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 50),
-                  HeaderSection(
-                    name: fullName,
-                    specialization: specialization,
-                    imageUrl: user.profilePicture,
-                  ),
-                  SizedBox(height: size.height * 0.04),
-                  ActionButtons(user: user),
-                  SizedBox(height: size.height * 0.02),
-                  PointCard(points: user.wallet.balance),
-                  const SizedBox(height: 20),
-                  ContentTypeTabBar(
-                    selectedType: _selectedType,
-                    onChanged: (type) {
-                      setState(() => _selectedType = type);
-                      final cubit = context.read<MainProfileCubit>();
-                      switch (type) {
-                        case AddContentType.post:
-                          cubit.doIntent(GetMyPostsIntent());
-                          break;
-                        case AddContentType.question:
-                          cubit.doIntent(GetMyQuestionsIntent());
-                          break;
-                        default:
-                          cubit.doIntent(GetMyCertificatesIntent());
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 8),
-                ],
+              child: _ProfileHeader(
+                user: user,
+                postCount: state.postCount,
+                questionCount: state.questionCount,
+                certificateCount: state.certificateCount,
+                selectedType: _selectedType,
+                onTabChanged: (type) => _onTabChanged(type, context),
               ),
             ),
           ],
-          body: _buildList(),
+          body: _buildList(user),
         );
       },
     );
   }
 
-  Widget _buildList() {
+  Widget _buildList(UserEntity user) {
     return BlocBuilder<MainProfileCubit, ProfileState>(
       buildWhen: (prev, next) =>
           prev.postsBaseState != next.postsBaseState ||
@@ -157,7 +146,7 @@ class _MainBodyState extends State<MainBody> {
               onRetry: () => context.read<MainProfileCubit>().doIntent(
                 GetMyCertificatesIntent(),
               ),
-              itemBuilder: (c) => CertificateCard(certificate: c),
+              itemBuilder: (c) => CertificateCard(certificate: c, user: user),
             );
         }
       },
@@ -177,7 +166,7 @@ class _MainBodyState extends State<MainBody> {
     }
 
     if (items.isEmpty && state.errorMessage == null) {
-      return const Center(child: Text('No items found.'));
+      return const Center(child: Text(AppTextConstants.noItemsFound));
     }
 
     if (items.isEmpty && state.errorMessage != null) {
@@ -206,6 +195,55 @@ class _MainBodyState extends State<MainBody> {
         }
         return itemBuilder(items[index]);
       },
+    );
+  }
+}
+
+class _ProfileHeader extends StatelessWidget {
+  final UserEntity user;
+  final int postCount;
+  final int questionCount;
+  final int certificateCount;
+  final AddContentType selectedType;
+  final ValueChanged<AddContentType> onTabChanged;
+
+  const _ProfileHeader({
+    required this.user,
+    required this.postCount,
+    required this.questionCount,
+    required this.certificateCount,
+    required this.selectedType,
+    required this.onTabChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final fullName = '${user.firstName} ${user.lastName}'.trim();
+    final specialization = user.specializations.isNotEmpty
+        ? user.specializations.first.name
+        : AppTextConstants.noSpecialization;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 50),
+        HeaderSection(
+          name: fullName,
+          specialization: specialization,
+          imageUrl: user.profilePicture,
+          questions: questionCount,
+          posts: postCount,
+          certificates: certificateCount,
+        ),
+        SizedBox(height: size.height * 0.04),
+        ActionButtons(user: user),
+        SizedBox(height: size.height * 0.02),
+        PointCard(points: user.wallet.balance),
+        const SizedBox(height: 20),
+        ContentTypeTabBar(selectedType: selectedType, onChanged: onTabChanged),
+        const SizedBox(height: 8),
+      ],
     );
   }
 }

@@ -18,11 +18,13 @@ abstract class MainProfileApiClient {
   @GET(ApiConstants.getProfile)
   Future<UserModel> getProfile();
   @GET(ApiConstants.getMyPosts)
-  Future<GetPostsResponsModel> getMyPosts();
+  Future<GetPostsResponsModel> getMyPosts(@Query('page') int page);
   @GET(ApiConstants.getMyQuestions)
-  Future<GetListQuestionsResponseModel> getMyQuestions();
+  Future<GetListQuestionsResponseModel> getMyQuestions(@Query('page') int page);
   @GET(ApiConstants.getMyCertificates)
-  Future<GetCertificatesResponseModel> getMyCertificates();
+  Future<GetCertificatesResponseModel> getMyCertificates(
+    @Query('page') int page,
+  );
   @DELETE(ApiConstants.deleteMyCertificate)
   Future<void> deleteMyCertificate(@Path('id') String id);
 }
