@@ -85,7 +85,9 @@ class MeetingsListView<T> extends StatelessWidget {
           if (itemIndex == items.length) {
             return const Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              ),
             );
           }
           return itemBuilder(items[itemIndex]);
