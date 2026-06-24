@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/config/base_state/base_state.dart';
 import 'package:explaino/features/tabs/chatbot/domain/entities/request/start_new_chat_request_entity.dart';
+import 'package:explaino/features/tabs/chatbot/domain/entities/response/chat_stream_result_entity.dart';
 import 'package:explaino/features/tabs/chatbot/domain/usecases/ask_question_use_case.dart';
 import 'package:explaino/features/tabs/chatbot/domain/usecases/delete_chat_use_case.dart';
 import 'package:explaino/features/tabs/chatbot/domain/usecases/get_chat_details_use_case.dart';
@@ -23,7 +24,7 @@ class ChatbotCubit extends Cubit<ChatbotState> {
   final ListMyChatsUseCase _listMyChatsUseCase;
   final RenameChatUseCase _renameChatUseCase;
   final StartNewChatUseCase _startNewChatUseCase;
-  StreamSubscription<String>? _answerSubscription;
+  StreamSubscription<BaseResponse<ChatStreamResultEntity>>? _answerSubscription;
 
   ChatbotCubit({
     required AskQuestionUseCase askQuestionUseCase,
@@ -258,7 +259,22 @@ class ChatbotCubit extends Cubit<ChatbotState> {
           chatId: targetChatId,
           question: trimmedQuestion,
         ).listen(
-          (chunk) => _updateStreamingMessage(assistantMessage.id, chunk),
+          (response) => response.when(
+            success: (result) {
+              _updateStreamingMessage(assistantMessage.id, result);
+              return null;
+            },
+            failure: (error) {
+              emit(
+                state.copyWith(
+                  isSending: false,
+                  sendErrorMessage: error.message,
+                  messages: _finishStreamingMessage(assistantMessage.id),
+                ),
+              );
+              return null;
+            },
+          ),
           onError: (Object error) {
             emit(
               state.copyWith(
@@ -304,13 +320,26 @@ class ChatbotCubit extends Cubit<ChatbotState> {
     );
   }
 
-  void _updateStreamingMessage(String messageId, String chunk) {
+  void _updateStreamingMessage(
+    String messageId,
+    ChatStreamResultEntity result,
+  ) {
     emit(
       state.copyWith(
         messages: [
           for (final message in state.messages)
             if (message.id == messageId)
-              message.copyWith(content: '${message.content}$chunk')
+              message.copyWith(
+                content: '${message.content}${result.answer}',
+                agent: (result.agent?.trim().isEmpty ?? true)
+                    ? null
+                    : result.agent,
+                sources: result.sources.isEmpty ? null : result.sources,
+                deeperSuggestion:
+                    (result.deeperSuggestion?.trim().isEmpty ?? true)
+                    ? null
+                    : result.deeperSuggestion,
+              )
             else
               message,
         ],

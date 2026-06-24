@@ -212,4 +212,9 @@ class AppTextConstants {
   static const String chats = 'Chats';
   static const String tryAgain = 'Try Again';
   static const String delete = 'Delete';
+  static const String howCanIHelpYou = 'How can I help you study today?';
+  static const String studyBetter = 'How can I study better?';
+  static const String studyPlan = 'Help me make a study plan';
+  static const String explainTopic = 'Explain a topic simply';
+  static const String quizMe = 'Quiz me with questions';
 }

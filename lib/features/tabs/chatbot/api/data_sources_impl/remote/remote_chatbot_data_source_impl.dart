@@ -4,6 +4,7 @@ import 'package:explaino/features/tabs/chatbot/api/api_clients/chat_stream_servi
 import 'package:explaino/features/tabs/chatbot/api/api_clients/chatbot_api_client.dart';
 import 'package:explaino/features/tabs/chatbot/data/datasources/remote/remote_chatbot_data_source.dart';
 import 'package:explaino/features/tabs/chatbot/data/models/request/start_new_chat_request.dart';
+import 'package:explaino/features/tabs/chatbot/data/models/response/chat_stream_result_model.dart';
 import 'package:explaino/features/tabs/chatbot/data/models/response/get_my_chats_response_model.dart';
 import 'package:explaino/features/tabs/chatbot/data/models/response/session_details_model.dart';
 import 'package:explaino/features/tabs/chatbot/data/models/response/session_model.dart';
@@ -29,11 +30,13 @@ class RemoteChatbotDataSourceImpl implements RemoteChatbotDataSource {
   }
 
   @override
-  Stream<String> askQuestion({
+  Stream<BaseResponse<ChatStreamResult>> askQuestion({
     required String chatId,
     required String question,
   }) {
-    return _chatStreamService.askQuestion(chatId: chatId, question: question);
+    return _chatStreamService
+        .askQuestion(chatId: chatId, question: question)
+        .map((result) => BaseResponse<ChatStreamResult>.success(result));
   }
 
   @override

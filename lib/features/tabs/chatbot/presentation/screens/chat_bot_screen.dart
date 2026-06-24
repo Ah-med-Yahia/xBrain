@@ -124,6 +124,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                             scrollController: _scrollController,
                             isLoading: state.chatDetailsState.isFetching,
                             errorMessage: state.chatDetailsState.errorMessage,
+                            onDeeperQuestionSelected: _fillPrompt,
                             onRetry: () {
                               final id = state.selectedChatId;
                               if (id == null) return;
