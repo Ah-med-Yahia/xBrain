@@ -33,6 +33,10 @@ class ApiConstants {
   static const String getCertificate = 'users/me/certificates/';
   static const String addCertificate = 'users/me/certificates/';
   static const String deleteCertificate = 'users/me/certificates/{id}/';
+  static const String getMyPosts = 'users/me/posts/';
+  static const String getMyQuestions = 'users/me/questions/';
+  static const String getMyCertificates = 'users/me/certificates/';
+  static const String deleteMyCertificate = 'users/me/certificates/{id}/';
   //==================== Specializations============================
   static const String specializations = 'specializations/';
   static const String selectSpecializations = 'users/me/specializations/';

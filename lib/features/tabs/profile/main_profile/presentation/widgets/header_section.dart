@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/main_profile_cubit.dart';
 import 'package:explaino/features/tabs/profile/main_profile/presentation/cubit/main_profile_intents.dart';
+import 'package:explaino/features/tabs/profile/main_profile/presentation/widgets/stat_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
@@ -10,16 +12,28 @@ class HeaderSection extends StatelessWidget {
   final String name;
   final String specialization;
   final String? imageUrl;
+  final String? description;
+  final int questions;
+  final int posts;
+  final int certificates;
 
   const HeaderSection({
     super.key,
     required this.name,
     required this.specialization,
-    required this.imageUrl,
+    this.imageUrl,
+    this.description,
+    this.questions = 0,
+    this.posts = 0,
+    this.certificates = 0,
   });
 
-  Widget _fallbackAvatar(BuildContext context) {
-    final radius = MediaQuery.of(context).size.width * 0.15;
+  static const double _profileRadius = 46;
+  static const double _horizontalPadding = 16;
+  static const double _verticalSpacing = 12;
+  static const double _headerHeight = 110;
+
+  Widget _fallbackAvatar(double radius) {
     return CircleAvatar(
       radius: radius,
       backgroundColor: AppColors.lightAvatar,
@@ -31,8 +45,7 @@ class HeaderSection extends StatelessWidget {
     );
   }
 
-  Widget _shimmerPlaceholder(BuildContext context) {
-    final radius = MediaQuery.of(context).size.width * 0.15;
+  Widget _shimmerPlaceholder(double radius) {
     return Shimmer.fromColors(
       baseColor: AppColors.shimmerBaseColor,
       highlightColor: AppColors.shimmerHighlightColor,
@@ -43,53 +56,104 @@ class HeaderSection extends StatelessWidget {
     );
   }
 
+  Widget _buildProfileImage() {
+    if (imageUrl == null || imageUrl!.isEmpty) {
+      return _fallbackAvatar(_profileRadius);
+    }
+
+    return CachedNetworkImage(
+      imageUrl: imageUrl!,
+      imageBuilder: (context, imageProvider) =>
+          CircleAvatar(radius: _profileRadius, backgroundImage: imageProvider),
+      placeholder: (context, url) => _shimmerPlaceholder(_profileRadius),
+      errorWidget: (context, url, error) => _fallbackAvatar(_profileRadius),
+      fadeInDuration: const Duration(milliseconds: 300),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final textTheme = Theme.of(context).textTheme;
-
     return Padding(
-      padding: EdgeInsets.only(top: size.height * 0.06),
+      padding: const EdgeInsets.symmetric(horizontal: _horizontalPadding),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: () {
-              context.read<MainProfileCubit>().doIntent(
-                NavigateToEditProfileImageScreenIntent(imageUrl: imageUrl),
-              );
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 4),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.15),
-                    blurRadius: 16,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: imageUrl != null && imageUrl!.isNotEmpty
-                  ? CachedNetworkImage(
-                      imageUrl: imageUrl!,
-                      imageBuilder: (context, imageProvider) => CircleAvatar(
-                        radius: size.width * 0.15,
-                        backgroundImage: imageProvider,
+          SizedBox(
+            height: _headerHeight,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    context.read<MainProfileCubit>().doIntent(
+                      NavigateToEditProfileImageScreenIntent(
+                        imageUrl: imageUrl,
                       ),
-                      placeholder: (context, url) =>
-                          _shimmerPlaceholder(context),
-                      errorWidget: (context, url, error) =>
-                          _fallbackAvatar(context),
-                    )
-                  : _fallbackAvatar(context),
+                    );
+                  },
+                  child: _buildProfileImage(),
+                ),
+                const SizedBox(width: _verticalSpacing),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: StatCard(
+                          number: questions.toString(),
+                          title: AppTextConstants.questions,
+                        ),
+                      ),
+                      Flexible(
+                        child: StatCard(
+                          number: posts.toString(),
+                          title: AppTextConstants.posts,
+                        ),
+                      ),
+                      Flexible(
+                        child: StatCard(
+                          number: certificates.toString(),
+                          title: AppTextConstants.certificates,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: _verticalSpacing),
           Text(
             name,
-            style: textTheme.headlineMedium?.copyWith(letterSpacing: -0.5),
+            style: textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
+          const SizedBox(height: 4),
+          Text(
+            specialization,
+            style: textTheme.titleSmall?.copyWith(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w500,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 8),
+          if (description != null && description!.isNotEmpty)
+            Text(
+              description!,
+              style: textTheme.bodySmall?.copyWith(
+                color: Colors.grey[700],
+                height: 1.4,
+              ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
         ],
       ),
     );

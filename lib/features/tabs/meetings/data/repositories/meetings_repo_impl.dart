@@ -3,7 +3,7 @@ import 'package:explaino/features/schedule_meeting/data/mappers/schedule_metting
 import 'package:explaino/features/schedule_meeting/domain/entities/response/schedule_meeting_response_entity.dart';
 import 'package:explaino/features/tabs/meetings/data/data_sources/remote/remote_meeting_data_source.dart';
 import 'package:explaino/features/tabs/meetings/data/mappers/accept_meeting_request_mapper.dart';
-import 'package:explaino/features/tabs/meetings/data/mappers/decline_meeting_request_entity.dart';
+import 'package:explaino/features/tabs/meetings/data/mappers/decline_meeting_request_mapper.dart';
 import 'package:explaino/features/tabs/meetings/data/mappers/meetings_response_mapper.dart';
 import 'package:explaino/features/tabs/meetings/domain/entities/request/accept_meeting_request_entity.dart';
 import 'package:explaino/features/tabs/meetings/domain/entities/request/decline_meeting_request_entity.dart';
