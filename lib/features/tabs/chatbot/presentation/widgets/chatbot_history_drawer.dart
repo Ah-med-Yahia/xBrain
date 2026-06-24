@@ -63,6 +63,7 @@ class ChatbotHistoryDrawer extends StatelessWidget {
       children: [
         Expanded(
           child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(vertical: 8),
             itemCount: sessions.length,
             separatorBuilder: (_, index) => const SizedBox(height: 2),
