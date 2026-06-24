@@ -17,7 +17,6 @@ import 'package:explaino/features/tabs/add_question_or_posts/presentation/widget
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_content_editor.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_content_type_tab_bar.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_specialization_chips.dart';
-import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_spend_notice.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/widgets/add_submit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -201,7 +200,7 @@ class _AddPostsQuestionsCertificatesScreenState
               builder: (context, state) {
                 final isCertificate =
                     state.contentType == AddContentType.certificate;
-                final isQuestion = state.contentType == AddContentType.question;
+                // final isQuestion = state.contentType == AddContentType.question;
                 return Form(
                   key: _formKey,
                   child: Column(
@@ -269,7 +268,7 @@ class _AddPostsQuestionsCertificatesScreenState
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           child: AddAttachmentToolbar(),
                         ),
-                        if (isQuestion) const AddSpendNotice(),
+                        // if (isQuestion) const AddSpendNotice(),
                       ],
                       BlocBuilder<
                         AddPostsQuestionsCertificatesCubit,
