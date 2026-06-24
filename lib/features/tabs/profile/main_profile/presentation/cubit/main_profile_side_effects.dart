@@ -20,3 +20,9 @@ class NavigationToEditProfileImageScreen extends MainProfileSideEffects {
   final String? imageUrl;
   NavigationToEditProfileImageScreen(this.imageUrl);
 }
+
+class ShowSuccessMessage extends MainProfileSideEffects {
+  final String message;
+
+  ShowSuccessMessage(this.message);
+}

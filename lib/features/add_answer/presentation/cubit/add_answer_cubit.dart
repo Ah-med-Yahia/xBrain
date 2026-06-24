@@ -72,6 +72,9 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
       case RemoveFileIntent():
         _handleRemoveFile();
         break;
+      case ToggleAddReplyIntent(answerId: final answerId):
+        _handleToggleAddReply(answerId);
+        break;
       case UpdateFileValidationIntent(
         content: final content,
         file: final file,
@@ -96,6 +99,10 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
     hasMore = true;
   }
 
+  void _handleToggleAddReply(String answerId) {
+    emit(state.copyWith(addReplyAnswerId: answerId));
+  }
+
   Future<void> _getAnswers(String questionId) async {
     if (!hasMore || _isLoadingAnswers) return;
 
@@ -110,6 +117,7 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
         getAnswersState: state.getAnswersState.copyWith(
           isFetching: true,
           errorMessage: null,
+          clearError: true,
         ),
       ),
     );
@@ -269,6 +277,7 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
         );
         _resetPagination();
         await _getReplies(answerId);
+        _handleToggleAddReply('null');
       },
       failure: (error) {
         emit(

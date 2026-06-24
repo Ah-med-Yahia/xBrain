@@ -73,3 +73,8 @@ class DeleteReplyOrAnswerIntent extends AddAnswerIntents {
   final String id;
   DeleteReplyOrAnswerIntent({required this.id});
 }
+
+class ToggleAddReplyIntent extends AddAnswerIntents {
+  final String answerId;
+  ToggleAddReplyIntent({required this.answerId});
+}

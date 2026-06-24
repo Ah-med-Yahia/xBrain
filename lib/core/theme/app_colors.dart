@@ -7,6 +7,7 @@ class AppColors {
   // Brand / Primary Colors
   // =========================
   static const Color primary = Color(0xFF1197F7);
+  static const Color lightPrimary = Color(0xFF6DC2FE);
   static const Color onPrimary = Color(0xFFFFFFFF);
 
   // =========================
@@ -95,4 +96,26 @@ class AppColors {
   static const Color jetBlack = Color(0xFF1A1A1A);
   static const Color spanishGray = Color(0xFF888888);
   static const Color silverGray = Color(0xFF999999);
+  static const Color grayishPurple = Color(0xFF79747E);
+  static const Color ghostWhite = Color(0xFFF5F7FA);
+  static const Color oxdordBlue = Color(0xFF1A1A2E);
+  static const Color athensGray = Color(0xFFEDF1F7);
+  static const Color aliceBlue = Color(0xFFF8FAFD);
+  static const Color lavenderBlue = Color(0xFFF2F5FA);
+  static const Color lightBlueGray = Color(0xFFEEF2F8);
+  static const Color paleBlueGray = Color(0xFFE0E5ED);
+  static const Color brightPurple = Color(0xFF8B5CF6);
+  static const Color darkGray = Color(0xFF4A5568);
+  static const Color azureBlue = Color(0xFF0D8AE0);
+  static const veryLightBlue = Color(0xFFF8F9FF);
+  static const softBlue = Color(0xFFEFF4FF);
+  static const lightBlue = Color(0xFFE5EEFF);
+  static const paleBlue = Color(0xFFDCE9FF);
+  static const powderBlue = Color(0xFFD3E4FE);
+  static const royalBlue = Color(0xFF2170E4);
+  static const softLavender = Color(0xFFD8E2FF);
+  static const darkNavy = Color(0xFF0B1C30);
+  static const slateGray = Color(0xFF424754);
+  static const lightGray = Color(0xFFC2C6D6);
+  static const accentBlue = Color(0xFF0058BE);
 }

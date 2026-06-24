@@ -2,10 +2,12 @@ import 'package:explaino/core/constants/app_text_constants.dart';
 import 'package:explaino/core/gen/assets.gen.dart';
 import 'package:explaino/core/helpers/text_direction_helper.dart';
 import 'package:explaino/core/helpers/time_ago_helper.dart';
+import 'package:explaino/core/routing/app_routes_constant.dart';
 import 'package:explaino/core/shared/data/models/questions/response/first_ten_answers_of_question_response_model/answer_model.dart';
 import 'package:explaino/core/theme/app_colors.dart';
 import 'package:explaino/features/add_answer/presentation/widgets/avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ReplyCard extends StatelessWidget {
   final AnswerModel reply;
@@ -80,11 +82,23 @@ class ReplyCard extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: Assets.icons.videoCall.image(
-                          color: AppColors.grey,
+                      InkWell(
+                        onTap: () {
+                          GoRouter.of(context).push(
+                            AppRoutesConstants.scheduleMeetingRoute,
+                            extra: {
+                              AppRoutesConstants.idKey: reply.author.id,
+                              AppRoutesConstants.authorNameKey:
+                                  '${reply.author.firstName} ${reply.author.lastName}',
+                            },
+                          );
+                        },
+                        child: SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: Assets.icons.videoCall.image(
+                            color: AppColors.grey,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 16),

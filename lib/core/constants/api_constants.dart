@@ -33,6 +33,10 @@ class ApiConstants {
   static const String getCertificate = 'users/me/certificates/';
   static const String addCertificate = 'users/me/certificates/';
   static const String deleteCertificate = 'users/me/certificates/{id}/';
+  static const String getMyPosts = 'users/me/posts/';
+  static const String getMyQuestions = 'users/me/questions/';
+  static const String getMyCertificates = 'users/me/certificates/';
+  static const String deleteMyCertificate = 'users/me/certificates/{id}/';
   //==================== Specializations============================
   static const String specializations = 'specializations/';
   static const String selectSpecializations = 'users/me/specializations/';
@@ -114,4 +118,26 @@ class ApiConstants {
   //==================== Update CommentOrReply ==========================
   static const String updateCommentOrReply =
       'comments/{id}/'; // {String {content},CommentModel}
+  //==========================================================
+  //==================== Schedule Meetings ==========================
+  static const String scheduleMeeting = 'answers/{id}/request-meeting/';
+  static const String getOutgoingMeetings =
+      'users/me/meeting-requests/outgoing/';
+  static const String getIncomingMeetings =
+      'users/me/meeting-requests/incoming/';
+  static const String getSingleMeetingDetails = 'meeting-requests/{id}/';
+  static const String acceptMeeting = 'meeting-requests/{id}/accept/';
+  static const String declineMeeting = 'meeting-requests/{id}/decline/';
+  static const String cancelMeeting = 'meeting-requests/{id}/cancel/';
+  //==================== ChatBot ==========================
+  static const String listMyChats =
+      'ai/chats/'; // get - {_,GetMyChatsResponseModel}
+  static const String startNewChat =
+      'ai/chats/'; // post - {optional string title,session model}
+  static const String getChatDetails =
+      'ai/chats/{id}/'; // get - {_,SessionDetailsModel}
+  static const String renameChat =
+      'ai/chats/{id}/'; // patch - {required string title,session model}
+  static const String deleteChat = 'ai/chats/{id}/'; // delete - {_,_}
+  static const String sendMessageToChat = 'ai/chats/{id}/ask/';
 }

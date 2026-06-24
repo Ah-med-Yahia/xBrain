@@ -4,10 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class UserAvatar extends StatelessWidget {
-  final String username;
+  final String userName;
   final String? profileImageUrl;
+  final double? radius;
 
-  const UserAvatar({super.key, required this.username, this.profileImageUrl});
+  const UserAvatar({
+    super.key,
+    required this.userName,
+    this.profileImageUrl,
+    this.radius,
+  });
   Widget _shimmerPlaceholder(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: AppColors.shimmerBaseColor,
@@ -22,7 +28,7 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final initial = username[0].toUpperCase();
+    final initial = userName[0].toUpperCase();
 
     final fallback = CircleAvatar(
       radius: 23,
@@ -41,8 +47,10 @@ class UserAvatar extends StatelessWidget {
       child: profileImageUrl != null && profileImageUrl!.isNotEmpty
           ? CachedNetworkImage(
               imageUrl: profileImageUrl!,
-              imageBuilder: (context, imageProvider) =>
-                  CircleAvatar(radius: 23, backgroundImage: imageProvider),
+              imageBuilder: (context, imageProvider) => CircleAvatar(
+                radius: radius ?? 23,
+                backgroundImage: imageProvider,
+              ),
               placeholder: (context, url) => _shimmerPlaceholder(context),
               errorWidget: (context, url, error) => fallback,
             )
