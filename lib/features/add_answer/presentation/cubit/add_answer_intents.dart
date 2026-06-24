@@ -61,3 +61,20 @@ class UpdateFocusStatusIntent extends AddAnswerIntents {
   final bool isFocused;
   UpdateFocusStatusIntent({required this.isFocused});
 }
+
+class AddReplyIntent extends AddAnswerIntents {
+  final String answerId;
+  final AddAnswerRequestEntity request;
+
+  AddReplyIntent({required this.answerId, required this.request});
+}
+
+class DeleteReplyOrAnswerIntent extends AddAnswerIntents {
+  final String id;
+  DeleteReplyOrAnswerIntent({required this.id});
+}
+
+class ToggleAddReplyIntent extends AddAnswerIntents {
+  final String answerId;
+  ToggleAddReplyIntent({required this.answerId});
+}

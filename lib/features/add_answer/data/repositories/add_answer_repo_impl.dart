@@ -55,4 +55,28 @@ class AddAnswerRepoImpl implements AddAnswerRepo {
       failure: (error) => BaseResponse.failure(error),
     );
   }
+
+  @override
+  Future<BaseResponse<AnswerEntity>> addReply(
+    String answerId,
+    AddAnswerRequestEntity request,
+  ) async {
+    final result = await _remoteAddAnswerDataSource.addReply(
+      answerId,
+      request.toModel(),
+    );
+    return result.when(
+      success: (data) => BaseResponse.success(data.toEntity()),
+      failure: (error) => BaseResponse.failure(error),
+    );
+  }
+
+  @override
+  Future<BaseResponse<void>> deleteAnswerOrReply(String id) async {
+    final result = await _remoteAddAnswerDataSource.deleteAnswerOrReply(id);
+    return result.when(
+      success: (data) => BaseResponse.success(data),
+      failure: (error) => BaseResponse.failure(error),
+    );
+  }
 }

@@ -19,8 +19,9 @@ import 'package:go_router/go_router.dart';
 
 class AnswerCard extends StatelessWidget {
   final AnswerModel answer;
+  final FocusNode? replyFocusNode;
 
-  const AnswerCard({super.key, required this.answer});
+  const AnswerCard({super.key, required this.answer, this.replyFocusNode});
 
   @override
   Widget build(BuildContext context) {
@@ -121,11 +122,19 @@ class AnswerCard extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 16),
-                            Text(
-                              AppTextConstants.reply,
-                              style: textTheme.bodyMedium?.copyWith(
-                                color: AppColors.grey,
-                                fontWeight: FontWeight.w500,
+                            InkWell(
+                              onTap: () {
+                                replyFocusNode?.requestFocus();
+                                context.read<AddAnswerCubit>().doIntent(
+                                  ToggleAddReplyIntent(answerId: answer.id),
+                                );
+                              },
+                              child: Text(
+                                AppTextConstants.reply,
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.grey,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ],

@@ -17,4 +17,10 @@ abstract interface class AddAnswerRepo {
   Future<BaseResponse<AnswersOfQuestionResponseEntity>> getReplies(
     String answerId,
   );
+
+  Future<BaseResponse<AnswerEntity>> addReply(
+    String answerId,
+    AddAnswerRequestEntity request,
+  );
+  Future<BaseResponse<void>> deleteAnswerOrReply(String id);
 }

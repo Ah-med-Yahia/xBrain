@@ -60,11 +60,31 @@ class _AddAnswerScreenState extends State<AddAnswerScreen> {
     super.dispose();
   }
 
-  void _onSend(AddAnswerState state) {
+  void _onSendAnswer(AddAnswerState state) {
     _addAnswerCubit.doIntent(
       AddAnswerIntent(
         questionId: widget.questionId,
         addAnswerRequestEntity: AddAnswerRequestEntity(
+          content: _commentController.text,
+          attachments: [
+            if (state.selectedImageFile != null) state.selectedImageFile!,
+            if (state.selectedFile != null) state.selectedFile!,
+          ].nullIfEmpty,
+        ),
+      ),
+    );
+    _commentController.clear();
+    _focusNode.unfocus();
+    _addAnswerCubit.doIntent(RemoveImageIntent());
+    _addAnswerCubit.doIntent(RemoveFileIntent());
+    _addAnswerCubit.doIntent(GetAnswersIntent(questionId: widget.questionId));
+  }
+
+  void _onSendReply(AddAnswerState state, String answerId) {
+    _addAnswerCubit.doIntent(
+      AddReplyIntent(
+        answerId: answerId,
+        request: AddAnswerRequestEntity(
           content: _commentController.text,
           attachments: [
             if (state.selectedImageFile != null) state.selectedImageFile!,
@@ -117,7 +137,8 @@ class _AddAnswerScreenState extends State<AddAnswerScreen> {
     return BlocBuilder<AddAnswerCubit, AddAnswerState>(
       buildWhen: (prev, next) =>
           prev.selectedImageFile != next.selectedImageFile ||
-          prev.selectedFile != next.selectedFile,
+          prev.selectedFile != next.selectedFile ||
+          prev.addReplyAnswerId != next.addReplyAnswerId,
       builder: (context, state) {
         return CommentInputBar(
           controller: _commentController,
@@ -126,7 +147,9 @@ class _AddAnswerScreenState extends State<AddAnswerScreen> {
           selectedFile: state.selectedFile,
           onRemoveImage: () => _addAnswerCubit.doIntent(RemoveImageIntent()),
           onRemoveFile: () => _addAnswerCubit.doIntent(RemoveFileIntent()),
-          onSend: () => _onSend(state),
+          onSend: () => state.addReplyAnswerId != null
+              ? _onSendReply(state, state.addReplyAnswerId!)
+              : _onSendAnswer(state),
           onImagePick: () {
             showImagePickerDialog(context).then((file) {
               if (file != null) {
@@ -158,7 +181,8 @@ class _AddAnswerScreenState extends State<AddAnswerScreen> {
           onRetry: () => context.read<AddAnswerCubit>().doIntent(
             GetAnswersIntent(questionId: widget.questionId),
           ),
-          itemBuilder: (answer) => AnswerCard(answer: answer),
+          itemBuilder: (answer) =>
+              AnswerCard(answer: answer, replyFocusNode: _focusNode),
           scrollController: _scrollController,
         );
       },

@@ -16,6 +16,11 @@ class AddAnswerState extends Equatable {
   final File? selectedImageFile;
   final bool filedValidation;
   final bool isFocused;
+  final String? addReplyAnswerId;
+  final int answerCurrentPag;
+  final int replyCurrentPag;
+  final bool answerHasNextPage;
+  final bool replyHasNextPage;
 
   const AddAnswerState({
     this.getAnswersState = const BaseState<AnswersOfQuestionResponseEntity>(),
@@ -26,6 +31,11 @@ class AddAnswerState extends Equatable {
     this.selectedImageFile,
     this.filedValidation = false,
     this.isFocused = false,
+    this.addReplyAnswerId,
+    this.answerCurrentPag = 1,
+    this.replyCurrentPag = 1,
+    this.answerHasNextPage = true,
+    this.replyHasNextPage = true,
   });
 
   AddAnswerState copyWith({
@@ -37,6 +47,11 @@ class AddAnswerState extends Equatable {
     Object? selectedImageFile = _remove,
     bool? filedValidation,
     bool? isFocused,
+    String? addReplyAnswerId,
+    int? answerCurrentPag,
+    int? replyCurrentPag,
+    bool? answerHasNextPage,
+    bool? replyHasNextPage,
   }) {
     return AddAnswerState(
       getAnswersState: getAnswersState ?? this.getAnswersState,
@@ -51,6 +66,11 @@ class AddAnswerState extends Equatable {
           : selectedImageFile as File?,
       filedValidation: filedValidation ?? this.filedValidation,
       isFocused: isFocused ?? this.isFocused,
+      addReplyAnswerId: addReplyAnswerId ?? this.addReplyAnswerId,
+      answerCurrentPag: answerCurrentPag ?? this.answerCurrentPag,
+      replyCurrentPag: replyCurrentPag ?? this.replyCurrentPag,
+      answerHasNextPage: answerHasNextPage ?? this.answerHasNextPage,
+      replyHasNextPage: replyHasNextPage ?? this.replyHasNextPage,
     );
   }
 
@@ -64,5 +84,10 @@ class AddAnswerState extends Equatable {
     selectedImageFile,
     filedValidation,
     isFocused,
+    addReplyAnswerId,
+    answerCurrentPag,
+    replyCurrentPag,
+    answerHasNextPage,
+    replyHasNextPage,
   ];
 }
