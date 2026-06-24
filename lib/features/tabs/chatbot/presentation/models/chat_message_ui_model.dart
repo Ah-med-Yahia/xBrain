@@ -8,22 +8,41 @@ class ChatMessageUiModel extends Equatable {
   final String content;
   final ChatMessageAuthor author;
   final bool isStreaming;
+  final String? agent;
+  final List<String> sources;
+  final String? deeperSuggestion;
 
   const ChatMessageUiModel({
     required this.id,
     required this.content,
     required this.author,
     this.isStreaming = false,
+    this.agent,
+    this.sources = const [],
+    this.deeperSuggestion,
   });
 
   bool get isUser => author == ChatMessageAuthor.user;
+  bool get hasMetadata =>
+      (agent?.trim().isNotEmpty ?? false) ||
+      sources.isNotEmpty ||
+      (deeperSuggestion?.trim().isNotEmpty ?? false);
 
-  ChatMessageUiModel copyWith({String? content, bool? isStreaming}) {
+  ChatMessageUiModel copyWith({
+    String? content,
+    bool? isStreaming,
+    String? agent,
+    List<String>? sources,
+    String? deeperSuggestion,
+  }) {
     return ChatMessageUiModel(
       id: id,
       content: content ?? this.content,
       author: author,
       isStreaming: isStreaming ?? this.isStreaming,
+      agent: agent ?? this.agent,
+      sources: sources ?? this.sources,
+      deeperSuggestion: deeperSuggestion ?? this.deeperSuggestion,
     );
   }
 
@@ -42,5 +61,13 @@ class ChatMessageUiModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, content, author, isStreaming];
+  List<Object?> get props => [
+    id,
+    content,
+    author,
+    isStreaming,
+    agent,
+    sources,
+    deeperSuggestion,
+  ];
 }

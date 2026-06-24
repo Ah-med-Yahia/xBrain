@@ -9,6 +9,7 @@ class ChatMessageList extends StatelessWidget {
   final bool isLoading;
   final String? errorMessage;
   final VoidCallback onRetry;
+  final ValueChanged<String> onDeeperQuestionSelected;
 
   const ChatMessageList({
     super.key,
@@ -17,6 +18,7 @@ class ChatMessageList extends StatelessWidget {
     required this.isLoading,
     required this.errorMessage,
     required this.onRetry,
+    required this.onDeeperQuestionSelected,
   });
 
   @override
@@ -34,7 +36,10 @@ class ChatMessageList extends StatelessWidget {
       padding: const EdgeInsets.only(top: 12, bottom: 16),
       itemCount: messages.length,
       itemBuilder: (context, index) {
-        return ChatMessageBubble(message: messages[index]);
+        return ChatMessageBubble(
+          message: messages[index],
+          onDeeperQuestionSelected: onDeeperQuestionSelected,
+        );
       },
     );
   }

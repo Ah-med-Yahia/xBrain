@@ -1,5 +1,6 @@
 import 'package:explaino/config/base_response/base_response.dart';
 import 'package:explaino/features/tabs/chatbot/domain/entities/request/start_new_chat_request_entity.dart';
+import 'package:explaino/features/tabs/chatbot/domain/entities/response/chat_stream_result_entity.dart';
 import 'package:explaino/features/tabs/chatbot/domain/entities/response/get_my_chats_response_entity.dart';
 import 'package:explaino/features/tabs/chatbot/domain/entities/response/session_details_entity.dart';
 import 'package:explaino/features/tabs/chatbot/domain/entities/response/session_entity.dart';
@@ -11,7 +12,7 @@ abstract interface class ChatbotRepository {
     StartNewChatRequestEntity? request,
   );
 
-  Stream<String> askQuestion({
+  Stream<BaseResponse<ChatStreamResultEntity>> askQuestion({
     required String chatId,
     required String question,
   });
