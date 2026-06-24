@@ -12,6 +12,7 @@ import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_car
 import 'package:explaino/features/tabs/meetings/presentation/widgets/meeting_card_widgets/user_meeting_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MeetingCard extends StatefulWidget {
   final ScheduleMeetingResponseEntity meeting;
@@ -104,31 +105,61 @@ class _MeetingCardState extends State<MeetingCard>
                                         .toLowerCase()) ...[
                               const SizedBox(height: 18),
                               PendingActions(meeting: meeting),
-                            ] else if (meeting.status ==
-                                MeetingStatus.accepted) ...[
+                            ] else ...[
                               const SizedBox(height: 18),
-                              GlassActionButton(
-                                label: AppTextConstants.joinMeeting,
-                                icon: Icons.videocam_rounded,
-                                variant: ButtonVariant.gradient,
-                                onTap: () {},
-                              ),
-                            ],
-                            if (widget.namingList ==
-                                    AppTextConstants.outgoing.toLowerCase() &&
-                                (meeting.status == MeetingStatus.pending ||
-                                    meeting.status ==
-                                        MeetingStatus.scheduled)) ...[
-                              const SizedBox(height: 18),
-                              GlassActionButton(
-                                label: AppTextConstants.cancel,
-                                icon: Icons.close,
-                                variant: ButtonVariant.solid,
-                                onTap: () {
-                                  context.read<MeetingsCubit>().doIntent(
-                                    CancelMeetingIntent(id: meeting.id),
-                                  );
-                                },
+                              Row(
+                                children: [
+                                  if (widget.namingList ==
+                                          AppTextConstants.outgoing
+                                              .toLowerCase() &&
+                                      (meeting.status ==
+                                              MeetingStatus.pending ||
+                                          meeting.status ==
+                                              MeetingStatus.scheduled))
+                                    Expanded(
+                                      child: GlassActionButton(
+                                        label: AppTextConstants.cancel,
+                                        icon: Icons.close,
+                                        variant: ButtonVariant.outline,
+                                        onTap: () {
+                                          context
+                                              .read<MeetingsCubit>()
+                                              .doIntent(
+                                                CancelMeetingIntent(
+                                                  id: meeting.id,
+                                                ),
+                                              );
+                                        },
+                                      ),
+                                    ),
+                                  if (meeting.meetLink != null &&
+                                      meeting.meetLink!.isNotEmpty &&
+                                      meeting.status ==
+                                          MeetingStatus.scheduled) ...[
+                                    if (widget.namingList ==
+                                        AppTextConstants.outgoing.toLowerCase())
+                                      const SizedBox(width: 8),
+                                    Expanded(
+                                      child: GlassActionButton(
+                                        label: AppTextConstants.joinMeeting,
+                                        icon: Icons.videocam_rounded,
+                                        variant: ButtonVariant.gradient,
+                                        onTap: () async {
+                                          final url = Uri.parse(
+                                            meeting.meetLink!,
+                                          );
+                                          if (await canLaunchUrl(url)) {
+                                            await launchUrl(
+                                              url,
+                                              mode: LaunchMode
+                                                  .externalApplication,
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ],
                               ),
                             ],
                           ],

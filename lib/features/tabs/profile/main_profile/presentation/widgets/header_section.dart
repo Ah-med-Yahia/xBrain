@@ -134,15 +134,15 @@ class HeaderSection extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
-          Text(
-            specialization,
-            style: textTheme.titleSmall?.copyWith(
-              color: AppColors.primary,
-              fontWeight: FontWeight.w500,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+          // Text(
+          //   specialization,
+          //   style: textTheme.titleSmall?.copyWith(
+          //     color: AppColors.primary,
+          //     fontWeight: FontWeight.w500,
+          //   ),
+          //   maxLines: 1,
+          //   overflow: TextOverflow.ellipsis,
+          // ),
           const SizedBox(height: 8),
           if (description != null && description!.isNotEmpty)
             Text(
