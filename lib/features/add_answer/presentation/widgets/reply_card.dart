@@ -75,31 +75,27 @@ class ReplyCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                InkWell(
-                  onTap: () {},
-                  borderRadius: BorderRadius.circular(8),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: Assets.icons.videoCall.image(
-                            color: AppColors.grey,
-                          ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: Assets.icons.videoCall.image(
+                          color: AppColors.grey,
                         ),
-                        const SizedBox(width: 16),
-                        Text(
-                          AppTextConstants.reply,
-                          style: textTheme.labelLarge?.copyWith(
-                            color: AppColors.grey,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      ),
+                      const SizedBox(width: 16),
+                      Text(
+                        AppTextConstants.reply,
+                        style: textTheme.labelLarge?.copyWith(
+                          color: AppColors.grey,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],

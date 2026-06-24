@@ -43,4 +43,22 @@ class RemoteAddAnswerDataSourceImpl implements RemoteAddAnswerDataSource {
   ) async {
     return await safeApiCall(() => _addAnswerApiClient.getReplies(id));
   }
+
+  @override
+  Future<BaseResponse<AnswerModel>> addReply(
+    String answerId,
+    AddAnswerRequestModel request,
+  ) async {
+    return await safeApiCall(
+      () async => _addAnswerApiClient.addReply(
+        answerId,
+        await AddAnswerMapper.questionToFormData(request),
+      ),
+    );
+  }
+
+  @override
+  Future<BaseResponse<void>> deleteAnswerOrReply(String id) async {
+    return await safeApiCall(() => _addAnswerApiClient.deleteAnswerOrReply(id));
+  }
 }

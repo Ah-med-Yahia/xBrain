@@ -26,4 +26,13 @@ abstract class AddAnswerApiClient {
 
   @GET(ApiConstants.getReplies)
   Future<AnswersOfQuestionResponsModel> getReplies(@Path('id') String id);
+
+  @DELETE(ApiConstants.deleteAnswer)
+  Future<void> deleteAnswerOrReply(@Path('id') String id);
+
+  @POST(ApiConstants.addReply)
+  Future<AnswerModel> addReply(
+    @Path('id') String answerId,
+    @Body() FormData formData,
+  );
 }

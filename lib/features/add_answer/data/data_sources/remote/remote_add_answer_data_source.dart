@@ -13,4 +13,10 @@ abstract class RemoteAddAnswerDataSource {
     int page,
   );
   Future<BaseResponse<AnswersOfQuestionResponsModel>> getReplies(String id);
+
+  Future<BaseResponse<AnswerModel>> addReply(
+    String answerId,
+    AddAnswerRequestModel request,
+  );
+  Future<BaseResponse<void>> deleteAnswerOrReply(String id);
 }

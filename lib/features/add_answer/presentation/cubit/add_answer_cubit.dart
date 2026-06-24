@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:explaino/config/base_response/base_response.dart';
@@ -5,9 +6,12 @@ import 'package:explaino/config/base_state/base_state.dart';
 import 'package:explaino/core/shared/data/models/questions/response/first_ten_answers_of_question_response_model/answer_model.dart';
 import 'package:explaino/features/add_answer/domain/entities/request/add_answer_request_entity.dart';
 import 'package:explaino/features/add_answer/domain/usecase/add_answer_use_case.dart';
+import 'package:explaino/features/add_answer/domain/usecase/add_reply_use_case.dart';
+import 'package:explaino/features/add_answer/domain/usecase/delete_reply_or_answer.dart';
 import 'package:explaino/features/add_answer/domain/usecase/get_all_answer_use_case.dart';
 import 'package:explaino/features/add_answer/domain/usecase/get_single_reply_use_case.dart';
 import 'package:explaino/features/add_answer/presentation/cubit/add_answer_intents.dart';
+import 'package:explaino/features/add_answer/presentation/cubit/add_answer_side_effects.dart';
 import 'package:explaino/features/add_answer/presentation/cubit/add_answer_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -20,14 +24,23 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
   int page = 1;
   bool hasMore = true;
   bool _isLoadingAnswers = false;
+  final AddReplyUseCase _addReplyUseCase;
+  final DeleteReplyOrAnswerUseCase _deleteReplyOrAnswerUseCase;
+  final _sideEffectController =
+      StreamController<AddAnswerSideEffect>.broadcast();
+  Stream<AddAnswerSideEffect> get sideEffects => _sideEffectController.stream;
 
   AddAnswerCubit({
     required GetAllAnswersUseCase getAnswersUseCase,
     required AddAnswerUseCase addAnswerUseCase,
     required GetRepliesUseCase getRepliesUseCase,
+    required AddReplyUseCase addReplyUseCase,
+    required DeleteReplyOrAnswerUseCase deleteReplyOrAnswerUseCase,
   }) : _getAnswersUseCase = getAnswersUseCase,
        _addAnswerUseCase = addAnswerUseCase,
        _getRepliesUseCase = getRepliesUseCase,
+       _addReplyUseCase = addReplyUseCase,
+       _deleteReplyOrAnswerUseCase = deleteReplyOrAnswerUseCase,
        super(const AddAnswerState());
 
   void doIntent(AddAnswerIntents intent) {
@@ -68,6 +81,12 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
         break;
       case UpdateFocusStatusIntent(isFocused: final isFocused):
         _handleUpdateFocusStatus(isFocused);
+        break;
+      case AddReplyIntent(answerId: final answerId, request: final request):
+        _addReply(answerId, request);
+        break;
+      case DeleteReplyOrAnswerIntent(id: final id):
+        _deleteReplyOrAnswer(id);
         break;
     }
   }
@@ -214,6 +233,71 @@ class AddAnswerCubit extends Cubit<AddAnswerState> {
             },
           ),
         );
+      },
+    );
+  }
+
+  Future<void> _addReply(
+    String answerId,
+    AddAnswerRequestEntity addAnswerRequestEntity,
+  ) async {
+    emit(
+      state.copyWith(
+        addAnswerState: state.addAnswerState.copyWith(
+          isFetching: true,
+          errorMessage: null,
+        ),
+      ),
+    );
+
+    final result = await _addReplyUseCase(
+      answerId: answerId,
+      request: addAnswerRequestEntity,
+    );
+
+    result.when(
+      success: (data) async {
+        emit(
+          state.copyWith(
+            addAnswerState: state.addAnswerState.copyWith(
+              isFetching: false,
+              errorMessage: null,
+              data: data,
+            ),
+            getAnswersState: state.getAnswersState.copyWith(data: null),
+          ),
+        );
+        _resetPagination();
+        await _getReplies(answerId);
+      },
+      failure: (error) {
+        emit(
+          state.copyWith(
+            addAnswerState: state.addAnswerState.copyWith(
+              isFetching: false,
+              errorMessage: error.message,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _deleteReplyOrAnswer(String id) async {
+    _sideEffectController.add(ShowLoading());
+
+    final result = await _deleteReplyOrAnswerUseCase(id: id);
+
+    result.when(
+      success: (data) {
+        _sideEffectController.add(HideLoading());
+        _sideEffectController.add(
+          ShowSuccessMessage('Answer deleted successfully'),
+        );
+      },
+      failure: (error) {
+        _sideEffectController.add(HideLoading());
+        _sideEffectController.add(ShowError(error.message));
       },
     );
   }
