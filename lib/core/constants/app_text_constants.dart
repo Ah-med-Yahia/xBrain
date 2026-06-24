@@ -66,6 +66,14 @@ class AppTextConstants {
   static const String retryAgainMessage = 'Retry Again';
   static const String done = 'Done';
   static const String bio = 'BIO';
+  static const String certificateDeletedSuccessfully =
+      'Certificate deleted successfully';
+  static const String issuedOn = 'Issued on ';
+  static const String noSpecialization = 'No Specialization';
+  static const String noItemsFound = 'No items found';
+  static const String questions = 'Questions';
+  static const String posts = 'Posts';
+  static const String certificates = 'Certificates';
   //====================main============================
   static const String xBrain = 'xBrain';
   static const String home = 'Home';
@@ -194,4 +202,19 @@ class AppTextConstants {
   static const String meetingDeclinedSuccessfully =
       'Meeting Declined Successfully';
   static const String addToCalendar = 'Add to Calendar';
+  //====================Chatbot============================
+  static const String chatbotAppBarTitle = 'xBrain Chatbot';
+  static const String history = 'History';
+  static const String newChat = 'New Chat';
+  static const String chatInputHint = 'Write your message...';
+  static const String send = 'Send';
+  static const String noChatsYet = 'No chats yet';
+  static const String chats = 'Chats';
+  static const String tryAgain = 'Try Again';
+  static const String delete = 'Delete';
+  static const String howCanIHelpYou = 'How can I help you study today?';
+  static const String studyBetter = 'How can I study better?';
+  static const String studyPlan = 'Help me make a study plan';
+  static const String explainTopic = 'Explain a topic simply';
+  static const String quizMe = 'Quiz me with questions';
 }

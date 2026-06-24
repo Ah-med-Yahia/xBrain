@@ -13,3 +13,14 @@ class NavigateToEditProfileImageScreenIntent extends MainProfileIntents {
   final String? imageUrl;
   NavigateToEditProfileImageScreenIntent({required this.imageUrl});
 }
+
+class GetMyQuestionsIntent extends MainProfileIntents {}
+
+class GetMyPostsIntent extends MainProfileIntents {}
+
+class GetMyCertificatesIntent extends MainProfileIntents {}
+
+class DeleteCertificateIntent extends MainProfileIntents {
+  final String certificateId;
+  DeleteCertificateIntent({required this.certificateId});
+}

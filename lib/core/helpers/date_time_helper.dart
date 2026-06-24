@@ -22,6 +22,9 @@ extension DateTimeExtension on DateTime {
   /// 2026-07-17
   String get yyyyMMdd => DateFormat('yyyy-MM-dd').format(this);
 
+  /// 2026
+  String get year => DateFormat('yyyy').format(this);
+
   /// Custom format
   String format([String pattern = 'MMM d']) {
     return DateFormat(pattern).format(this);

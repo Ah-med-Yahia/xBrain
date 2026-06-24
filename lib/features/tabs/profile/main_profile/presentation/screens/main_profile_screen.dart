@@ -37,6 +37,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _handleNavigateToEditProfileScreen(sideEffect.user);
         case NavigationToEditProfileImageScreen():
           _handleNavigationToEditProfileImageScreen(sideEffect.imageUrl);
+        case ShowSuccessMessage():
+          _handleShowSuccessMessage(sideEffect.message);
       }
     });
     mainProfileCubit.doIntent(GetProfileDataIntent());
@@ -54,6 +56,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     UIUtils.showMessage(
       message,
       backGroundColor: AppColors.error,
+      textColor: AppColors.white,
+    );
+  }
+
+  void _handleShowSuccessMessage(String message) {
+    UIUtils.showMessage(
+      message,
+      backGroundColor: AppColors.green,
       textColor: AppColors.white,
     );
   }
@@ -88,16 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => mainProfileCubit,
-      child: const SafeArea(
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: MainBody(),
-            ),
-          ],
-        ),
-      ),
+      child: const ColoredBox(color: AppColors.kLight, child: MainBody()),
     );
   }
 }

@@ -12,6 +12,7 @@ import 'package:explaino/features/schedule_meeting/domain/entities/response/sche
 import 'package:explaino/features/schedule_meeting/presentation/screens/schedule_meeting_screen.dart';
 import 'package:explaino/features/splash/presentation/screens/splash_screen.dart';
 import 'package:explaino/features/tabs/add_question_or_posts/presentation/screens/add_posts_questions_certificates_screen.dart';
+import 'package:explaino/features/tabs/chatbot/presentation/screens/chat_bot_screen.dart';
 import 'package:explaino/features/tabs/meetings/presentation/screens/meeting_confirmed_screen.dart';
 import 'package:explaino/features/tabs/profile/edit_profile/presentation/screens/edit_profile_image_screen.dart';
 import 'package:explaino/features/tabs/profile/edit_profile/presentation/screens/edit_profile_screen.dart';
@@ -130,6 +131,11 @@ abstract class AppRouter {
 
           return MeetingConfirmedScreen(meeting: meeting);
         },
+      ),
+      GoRoute(
+        path: AppRoutesConstants.chatbotRoute,
+        name: AppRoutesConstants.chatbotRoute,
+        builder: (context, state) => const ChatBotScreen(),
       ),
     ],
   );
