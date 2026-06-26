@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/icons/app_icon.png" alt="Explaino Logo" width="100"/>
+<img src="assets/images/app_logo.png" alt="Explaino Logo" width="100"/>
 
 # Explaino
 
