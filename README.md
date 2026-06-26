@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="assets/images/app_logo.png" alt="Explaino Logo" width="100"/>
+<img src="assets/images/app_logo.png" alt="xBrain Logo" width="100"/>
 
-# Explaino
+# xBrain
 
 **An educational social platform connecting students and experts — powered by Flutter.**
 
@@ -16,7 +16,7 @@
 
 ## 📖 About
 
-**Explaino** is a graduation project mobile application built with Flutter that creates an educational social network. It allows users to ask questions, share posts and certificates, book one-on-one meetings with experts, and interact with an AI-powered chatbot — all within a single platform.
+**xBrain** is a graduation project mobile application built with Flutter that creates an educational social network. It allows users to ask questions, share posts and certificates, book one-on-one meetings with experts, and interact with an AI-powered chatbot — all within a single platform.
 
 ---
 
@@ -206,7 +206,7 @@ feature/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd explaino
+   cd xBrain
    ```
 
 2. **Install dependencies**
