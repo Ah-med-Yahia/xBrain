@@ -2,7 +2,7 @@
 
 <img src="assets/images/app_logo.png" alt="Explaino Logo" width="100"/>
 
-# Explaino
+# xBrain
 
 **An educational social platform connecting students and experts — powered by Flutter.**
 
